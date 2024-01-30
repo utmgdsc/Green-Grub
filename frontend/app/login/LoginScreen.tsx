@@ -2,22 +2,21 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import {RootStackParamList} from '../../App';
-import {TEXT_HUGE} from '../sizing';
+import {TEXT_HUGE, TEXT_LARGE} from '../sizing';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
+import LoginForm from './LoginForm';
 
-type StartScreenProps = StackScreenProps<RootStackParamList, 'Start'>;
+type StartScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
 
-export default function StartScreen({navigation}: StartScreenProps) {
+export default function LoginScreen({}: StartScreenProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Green Grub</Text>
+      <Text style={styles.subtitle}>login</Text>
+      <LoginForm />
       <ButtonGroup>
-        <MainButton
-          title="Login"
-          onPress={() => navigation.navigate('Login')}
-        />
-        <MainButton title="Register" onPress={() => console.log('Register')} />
+        <MainButton title="Login" onPress={() => console.log('Login')} />
       </ButtonGroup>
     </View>
   );
@@ -32,7 +31,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: TEXT_HUGE,
-    marginBottom: 20,
+    fontFamily: 'Roboto',
+    fontStyle: 'italic',
+  },
+  subtitle: {
+    fontSize: TEXT_LARGE,
     fontFamily: 'Roboto',
     fontStyle: 'italic',
   },
