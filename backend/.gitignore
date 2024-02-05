@@ -1,0 +1,10 @@
+.venv
+.env
+
+ggproject/db.sqlite3
+
+# recursively ignore all files in the migrations directory
+**/migrations/
+**/__pycache__/
+*.pyc
+
