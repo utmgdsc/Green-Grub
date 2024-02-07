@@ -4,10 +4,19 @@ import {StyleSheet, View} from 'react-native';
 import {TEXT_HUGE} from '../sizing';
 import TextInputField from '../shared/TextInputField';
 
-export default function LoginForm() {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+type LoginFormProps = {
+  username: string;
+  setUsername: (text: string) => void;
+  password: string;
+  setPassword: (text: string) => void;
+};
 
+export default function LoginForm({
+  username,
+  setUsername,
+  password,
+  setPassword,
+}: LoginFormProps) {
   return (
     <View style={styles.container}>
       <TextInputField

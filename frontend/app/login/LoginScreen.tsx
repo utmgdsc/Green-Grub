@@ -6,17 +6,34 @@ import {TEXT_HUGE, TEXT_LARGE} from '../sizing';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import LoginForm from './LoginForm';
+import {useDispatch} from 'react-redux';
+import {setUsername} from '../userSlice';
 
 type StartScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
 
 export default function LoginScreen({navigation}: StartScreenProps) {
+  const dispatch = useDispatch();
+  const [username, setLocalUsername] = React.useState('');
+  const [password, setLocalPassword] = React.useState('');
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Green Grub</Text>
       <Text style={styles.subtitle}>login</Text>
-      <LoginForm />
+      <LoginForm
+        username={username}
+        setUsername={setLocalUsername}
+        password={password}
+        setPassword={setLocalPassword}
+      />
       <ButtonGroup>
-        <MainButton title="Login" onPress={() => navigation.navigate('Main')} />
+        <MainButton
+          title="Login"
+          onPress={() => {
+            dispatch(setUsername(username));
+            navigation.navigate('Main');
+          }}
+        />
       </ButtonGroup>
     </View>
   );
