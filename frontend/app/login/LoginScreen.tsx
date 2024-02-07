@@ -9,14 +9,14 @@ import LoginForm from './LoginForm';
 
 type StartScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
 
-export default function LoginScreen({}: StartScreenProps) {
+export default function LoginScreen({navigation}: StartScreenProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Green Grub</Text>
       <Text style={styles.subtitle}>login</Text>
       <LoginForm />
       <ButtonGroup>
-        <MainButton title="Login" onPress={() => console.log('Login')} />
+        <MainButton title="Login" onPress={() => navigation.navigate('Main')} />
       </ButtonGroup>
     </View>
   );
