@@ -1,12 +1,22 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
+import {useSelector} from 'react-redux';
+import {RootState} from '../store';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
 
 export default function LoginScreen({}: StartScreenProps) {
-  return <View style={styles.container} />;
+  const username = useSelector(
+    (state: RootState) => state.userReducer.username,
+  );
+
+  return (
+    <View style={styles.container}>
+      <Text>Hello, {username}!</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
