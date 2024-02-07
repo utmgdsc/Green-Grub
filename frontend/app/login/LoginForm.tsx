@@ -1,7 +1,8 @@
 import React from 'react';
 
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {TEXT_HUGE} from '../sizing';
+import TextInputField from '../shared/TextInputField';
 
 export default function LoginForm() {
   const [username, setUsername] = React.useState('');
@@ -9,15 +10,13 @@ export default function LoginForm() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
+      <TextInputField
+        title="Username"
         onChangeText={setUsername}
         value={username}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
+      <TextInputField
+        title="Password"
         onChangeText={setPassword}
         value={password}
       />
@@ -37,12 +36,5 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontFamily: 'Roboto',
     fontStyle: 'italic',
-  },
-  input: {
-    width: '80%',
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
   },
 });
