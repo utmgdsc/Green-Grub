@@ -4,7 +4,7 @@
  *
  * @format
  */
-
+/*
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -16,6 +16,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
+import {Button} from 'react-native-elements';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
@@ -56,20 +58,39 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const LoginButton = () => {
+    const {authorize} = useAuth0();
+
+    const onPress = async () => {
+      try {
+        await authorize();
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    return <Button onPress={onPress} title="Log in" />;
+  };
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Section title="GreenGrub">
-          The revolutionary way for university students to get to class!
-        </Section>
-      </ScrollView>
-    </SafeAreaView>
+    <Auth0Provider
+      domain={'dev-b5k0rhu0fupm5t8g.us.auth0.com'}
+      clientId={'xj1sS15JivLnUf8Z4FMuqalz6aEdFb7m'}>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor={backgroundStyle.backgroundColor}
+        />
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={backgroundStyle}>
+          <Section title="GreenGrub">
+            The revolutionary way for university students to get to class!
+          </Section>
+          <LoginButton />
+        </ScrollView>
+      </SafeAreaView>
+    </Auth0Provider>
   );
 }
 
@@ -89,6 +110,118 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+});
+
+export default App;
+
+import React from 'react';
+import {Button, Text, View, StyleSheet} from 'react-native';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
+
+const Home = () => {
+  const {authorize, clearSession, user, error, isLoading} = useAuth0();
+
+  const onLogin = async () => {
+    try {
+      await authorize();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onLogout = async () => {
+    try {
+      await clearSession();
+    } catch (e) {
+      console.log('Log out cancelled');
+    }
+  };
+
+  if (isLoading) {
+    return <View style={styles.container}><Text>Loading</Text></View>;
+  }
+
+  const loggedIn = user !== undefined && user !== null;
+
+  return (
+    <View style={styles.container}>
+      {loggedIn && <Text>You are logged in as {user.name}</Text>}
+      {!loggedIn && <Text>You are not logged in</Text>}
+      {error && <Text>{error.message}</Text>}
+
+      <Button
+        onPress={loggedIn ? onLogout : onLogin}
+        title={loggedIn ? 'Log Out' : 'Log In'}
+      />
+    </View>
+  );
+};
+*/
+import React from 'react';
+import {Button, Text, View, StyleSheet} from 'react-native';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
+
+const Home = () => {
+  const {authorize, clearSession, user, error, isLoading} = useAuth0();
+
+  const onLogin = async () => {
+    try {
+      await authorize();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onLogout = async () => {
+    try {
+      await clearSession();
+    } catch (e) {
+      console.log('Log out cancelled');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
+
+
+  const loggedIn = user !== undefined && user !== null;
+
+  return (
+    <View style={styles.container}>
+      {loggedIn && <Text>You are logged in as {user.name}</Text>}
+      {!loggedIn && <Text>You are not logged in</Text>}
+      {error && <Text>{error.message}</Text>}
+
+      <Button
+        onPress={loggedIn ? onLogout : onLogin}
+        title={loggedIn ? 'Log Out' : 'Log In'}
+      />
+    </View>
+  );
+};
+
+const App = () => {
+  return (
+    <Auth0Provider
+      domain={'dev-b5k0rhu0fupm5t8g.us.auth0.com'}
+      clientId={'xj1sS15JivLnUf8Z4FMuqalz6aEdFb7m'}>
+      <Home />
+    </Auth0Provider>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
 });
 

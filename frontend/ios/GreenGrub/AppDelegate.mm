@@ -2,7 +2,20 @@
 
 #import <React/RCTBundleURLProvider.h>
 
+#import <React/RCTLinkingManager.h>
+
+
 @implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+{
+  NSString * str = url.absoluteString;
+  NSLog(@"callback url = %@", str);
+  
+  
+  return [RCTLinkingManager application:app openURL:url options:options];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
