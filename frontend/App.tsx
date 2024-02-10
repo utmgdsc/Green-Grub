@@ -15,13 +15,15 @@ import MainTabs from './app/MainTabs';
 
 import {store} from './app/store';
 import {Provider} from 'react-redux';
-import ScanResultScreen from './app/scan/ScanResultScreen';
+import BarcodeScanResultScreen from './app/scan/BarcodeScanResultScreen';
+import ReceiptScanResultScreen from './app/scan/ReceiptScanResultScreen';
 
 export type RootStackParamList = {
   Start: undefined;
   Login: undefined;
   Main: undefined;
-  'Scan Result': {barcode: string};
+  'Barcode Scan Result': {barcode: string};
+  'Receipt Scan Result': {path: string};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -46,7 +48,14 @@ export default function App(): React.JSX.Element {
             component={MainTabs}
             options={{headerShown: false}}
           />
-          <Stack.Screen name="Scan Result" component={ScanResultScreen} />
+          <Stack.Screen
+            name="Barcode Scan Result"
+            component={BarcodeScanResultScreen}
+          />
+          <Stack.Screen
+            name="Receipt Scan Result"
+            component={ReceiptScanResultScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -6,7 +6,7 @@ import MainButton from '../shared/MainButton';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
-  'Scan Result'
+  'Receipt Scan Result'
 >;
 
 export default function ScanResultScreen({
@@ -15,7 +15,7 @@ export default function ScanResultScreen({
 }: ScanResultScreenProps) {
   return (
     <View style={styles.container}>
-      <Text>{route.params.barcode}</Text>
+      <Text>{route.params.path}</Text>
       <MainButton title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );

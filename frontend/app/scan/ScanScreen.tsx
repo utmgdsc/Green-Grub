@@ -34,7 +34,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
             'Main',
             undefined
           >
-        ).navigate('Scan Result', {barcode: codes[0].value});
+        ).navigate('Barcode Scan Result', {barcode: codes[0].value});
       }
     },
   });
@@ -43,7 +43,13 @@ export default function ScanScreen({navigation}: StartScreenProps) {
     if (receiptCamera.current) {
       try {
         const photo = await receiptCamera.current.takePhoto();
-        console.log(photo);
+        (
+          navigation as unknown as StackNavigationProp<
+            RootStackParamList,
+            'Main',
+            undefined
+          >
+        ).navigate('Receipt Scan Result', {path: photo.path});
       } catch (e) {
         console.error(e);
       }
