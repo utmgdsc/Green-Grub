@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
@@ -11,6 +11,8 @@ import {
 import MainButton from '../shared/MainButton';
 import {useIsFocused} from '@react-navigation/native';
 import ModeSwitchButton from '../shared/ModeSwitchButton';
+import {RootStackParamList} from '../../App';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Scan'>;
 
@@ -22,24 +24,43 @@ export default function ScanScreen({navigation}: StartScreenProps) {
   const codeScanner = useCodeScanner({
     codeTypes: ['ean-13'],
     onCodeScanned: codes => {
-      if (codes.length > 0) {
-        navigation.navigate('Scan Result', {barcode: codes[0].value});
+      if (codes.length > 0 && codes[0].value) {
+        // We can navigate using the parent navigator
+        (
+          navigation as unknown as StackNavigationProp<
+            RootStackParamList,
+            'Main',
+            undefined
+          >
+        ).navigate('Scan Result', {barcode: codes[0].value});
       }
     },
   });
 
-  const cameraDevice = useCameraDevice('back');
+  const cameraDeviceA = useCameraDevice('back');
+  const cameraDeviceB = useCameraDevice('back');
 
   return (
     <View style={styles.container}>
       {hasPermission ? (
-        cameraDevice ? (
-          <Camera
-            codeScanner={codeScanner}
-            device={cameraDevice}
-            isActive={camActive}
-            style={{width: '100%', height: '100%'}}
-          />
+        cameraDeviceA && cameraDeviceB ? (
+          mode === 'Barcode' ? (
+            <Camera
+              key="barcode"
+              codeScanner={codeScanner}
+              device={cameraDeviceA}
+              isActive={camActive}
+              style={{width: '100%', height: '100%'}}
+            />
+          ) : (
+            <Camera
+              key="receipt"
+              device={cameraDeviceB}
+              isActive={camActive}
+              style={{width: '100%', height: '100%'}}
+              photo
+            />
+          )
         ) : (
           <Text>No back camera available</Text>
         )
