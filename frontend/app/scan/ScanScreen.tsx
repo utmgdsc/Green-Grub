@@ -13,6 +13,7 @@ import {useIsFocused} from '@react-navigation/native';
 import ModeSwitchButton from '../shared/ModeSwitchButton';
 import {RootStackParamList} from '../../App';
 import {StackNavigationProp} from '@react-navigation/stack';
+import TriggerButton from '../shared/TriggerButton';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Scan'>;
 
@@ -50,16 +51,25 @@ export default function ScanScreen({navigation}: StartScreenProps) {
               codeScanner={codeScanner}
               device={cameraDeviceA}
               isActive={camActive}
-              style={{width: '100%', height: '100%'}}
+              style={{width: '100%', height: '60%'}}
             />
           ) : (
-            <Camera
-              key="receipt"
-              device={cameraDeviceB}
-              isActive={camActive}
-              style={{width: '100%', height: '100%'}}
-              photo
-            />
+            <View
+              style={{
+                width: '100%',
+                height: '70%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <Camera
+                key="receipt"
+                device={cameraDeviceB}
+                isActive={camActive}
+                style={{width: '100%', height: '80%'}}
+                photo
+              />
+              <TriggerButton />
+            </View>
           )
         ) : (
           <Text>No back camera available</Text>
@@ -79,8 +89,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 100,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 });
