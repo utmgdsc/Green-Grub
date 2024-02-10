@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
@@ -21,6 +21,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
   const {hasPermission, requestPermission} = useCameraPermission();
   const camActive = useIsFocused();
   const [mode, setMode] = useState('Barcode');
+  const receiptCamera = useRef<Camera>(null);
 
   const codeScanner = useCodeScanner({
     codeTypes: ['ean-13'],
@@ -38,6 +39,17 @@ export default function ScanScreen({navigation}: StartScreenProps) {
     },
   });
 
+  const takeReceiptPhoto = async () => {
+    if (receiptCamera.current) {
+      try {
+        const photo = await receiptCamera.current.takePhoto();
+        console.log(photo);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
   const cameraDeviceA = useCameraDevice('back');
   const cameraDeviceB = useCameraDevice('back');
 
@@ -48,27 +60,24 @@ export default function ScanScreen({navigation}: StartScreenProps) {
           mode === 'Barcode' ? (
             <Camera
               key="barcode"
+              onError={error => console.error(error)}
               codeScanner={codeScanner}
               device={cameraDeviceA}
               isActive={camActive}
               style={{width: '100%', height: '60%'}}
             />
           ) : (
-            <View
-              style={{
-                width: '100%',
-                height: '70%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
+            <View style={styles.receiptContainer}>
               <Camera
                 key="receipt"
+                onError={error => console.error(error)}
                 device={cameraDeviceB}
                 isActive={camActive}
                 style={{width: '100%', height: '80%'}}
+                ref={receiptCamera}
                 photo
               />
-              <TriggerButton />
+              <TriggerButton onPress={takeReceiptPhoto} />
             </View>
           )
         ) : (
@@ -91,5 +100,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  receiptContainer: {
+    width: '100%',
+    height: '70%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

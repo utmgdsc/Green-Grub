@@ -4,7 +4,11 @@ import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function TriggerButton() {
+export type TriggerButtonProps = {
+  onPress?: () => void;
+};
+
+export default function TriggerButton({onPress}: TriggerButtonProps) {
   const buttonSize = useSharedValue(45);
 
   return (
@@ -12,6 +16,7 @@ export default function TriggerButton() {
       <AnimatedPressable
         onPressIn={() => (buttonSize.value = withTiming(35))}
         onPressOut={() => (buttonSize.value = withTiming(45))}
+        onPress={onPress}
         style={[
           styles.triggerButtonInner,
           {
