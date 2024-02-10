@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
@@ -10,12 +10,14 @@ import {
 } from 'react-native-vision-camera';
 import MainButton from '../shared/MainButton';
 import {useIsFocused} from '@react-navigation/native';
+import ModeSwitchButton from '../shared/ModeSwitchButton';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Scan'>;
 
 export default function ScanScreen({navigation}: StartScreenProps) {
   const {hasPermission, requestPermission} = useCameraPermission();
   const camActive = useIsFocused();
+  const [mode, setMode] = useState('Barcode');
 
   const codeScanner = useCodeScanner({
     codeTypes: ['ean-13'],
@@ -36,7 +38,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
             codeScanner={codeScanner}
             device={cameraDevice}
             isActive={camActive}
-            style={StyleSheet.absoluteFill}
+            style={{width: '100%', height: '100%'}}
           />
         ) : (
           <Text>No back camera available</Text>
@@ -44,6 +46,11 @@ export default function ScanScreen({navigation}: StartScreenProps) {
       ) : (
         <MainButton title="Allow Camera Usage" onPress={requestPermission} />
       )}
+      <ModeSwitchButton
+        modes={['Barcode', 'Receipt']}
+        mode={mode}
+        onModeChange={m => setMode(m)}
+      />
     </View>
   );
 }
