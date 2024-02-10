@@ -11,7 +11,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './home/HomeScreen';
 import ExploreScreen from './explore/ExploreScreen';
-import ScanScreen from './scan/ExploreScreen';
+import ScanScreen from './scan/ScanScreen';
 
 export type MainTabsParamList = {
   Home: undefined;
