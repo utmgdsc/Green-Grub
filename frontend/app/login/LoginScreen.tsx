@@ -50,10 +50,12 @@ const styles = StyleSheet.create({
     fontSize: TEXT_HUGE,
     fontFamily: 'Roboto',
     fontStyle: 'italic',
+    color: 'gray',
   },
   subtitle: {
     fontSize: TEXT_LARGE,
     fontFamily: 'Roboto',
     fontStyle: 'italic',
+    color: 'gray',
   },
 });

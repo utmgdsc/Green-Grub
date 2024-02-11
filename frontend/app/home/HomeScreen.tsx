@@ -14,7 +14,7 @@ export default function LoginScreen({}: StartScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Text>Hello, {username}!</Text>
+      <Text style={styles.loginText}>Hello, {username}!</Text>
     </View>
   );
 }
@@ -25,5 +25,8 @@ const styles = StyleSheet.create({
     marginVertical: 100,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loginText: {
+    color: 'gray',
   },
 });

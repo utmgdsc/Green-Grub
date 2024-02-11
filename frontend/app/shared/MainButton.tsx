@@ -5,7 +5,7 @@ import {TEXT_MEDIUM} from '../sizing';
 
 type MainButtonProps = {
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 export default function MainButton({title, onPress}: MainButtonProps) {

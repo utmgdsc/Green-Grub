@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
+import ButtonGroup from '../shared/ButtonGroup';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
@@ -15,8 +16,11 @@ export default function ScanResultScreen({
 }: ScanResultScreenProps) {
   return (
     <View style={styles.container}>
-      <Text>{route.params.barcode}</Text>
-      <MainButton title="Go back" onPress={() => navigation.goBack()} />
+      <Text style={styles.scanResultText}>{route.params.barcode}</Text>
+      <ButtonGroup>
+        <MainButton title="Retake" onPress={() => navigation.goBack()} />
+        <MainButton title="Record" />
+      </ButtonGroup>
     </View>
   );
 }
@@ -27,5 +31,8 @@ const styles = StyleSheet.create({
     marginVertical: 100,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  scanResultText: {
+    color: 'black',
   },
 });

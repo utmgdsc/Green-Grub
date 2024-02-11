@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
+import ButtonGroup from '../shared/ButtonGroup';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
@@ -15,8 +16,14 @@ export default function ScanResultScreen({
 }: ScanResultScreenProps) {
   return (
     <View style={styles.container}>
-      <Text>{route.params.path}</Text>
-      <MainButton title="Go back" onPress={() => navigation.goBack()} />
+      <Image
+        source={{uri: 'file://' + route.params.path}}
+        style={{width: '100%', height: '70%'}}
+      />
+      <ButtonGroup>
+        <MainButton title="Retake" onPress={() => navigation.goBack()} />
+        <MainButton title="Record" />
+      </ButtonGroup>
     </View>
   );
 }
@@ -24,7 +31,6 @@ export default function ScanResultScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
