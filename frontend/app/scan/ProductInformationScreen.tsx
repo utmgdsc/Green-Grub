@@ -5,6 +5,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import {TEXT_LARGE} from '../sizing';
+import RatingBar from '../RatingBar';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
@@ -14,8 +15,8 @@ type ScanResultScreenProps = StackScreenProps<
 const sample = {
   img: 'https://caffeinecam.com/cdn/shop/files/8c1e70ce69bbf30762cfe736b734537e2383ac9e0e917a9bdc3b828e7b6c2162__57752.1598296010.1280.1280.jpg?v=1689680456&width=180',
   name: 'Lays Chips',
-  nutriScore: 9.0,
-  sustainabilityScore: 10.0,
+  nutriScore: 8.1,
+  sustainabilityScore: 7.3,
 };
 
 function ProductInformation({product}: {product: typeof sample}) {
@@ -23,6 +24,18 @@ function ProductInformation({product}: {product: typeof sample}) {
     <View style={styles.productInformation}>
       <Image src={product.img} style={styles.productImage} />
       <Text style={styles.productNameText}>{product.name}</Text>
+      <RatingBar
+        label="Nutri Score"
+        min={0}
+        max={10}
+        actual={product.nutriScore}
+      />
+      <RatingBar
+        label="Sustainability Score"
+        min={0}
+        max={10}
+        actual={product.sustainabilityScore}
+      />
     </View>
   );
 }
