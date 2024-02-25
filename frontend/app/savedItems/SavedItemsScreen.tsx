@@ -77,11 +77,13 @@ export default function SavedItemsScreen({}: SavedItemsScreenProps) {
         animationType="slide"
         visible={!!productDetail}
         onRequestClose={() => setProductDetail(null)}>
-        {productDetail !== null ? (
-          <ProductInformation product={productDetail} />
-        ) : (
-          ''
-        )}
+        <View style={styles.productDetailModal}>
+          {productDetail !== null ? (
+            <ProductInformation product={productDetail} />
+          ) : (
+            ''
+          )}
+        </View>
       </Modal>
       <View style={styles.container}>
         {productsLoaded ? (
@@ -103,6 +105,12 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 30,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  productDetailModal: {
+    paddingHorizontal: 20,
+    width: '100%',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   loadingBox: {
