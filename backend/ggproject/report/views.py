@@ -8,6 +8,9 @@ from .models import Product, UserHistory
 from . import scan_parser
 from .serializers import ProductSerializer
 
+# import status
+from rest_framework import status
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def scan_and_save(request, barcode):
