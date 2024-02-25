@@ -9,20 +9,6 @@ def convert(file_path: str):
 
 # product name, image, sustainiblity score, nutrition score
 
-def parse_and_organize_response(response):
-    data = response.json()
-
-    # Organize data as needed. This is just an example.
-    organized_data = {
-        'product_name': data.get('product', {}).get('product_name'),
-        'image': data.get('product', {}).get('image_url'),
-        'nutri_score': nutri_score(data),
-        'sustainability' : sustainbility_score(data)
-        # Add more fields as needed
-    }
-
-    print(organized_data)
-    return organized_data
 
 
 '''
@@ -76,7 +62,24 @@ def parse_and_organize_response(data):
 
     return organized_data
 
-data_dict = convert("example_input.json")
-print(parse_and_organize_response(data_dict))
-print(data_dict.get('product', {}).get('image_url'))
+
+# Main code which gets sent
+def parse_and_organize_response(response):
+    data = response.json()
+
+    # Organize data as needed. This is just an example.
+    organized_data = {
+        'product_name': data.get('product', {}).get('product_name'),
+        'image': data.get('product', {}).get('image_url'),
+        'nutri_score': nutri_score(data),
+        'sustainability' : sustainbility_score(data)
+        # Add more fields as needed
+    }
+
+    print(organized_data)
+    return organized_data
+
+# data_dict = convert("example_input.json")
+# print(parse_and_organize_response(data_dict))
+# print(data_dict.get('product', {}).get('image_url'))
 

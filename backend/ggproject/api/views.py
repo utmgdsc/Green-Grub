@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import requests
 
+from report import scan_parser
+
 @api_view(['GET'])
 def hello(request):
     return Response({"message": "Hello, this is your first route!"})
@@ -10,4 +12,5 @@ def hello(request):
 @api_view(['GET'])
 def scan(request, barcode):
     response = requests.get(f'https://world.openfoodfacts.net/api/v2/product/{barcode}')
-    return Response(response.json())
+    return Response(scan_parser.parse_and_organize_response(response))
+
