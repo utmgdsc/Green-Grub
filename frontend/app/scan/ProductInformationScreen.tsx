@@ -1,0 +1,82 @@
+import React from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {RootStackParamList} from '../../App';
+import {StackScreenProps} from '@react-navigation/stack';
+import MainButton from '../shared/MainButton';
+import ButtonGroup from '../shared/ButtonGroup';
+import {TEXT_LARGE} from '../sizing';
+
+type ScanResultScreenProps = StackScreenProps<
+  RootStackParamList,
+  'Product Information'
+>;
+
+const sample = {
+  img: 'https://caffeinecam.com/cdn/shop/files/8c1e70ce69bbf30762cfe736b734537e2383ac9e0e917a9bdc3b828e7b6c2162__57752.1598296010.1280.1280.jpg?v=1689680456&width=180',
+  name: 'Lays Chips',
+  nutriScore: 9.0,
+  sustainabilityScore: 10.0,
+};
+
+function ProductInformation({product}: {product: typeof sample}) {
+  return (
+    <View style={styles.productInformation}>
+      <Image src={product.img} style={styles.productImage} />
+      <Text style={styles.productNameText}>{product.name}</Text>
+    </View>
+  );
+}
+
+export default function ScanResultScreen({
+  navigation,
+  route,
+}: ScanResultScreenProps) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.productInformationContainer}>
+        <ProductInformation product={sample} />
+        <Text style={styles.scanResultText}>{route.params.barcode}</Text>
+      </View>
+      <ButtonGroup>
+        <MainButton title="Retake" onPress={() => navigation.goBack()} />
+        <MainButton title="Record" />
+      </ButtonGroup>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scanResultText: {
+    color: 'black',
+  },
+  productInformationContainer: {
+    padding: 20,
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  productInformation: {
+    elevation: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    flexDirection: 'column',
+    gap: 20,
+    padding: 20,
+    margin: 20,
+    width: '100%',
+  },
+  productImage: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+  },
+  productNameText: {
+    fontSize: TEXT_LARGE,
+    fontWeight: 'bold',
+  },
+});

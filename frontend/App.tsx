@@ -15,14 +15,14 @@ import MainTabs from './app/MainTabs';
 
 import {store} from './app/store';
 import {Provider} from 'react-redux';
-import BarcodeScanResultScreen from './app/scan/BarcodeScanResultScreen';
+import ProductInformationScreen from './app/scan/ProductInformationScreen';
 import ReceiptScanResultScreen from './app/scan/ReceiptScanResultScreen';
 
 export type RootStackParamList = {
   Start: undefined;
   Login: undefined;
   Main: undefined;
-  'Barcode Scan Result': {barcode: string};
+  'Product Information': {barcode: string};
   'Receipt Scan Result': {path: string};
 };
 
@@ -49,8 +49,8 @@ export default function App(): React.JSX.Element {
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="Barcode Scan Result"
-            component={BarcodeScanResultScreen}
+            name="Product Information"
+            component={ProductInformationScreen}
           />
           <Stack.Screen
             name="Receipt Scan Result"
