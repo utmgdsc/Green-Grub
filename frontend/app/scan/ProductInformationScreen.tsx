@@ -1,5 +1,5 @@
-import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
@@ -46,10 +46,22 @@ export default function ScanResultScreen({
   navigation,
   route,
 }: ScanResultScreenProps) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.productInformationContainer}>
-        <ProductInformation product={sample} />
+        {loading ? (
+          <View style={styles.loadingBox}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        ) : (
+          <ProductInformation product={sample} />
+        )}
         <Text style={styles.scanResultText}>{route.params.barcode}</Text>
       </View>
       <ButtonGroup>
@@ -68,6 +80,9 @@ const styles = StyleSheet.create({
   },
   scanResultText: {
     color: 'black',
+  },
+  loadingBox: {
+    padding: 100,
   },
   productInformationContainer: {
     paddingHorizontal: 20,
