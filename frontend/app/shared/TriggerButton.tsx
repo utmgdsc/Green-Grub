@@ -1,6 +1,10 @@
 import React from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
-import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -11,19 +15,18 @@ export type TriggerButtonProps = {
 export default function TriggerButton({onPress}: TriggerButtonProps) {
   const buttonSize = useSharedValue(45);
 
+  const animatedStyles = useAnimatedStyle(() => ({
+    width: withTiming(buttonSize.value),
+    height: withTiming(buttonSize.value),
+  }));
+
   return (
     <View style={styles.triggerButtonOuter}>
       <AnimatedPressable
-        onPressIn={() => (buttonSize.value = withTiming(35))}
-        onPressOut={() => (buttonSize.value = withTiming(45))}
+        onPressIn={() => (buttonSize.value = 35)}
+        onPressOut={() => (buttonSize.value = 45)}
         onPress={onPress}
-        style={[
-          styles.triggerButtonInner,
-          {
-            width: buttonSize,
-            height: buttonSize,
-          },
-        ]}
+        style={[styles.triggerButtonInner, animatedStyles]}
       />
     </View>
   );
