@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Image, Text, StyleSheet} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
 import {TEXT_LARGE} from './sizing';
+import {FlatList} from 'react-native-gesture-handler';
 
 export type Product = {
   img: string;
@@ -11,6 +12,31 @@ export type Product = {
 };
 
 type ProductInformationProps = {product: Product};
+type ShortProductInformationListProps = {products: Product[]};
+
+export function ShortProductInformationList({
+  products,
+}: ShortProductInformationListProps) {
+  return (
+    <FlatList
+      contentContainerStyle={styles.shortProductInformationList}
+      style={styles.shortProductInformationListContainer}
+      renderItem={({item: product}) => (
+        <ShortProductInformation product={product} />
+      )}
+      data={products}
+    />
+  );
+}
+
+export function ShortProductInformation({product}: ProductInformationProps) {
+  return (
+    <View style={styles.shortProductInformation}>
+      <Image src={product.img} style={styles.shortProductInformationImage} />
+      <Text style={styles.shortProductInformationText}>{product.name}</Text>
+    </View>
+  );
+}
 
 export default function ProductInformation({product}: ProductInformationProps) {
   return (
@@ -54,5 +80,30 @@ const styles = StyleSheet.create({
   productNameText: {
     fontSize: TEXT_LARGE,
     fontWeight: 'bold',
+  },
+  shortProductInformationList: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  shortProductInformationListContainer: {
+    width: '100%',
+  },
+  shortProductInformation: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    padding: 10,
+    margin: 5,
+    borderColor: 'lightgray',
+    borderWidth: 2,
+    width: '100%',
+    alignSelf: 'center',
+  },
+  shortProductInformationImage: {
+    width: 50,
+    height: 50,
+  },
+  shortProductInformationText: {
+    fontSize: TEXT_LARGE,
   },
 });
