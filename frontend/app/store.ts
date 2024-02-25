@@ -1,6 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit';
 import userReducer from './userSlice';
+import {reactotron} from './reactotron';
+
 export const store = configureStore({
+  enhancers: getDefaultEnhancer =>
+    getDefaultEnhancer().concat(reactotron.createEnhancer()),
   reducer: {userReducer},
 });
 
