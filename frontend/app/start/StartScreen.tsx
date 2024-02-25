@@ -23,7 +23,7 @@ export default function StartScreen({navigation}: StartScreenProps) {
           title="Login"
           onPress={() => navigation.navigate('Login')}
         />
-        <MainButton title="Register" onPress={() => console.log('Register')} />
+        <MainButton title="Register" onPress={() => navigation.navigate('Register')} />
       </ButtonGroup>
     </View>
   );
