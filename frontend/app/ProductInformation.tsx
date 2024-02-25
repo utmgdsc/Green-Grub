@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
 import {TEXT_LARGE} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
@@ -12,29 +12,42 @@ export type Product = {
 };
 
 type ProductInformationProps = {product: Product};
-type ShortProductInformationListProps = {products: Product[]};
+type ShortProductInformationProps = {product: Product; onSelected?: () => void};
+type ShortProductInformationListProps = {
+  products: Product[];
+  onSelected?: (product: Product) => void;
+};
 
 export function ShortProductInformationList({
   products,
+  onSelected,
 }: ShortProductInformationListProps) {
   return (
     <FlatList
       contentContainerStyle={styles.shortProductInformationList}
       style={styles.shortProductInformationListContainer}
       renderItem={({item: product}) => (
-        <ShortProductInformation product={product} />
+        <ShortProductInformation
+          product={product}
+          onSelected={onSelected ? () => onSelected(product) : undefined}
+        />
       )}
       data={products}
     />
   );
 }
 
-export function ShortProductInformation({product}: ProductInformationProps) {
+export function ShortProductInformation({
+  product,
+  onSelected,
+}: ShortProductInformationProps) {
   return (
-    <View style={styles.shortProductInformation}>
+    <TouchableOpacity
+      style={styles.shortProductInformation}
+      onPress={onSelected}>
       <Image src={product.img} style={styles.shortProductInformationImage} />
       <Text style={styles.shortProductInformationText}>{product.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 

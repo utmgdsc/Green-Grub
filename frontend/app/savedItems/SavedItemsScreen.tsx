@@ -1,8 +1,11 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
 import {RootStackParamList} from '../../App';
-import {Product, ShortProductInformationList} from '../ProductInformation';
+import ProductInformation, {
+  Product,
+  ShortProductInformationList,
+} from '../ProductInformation';
 
 type SavedItemsScreenProps = StackScreenProps<
   RootStackParamList,
@@ -62,21 +65,37 @@ const dummyProducts: Product[] = [
 
 export default function SavedItemsScreen({}: SavedItemsScreenProps) {
   const [productsLoaded, setProductsLoaded] = useState(false);
+  const [productDetail, setProductDetail] = useState<Product | null>(null);
 
   useEffect(() => {
     setTimeout(() => setProductsLoaded(true), 1000);
   }, []);
 
   return (
-    <View style={styles.container}>
-      {productsLoaded ? (
-        <ShortProductInformationList products={dummyProducts} />
-      ) : (
-        <View style={styles.loadingBox}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      )}
-    </View>
+    <>
+      <Modal
+        animationType="slide"
+        visible={!!productDetail}
+        onRequestClose={() => setProductDetail(null)}>
+        {productDetail !== null ? (
+          <ProductInformation product={productDetail} />
+        ) : (
+          ''
+        )}
+      </Modal>
+      <View style={styles.container}>
+        {productsLoaded ? (
+          <ShortProductInformationList
+            products={dummyProducts}
+            onSelected={setProductDetail}
+          />
+        ) : (
+          <View style={styles.loadingBox}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
+      </View>
+    </>
   );
 }
 
