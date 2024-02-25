@@ -1,6 +1,6 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {Product, ShortProductInformationList} from '../ProductInformation';
 
@@ -61,15 +61,21 @@ const dummyProducts: Product[] = [
 ];
 
 export default function SavedItemsScreen({}: SavedItemsScreenProps) {
-  const [products, setProducts] = useState([] as Product[]);
+  const [productsLoaded, setProductsLoaded] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setProducts(dummyProducts), 500);
+    setTimeout(() => setProductsLoaded(true), 1000);
   }, []);
 
   return (
     <View style={styles.container}>
-      <ShortProductInformationList products={products} />
+      {productsLoaded ? (
+        <ShortProductInformationList products={dummyProducts} />
+      ) : (
+        <View style={styles.loadingBox}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
     </View>
   );
 }
@@ -79,5 +85,8 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loadingBox: {
+    padding: 100,
   },
 });
