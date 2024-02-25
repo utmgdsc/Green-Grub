@@ -111,12 +111,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     width: '100%',
     alignSelf: 'center',
+    backgroundColor: 'white',
+    elevation: 2,
+    borderRadius: 8,
   },
   shortProductInformationImage: {
     width: 50,
     height: 50,
+    flex: 1,
   },
   shortProductInformationText: {
     fontSize: TEXT_LARGE,
+    flex: 6,
   },
 });
