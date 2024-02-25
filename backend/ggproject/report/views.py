@@ -6,6 +6,7 @@ import requests
 
 from .models import Product, UserHistory
 from . import scan_parser
+from .serializers import ProductSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -28,3 +29,12 @@ def scan_and_save(request, barcode):
     UserHistory.objects.create(user=request.user, product=product)
 
     return Response({'message': 'Product scanned and saved successfully'})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_products(request):
+    user_history = UserHistory.objects.filter(user=request.user)
+    products = Product.objects.filter(userhistory__in=user_history)
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
