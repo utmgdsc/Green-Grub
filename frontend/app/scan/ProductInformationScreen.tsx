@@ -5,7 +5,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import {TEXT_LARGE} from '../sizing';
-import RatingBar from '../RatingBar';
+import RatingBar, {RatingBarGroup} from '../RatingBar';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
@@ -24,18 +24,20 @@ function ProductInformation({product}: {product: typeof sample}) {
     <View style={styles.productInformation}>
       <Image src={product.img} style={styles.productImage} />
       <Text style={styles.productNameText}>{product.name}</Text>
-      <RatingBar
-        label="Nutri Score"
-        min={0}
-        max={10}
-        actual={product.nutriScore}
-      />
-      <RatingBar
-        label="Sustainability Score"
-        min={0}
-        max={10}
-        actual={product.sustainabilityScore}
-      />
+      <RatingBarGroup>
+        <RatingBar
+          label="Nutri Score"
+          min={0}
+          max={10}
+          actual={product.nutriScore}
+        />
+        <RatingBar
+          label="Sustainability Score"
+          min={0}
+          max={10}
+          actual={product.sustainabilityScore}
+        />
+      </RatingBarGroup>
     </View>
   );
 }
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   productInformationContainer: {
-    padding: 20,
+    paddingHorizontal: 20,
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',

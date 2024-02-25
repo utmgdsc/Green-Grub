@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 export type RatingBarProps = {
@@ -41,10 +41,18 @@ export default function RatingBar({label, actual, min, max}: RatingBarProps) {
   );
 }
 
+export function RatingBarGroup({children}: PropsWithChildren) {
+  return <View style={styles.ratingBarGroup}>{children}</View>;
+}
+
 const styles = StyleSheet.create({
   ratingBar: {
     elevation: 5,
     height: 20,
     flexDirection: 'row',
+  },
+  ratingBarGroup: {
+    flexDirection: 'column',
+    gap: 5,
   },
 });
