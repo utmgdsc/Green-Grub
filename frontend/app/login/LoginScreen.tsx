@@ -3,6 +3,7 @@ import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {TEXT_HUGE, TEXT_LARGE} from '../sizing';
+import {PRIMARY_BLUE, WHITE} from '../colors';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import LoginForm from './LoginForm';
@@ -18,8 +19,7 @@ export default function LoginScreen({navigation}: StartScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Green Grub</Text>
-      <Text style={styles.subtitle}>login</Text>
+      <Text style={styles.title}>Log In</Text>
       <LoginForm
         username={username}
         setUsername={setLocalUsername}
@@ -42,15 +42,15 @@ export default function LoginScreen({navigation}: StartScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 100,
+    backgroundColor: PRIMARY_BLUE,
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
     fontSize: TEXT_HUGE,
-    fontFamily: 'Roboto',
-    fontStyle: 'italic',
-    color: 'gray',
+    fontFamily: 'Pacifico-Regular',
+    marginTop: 100,
+    color: WHITE,
   },
   subtitle: {
     fontSize: TEXT_LARGE,

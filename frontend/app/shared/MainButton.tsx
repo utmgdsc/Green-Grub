@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {GRAY, PRIMARY_GREEN} from '../colors';
+import {BLACK, WHITE} from '../colors';
 import {TEXT_MEDIUM} from '../sizing';
 
 type MainButtonProps = {
@@ -18,12 +18,12 @@ export default function MainButton({title, onPress}: MainButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: PRIMARY_GREEN,
+    backgroundColor: WHITE,
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 7,
   },
   buttonText: {
-    color: GRAY,
+    color: BLACK,
     textAlign: 'center',
     fontSize: TEXT_MEDIUM,
     fontWeight: 'bold',
