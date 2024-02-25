@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
-import {TEXT_LARGE} from '../sizing';
-import RatingBar, {RatingBarGroup} from '../RatingBar';
+import ProductInformation from '../ProductInformation';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
@@ -18,29 +17,6 @@ const sample = {
   nutriScore: 8.1,
   sustainabilityScore: 7.3,
 };
-
-function ProductInformation({product}: {product: typeof sample}) {
-  return (
-    <View style={styles.productInformation}>
-      <Image src={product.img} style={styles.productImage} />
-      <Text style={styles.productNameText}>{product.name}</Text>
-      <RatingBarGroup>
-        <RatingBar
-          label="Nutri Score"
-          min={0}
-          max={10}
-          actual={product.nutriScore}
-        />
-        <RatingBar
-          label="Sustainability Score"
-          min={0}
-          max={10}
-          actual={product.sustainabilityScore}
-        />
-      </RatingBarGroup>
-    </View>
-  );
-}
 
 export default function ScanResultScreen({
   navigation,
@@ -89,24 +65,5 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  productInformation: {
-    elevation: 10,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    flexDirection: 'column',
-    gap: 20,
-    padding: 20,
-    margin: 20,
-    width: '100%',
-  },
-  productImage: {
-    width: 200,
-    height: 200,
-    alignSelf: 'center',
-  },
-  productNameText: {
-    fontSize: TEXT_LARGE,
-    fontWeight: 'bold',
   },
 });
