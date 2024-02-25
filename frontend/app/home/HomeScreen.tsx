@@ -5,6 +5,7 @@ import {MainTabsParamList} from '../MainTabs';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store';
 import MainButton from '../shared/MainButton';
+import ButtonGroup from '../shared/ButtonGroup';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
 
@@ -16,10 +17,12 @@ export default function HomeScreen({navigation}: StartScreenProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.loginText}>Hello, {username}!</Text>
-      <MainButton
-        title="Saved Items"
-        onPress={() => navigation.navigate('Saved Items')}
-      />
+      <ButtonGroup>
+        <MainButton
+          title="Saved Items"
+          onPress={() => navigation.navigate('Saved Items')}
+        />
+      </ButtonGroup>
     </View>
   );
 }

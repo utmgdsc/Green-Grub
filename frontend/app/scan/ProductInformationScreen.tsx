@@ -42,7 +42,10 @@ export default function ScanResultScreen({
       </View>
       <ButtonGroup>
         <MainButton title="Retake" onPress={() => navigation.goBack()} />
-        <MainButton title="Record" />
+        <MainButton
+          title="Add to Saved Items"
+          onPress={() => navigation.goBack()}
+        />
       </ButtonGroup>
     </View>
   );
