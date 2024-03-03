@@ -23,11 +23,13 @@ export default function ProfileForm({
         title="Username"
         onChangeText={setUsername}
         value={username}
+        isSecureText={false}
       />
       <TextInputField
         title="Password"
         onChangeText={setPassword}
         value={password}
+        isSecureText={true}
       />
     </View>
   );

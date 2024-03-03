@@ -4,6 +4,7 @@ import {StyleSheet, TextInput} from 'react-native';
 type TextInputFieldProps = {
   title: string;
   value: string;
+  isSecureText: boolean;
   onChangeText: (text: string) => void;
 };
 
@@ -11,12 +12,14 @@ export default function TextInputField({
   title,
   value,
   onChangeText,
+  isSecureText,
 }: TextInputFieldProps) {
   return (
     <TextInput
       style={styles.input}
       placeholder={title}
       onChangeText={onChangeText}
+      secureTextEntry={isSecureText}
       value={value}
     />
   );
