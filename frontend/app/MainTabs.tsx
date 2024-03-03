@@ -12,11 +12,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './home/HomeScreen';
 import ExploreScreen from './explore/ExploreScreen';
 import ScanScreen from './scan/ScanScreen';
+import FriendsScreen from './friends/FriendsScreen';
 
 export type MainTabsParamList = {
   Home: undefined;
   Scan: undefined;
   Explore: undefined;
+  Friends: undefined;
 };
 
 const Tabs = createBottomTabNavigator<MainTabsParamList>();
@@ -45,6 +47,16 @@ function App(): React.JSX.Element {
       <Tabs.Screen
         name="Explore"
         component={ExploreScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="compass-outline" color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Friends"
+        component={FriendsScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="compass-outline" color={color} size={size} />
