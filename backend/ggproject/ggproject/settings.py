@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     # Raz - adding our apps
     'ggauth',
     'api',
+    'quizapp',
+    'report',
 ]
 
 # Raz - adding jwt config

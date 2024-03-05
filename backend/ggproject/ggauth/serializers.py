@@ -11,12 +11,16 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
-    
-    def update(self, instance, validate_data):
-        instance.first_name = validate_data.get("first_name",instance.first_name)
-        instance.last_name = validate_data.get("last_name",instance.last_name)
-        instance.password= validate_data.get("password",instance.password)
-        return instance
-    
-    
 
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)  # Assuming you want to allow email updates.
+        
+        # Handle password update with hashing
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            instance.set_password(password)
+        
+        instance.save()
+        return instance
