@@ -4,12 +4,14 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 import requests
 
+from django.utils import timezone
 from .models import Product, UserHistory
 from . import scan_parser
 from .serializers import ProductSerializer
 
 # import status
 from rest_framework import status
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

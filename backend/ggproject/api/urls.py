@@ -7,6 +7,7 @@ from ggauth.views import SignupView, UserUpdateView
 
 from . import views
 from report import views as report_views
+from friends import views as friends_views
 
 urlpatterns = [
     path('test/', views.hello, name='hello'),
@@ -17,4 +18,8 @@ urlpatterns = [
     path('scan/<str:barcode>/', views.scan, name='scan'),
     path('scan_and_save/<str:barcode>/', report_views.scan_and_save, name='scan_and_save'),
     path('user_products/', report_views.user_products, name='user_products'),
+    path('add_friend/<str:username>/', friends_views.add_friend, name='add_friend'),
+    path('accept_friend/<str:username>/', friends_views.accept_friend, name='accept_friend'),
+    path('decline_friend/<str:username>/', friends_views.decline_friend, name='decline_friend'),
+    
 ]

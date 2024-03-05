@@ -6,11 +6,6 @@ class Stats(models.Model):
     score = models.IntegerField()
     level = models.IntegerField()
 
-class Friends(models.Model):
-    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
-    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
-    
-
 class Product(models.Model):
     barcode = models.CharField(max_length=255, primary_key=True)
     product_name = models.CharField(max_length=255)
