@@ -8,6 +8,7 @@ import {TEXT_LARGE} from '../sizing';
 import RatingBar, {RatingBarGroup} from '../RatingBar';
 import {useGetProductInfoQuery} from './api';
 import FoodInfo from '../types/FoodInfo';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
@@ -17,7 +18,15 @@ type ScanResultScreenProps = StackScreenProps<
 function ProductInformation({product}: {product: FoodInfo}) {
   return (
     <View style={styles.productInformation}>
-      <Image src={product.image} style={styles.productImage} />
+      {product.image ? (
+        <Image src={product.image} style={styles.productImage} />
+      ) : (
+        <View style={styles.productImage}>
+          <Icon name="warning-outline" size={80} color="black" />
+          <Text style={styles.productNotFoundText}>Image not available</Text>
+        </View>
+      )}
+
       <Text style={styles.productNameText}>{product.product_name}</Text>
       <RatingBarGroup>
         <RatingBar
@@ -52,10 +61,14 @@ export default function ScanResultScreen({
           <View style={styles.loadingBox}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
+        ) : !product.product_name ? (
+          <View style={styles.productNotFound}>
+            <Icon name="warning-outline" size={200} color="black" />
+            <Text style={styles.productNotFoundText}>Product not found</Text>
+          </View>
         ) : (
           <ProductInformation product={product} />
         )}
-        <Text style={styles.scanResultText}>{route.params.barcode}</Text>
       </View>
       <ButtonGroup>
         <MainButton title="Retake" onPress={() => navigation.goBack()} />
@@ -98,10 +111,23 @@ const styles = StyleSheet.create({
     height: 200,
     alignSelf: 'center',
     resizeMode: 'contain',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   productNameText: {
     fontSize: TEXT_LARGE,
     fontWeight: 'bold',
     color: 'black',
+  },
+  productNotFound: {
+    paddingVertical: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  productNotFoundText: {
+    fontSize: TEXT_LARGE,
+    fontWeight: 'bold',
+    color: 'black',
+    textAlign: 'center',
   },
 });
