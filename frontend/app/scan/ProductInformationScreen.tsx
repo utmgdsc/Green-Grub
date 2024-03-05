@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -6,36 +6,31 @@ import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import {TEXT_LARGE} from '../sizing';
 import RatingBar, {RatingBarGroup} from '../RatingBar';
+import {useGetProductInfoQuery} from './api';
+import FoodInfo from '../types/FoodInfo';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
   'Product Information'
 >;
 
-const sample = {
-  img: 'https://caffeinecam.com/cdn/shop/files/8c1e70ce69bbf30762cfe736b734537e2383ac9e0e917a9bdc3b828e7b6c2162__57752.1598296010.1280.1280.jpg?v=1689680456&width=180',
-  name: 'Lays Chips',
-  nutriScore: 8.1,
-  sustainabilityScore: 7.3,
-};
-
-function ProductInformation({product}: {product: typeof sample}) {
+function ProductInformation({product}: {product: FoodInfo}) {
   return (
     <View style={styles.productInformation}>
-      <Image src={product.img} style={styles.productImage} />
-      <Text style={styles.productNameText}>{product.name}</Text>
+      <Image src={product.image} style={styles.productImage} />
+      <Text style={styles.productNameText}>{product.product_name}</Text>
       <RatingBarGroup>
         <RatingBar
           label="Nutri Score"
           min={0}
-          max={10}
-          actual={product.nutriScore}
+          max={5}
+          actual={product.nutri_score}
         />
         <RatingBar
           label="Sustainability Score"
           min={0}
-          max={10}
-          actual={product.sustainabilityScore}
+          max={5}
+          actual={product.sustainability}
         />
       </RatingBarGroup>
     </View>
@@ -46,21 +41,19 @@ export default function ScanResultScreen({
   navigation,
   route,
 }: ScanResultScreenProps) {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+  const {data: product, isLoading} = useGetProductInfoQuery(
+    route.params.barcode,
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.productInformationContainer}>
-        {loading ? (
+        {isLoading || !product ? (
           <View style={styles.loadingBox}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         ) : (
-          <ProductInformation product={sample} />
+          <ProductInformation product={product} />
         )}
         <Text style={styles.scanResultText}>{route.params.barcode}</Text>
       </View>
@@ -104,9 +97,11 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center',
+    resizeMode: 'contain',
   },
   productNameText: {
     fontSize: TEXT_LARGE,
     fontWeight: 'bold',
+    color: 'black',
   },
 });
