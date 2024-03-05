@@ -59,7 +59,7 @@ function App(): React.JSX.Element {
         component={FriendsScreen}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="compass-outline" color={color} size={size} />
+            <Icon name="people" color={color} size={size} />
           ),
         }}
       />
