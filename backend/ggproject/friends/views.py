@@ -197,10 +197,12 @@ def unfriend(request, username):
 def view_sent_requests(request):
     """
     Endpoint to view all active friend requests sent by the authenticated user.
+    Returns a list of usernames to whom the friend requests have been sent.
     """
     sent_requests = Friends.objects.filter(user1=request.user, status='pending').order_by('-request_sent_at')
-    serializer = FriendRequestSerializer(sent_requests, many=True)
-    return Response(serializer.data)
+    usernames = [request.user2.username for request in sent_requests]
+    return Response({"usernames":usernames})
+
 
 
 # End point to see active received requests
@@ -209,10 +211,12 @@ def view_sent_requests(request):
 def view_received_requests(request):
     """
     Endpoint to view all active friend requests received by the authenticated user.
+    Returns a list of usernames from whom the friend requests have been received.
     """
     received_requests = Friends.objects.filter(user2=request.user, status='pending').order_by('-request_sent_at')
-    serializer = FriendRequestSerializer(received_requests, many=True)
-    return Response(serializer.data)
+    usernames = [request.user1.username for request in received_requests]
+    return Response({"usernames":usernames})
+
 
 # End point to see friends list
 @api_view(['GET'])
