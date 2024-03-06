@@ -30,6 +30,7 @@ function App(): React.JSX.Element {
         name="Home"
         component={HomeScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
@@ -39,6 +40,7 @@ function App(): React.JSX.Element {
         name="Scan"
         component={ScanScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Icon name="scan" color={color} size={size} />
           ),
@@ -48,6 +50,7 @@ function App(): React.JSX.Element {
         name="Explore"
         component={ExploreScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Icon name="compass-outline" color={color} size={size} />
           ),
@@ -61,6 +64,7 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="people" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
     </Tabs.Navigator>
