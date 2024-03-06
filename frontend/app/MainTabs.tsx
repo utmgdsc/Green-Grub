@@ -61,6 +61,7 @@ function App(): React.JSX.Element {
         name="Friends"
         component={FriendsScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Icon name="people" color={color} size={size} />
           ),

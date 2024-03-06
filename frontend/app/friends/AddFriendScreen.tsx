@@ -1,92 +1,42 @@
-import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {FriendsStackParamList} from './FriendsScreen';
 import {StackScreenProps} from '@react-navigation/stack';
 import TextInputField from '../shared/TextInputField';
+import MainButton from '../shared/MainButton';
 
 type AddFriendScreenProps = StackScreenProps<
   FriendsStackParamList,
   'Add Friend'
 >;
 
-type User = {
-  username: String;
-};
-
-type FriendsListProps = {
-  friends: User[];
-};
-
-type FriendProps = {
-  friend: User;
-};
-
-const SAMPLE_FRIENDS: User[] = [
-  {username: 'John'},
-  {username: 'Jane'},
-  {username: 'Jack'},
-  {username: 'Jill'},
-];
-
-function Friend({friend}: FriendProps) {
-  return (
-    <TouchableOpacity style={styles.friend}>
-      <Text style={styles.friendText}>{friend.username}</Text>
-    </TouchableOpacity>
-  );
-}
-
-function FriendsList({friends}: FriendsListProps) {
-  return (
-    <FlatList
-      data={friends}
-      renderItem={({item}) => <Friend friend={item} />}
-    />
-  );
-}
-
-export default function AddFriendScreen({}: AddFriendScreenProps): JSX.Element {
+export default function AddFriendScreen({
+  navigation,
+}: AddFriendScreenProps): JSX.Element {
   const [username, setUsername] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const {date: friends} = {date: SAMPLE_FRIENDS};
-
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 200);
-    return () => {
-      setIsLoading(true);
-    };
-  }, [username]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInputField
+        title="Username"
         onChangeText={setUsername}
-        title="Name"
         value={username}
       />
-      {isLoading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <FriendsList friends={friends} />
-      )}
+      <MainButton
+        title="Add Friend"
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
     </View>
   );
 }
 
-const styles = {
-  friend: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  friendText: {
-    fontSize: 20,
-    color: 'gray',
-  },
-};
+});
