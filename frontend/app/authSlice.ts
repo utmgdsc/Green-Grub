@@ -16,26 +16,28 @@ const initialState: AuthState = {
 };
 
 
-const logout = createAsyncThunk(
+export const logout = createAsyncThunk(
     'auth/logout',
-    async (_, {dispatch, getState}) => {
-      try {
-        const result = await fetch('http://localhost:8000/api/logout/', {
-          headers: {
-            Authorization: `Token ${
-              (getState() as {auth: {token: string}}).auth.token
-            }`,
-          },
-        });
-        if (result.ok) {
-          await Keychain.resetInternetCredentials('greengrub');
-        } else {
-          console.log('Could not logout');
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    Keychain.resetInternetCredentials('greengrub')
+    // Have this part for later when we have access and refresh
+    // async (_, {dispatch, getState}) => {
+    //   try {
+    //     const result = await fetch('http://localhost:8000/api/logout/', {
+    //       headers: {
+    //         Authorization: `Token ${
+    //           (getState() as {auth: {token: string}}).auth.token
+    //         }`,
+    //       },
+    //     });
+    //     if (result.ok) {
+    //       await Keychain.resetInternetCredentials('greengrub');
+    //     } else {
+    //       console.log('Could not logout');
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
   );
 
 export const loadAuthToken = createAsyncThunk('auth/loadToken', async () => {
@@ -73,11 +75,6 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: (state) => {
-      state.status = 'unauthenticated';
-      state.token = '';
-      Keychain.resetInternetCredentials('greengrub');
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -97,5 +94,4 @@ const authSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -20,7 +20,7 @@ export default function ProfileScreen({navigation}: StartScreenProps) {
 
   const handleLogout = async () => {
     await dispatch(logout());
-    navigation.navigate('Login');
+    navigation.navigate('Start');
   };
 
   return (
@@ -28,28 +28,13 @@ export default function ProfileScreen({navigation}: StartScreenProps) {
       <Text style={styles.loginText}>Hello, {username}!</Text>
       <ProfileForm
         username={username}
-        setUsername={() => {
-          console.log('Set username');
-        }}
+        setUsername={() => {}}
         password={''}
-        setPassword={() => {
-          console.log('Set password');
-        }}
+        setPassword={() => {}}
       />
       <ButtonGroup>
-        <MainButton
-          title="Update"
-          onPress={() => {
-            console.log('Update user info');
-            navigation.navigate('Main');
-          }}
-        />
-        <MainButton
-          title="Log out"
-          onPress={() => {
-            handleLogout;
-          }}
-        />
+        <MainButton title="Update" />
+        <MainButton title="Log out" onPress={handleLogout} />
       </ButtonGroup>
     </View>
   );

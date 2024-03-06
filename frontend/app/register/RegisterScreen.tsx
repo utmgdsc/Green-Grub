@@ -31,10 +31,10 @@ export default function RegisterScreen({navigation}: StartScreenProps) {
         password,
       });
 
-      const {token} = response.data;
+      const {access} = response.data;
 
-      if (token) {
-        await dispatch(saveAuthToken(token));
+      if (access) {
+        await dispatch(saveAuthToken(access));
         dispatch(setUsername(username));
         navigation.navigate('Main');
       } else {
