@@ -5,7 +5,8 @@ import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
 import {TEXT_HUGE, TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
 import {PRIMARY_BLUE, WHITE} from '../colors';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {logout} from '../authSlice';
 import {RootState} from '../store';
 import ProfileForm from './ProfileForm';
 import ButtonGroup from '../shared/ButtonGroup';
@@ -14,7 +15,13 @@ import MainButton from '../shared/MainButton';
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
 
 export default function ProfileScreen({navigation}: StartScreenProps) {
+  const dispatch = useDispatch();
   const username = useSelector((state: RootState) => state.user.username);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.container}>
@@ -40,8 +47,7 @@ export default function ProfileScreen({navigation}: StartScreenProps) {
         <MainButton
           title="Log out"
           onPress={() => {
-            console.log('Log out user');
-            navigation.navigate('Main');
+            handleLogout;
           }}
         />
       </ButtonGroup>

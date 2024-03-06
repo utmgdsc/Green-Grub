@@ -6,12 +6,37 @@ export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 interface AuthState {
   token: string;
   status: AuthStatus;
+  isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
   token: '',
   status: 'loading', 
+  isAuthenticated: false,
 };
+
+
+const logout = createAsyncThunk(
+    'auth/logout',
+    async (_, {dispatch, getState}) => {
+      try {
+        const result = await fetch('http://localhost:8000/api/logout/', {
+          headers: {
+            Authorization: `Token ${
+              (getState() as {auth: {token: string}}).auth.token
+            }`,
+          },
+        });
+        if (result.ok) {
+          await Keychain.resetInternetCredentials('greengrub');
+        } else {
+          console.log('Could not logout');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  );
 
 export const loadAuthToken = createAsyncThunk('auth/loadToken', async () => {
   let status: AuthStatus = 'loading';
@@ -35,7 +60,7 @@ export const saveAuthToken = createAsyncThunk(
   'auth/saveToken',
   async (token: string) => {
     try {
-      await Keychain.setInternetCredentials('yourAppName', 'token', token);
+      await Keychain.setInternetCredentials('greengrub', 'token', token);
       return token;
     } catch (error) {
       console.error('Failed to save token:', error);
@@ -63,6 +88,10 @@ const authSlice = createSlice({
       .addCase(saveAuthToken.fulfilled, (state, action: PayloadAction<string>) => {
         state.token = action.payload;
         state.status = 'authenticated';
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.token = '';
+        state.status = 'unauthenticated';
       });
   },
 });
