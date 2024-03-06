@@ -8,9 +8,7 @@ import {RootState} from '../store';
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
 
 export default function LoginScreen({}: StartScreenProps) {
-  const username = useSelector(
-    (state: RootState) => state.userReducer.username,
-  );
+  const username = useSelector((state: RootState) => state.user.username);
 
   return (
     <View style={styles.container}>

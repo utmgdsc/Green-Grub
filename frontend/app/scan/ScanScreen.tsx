@@ -34,7 +34,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
             'Main',
             undefined
           >
-        ).navigate('Barcode Scan Result', {barcode: codes[0].value});
+        ).navigate('Product Information', {barcode: codes[0].value});
       }
     },
   });
