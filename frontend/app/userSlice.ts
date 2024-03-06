@@ -6,7 +6,7 @@ interface UserState {
 }
 
 const initialState = {
-  username: 'default',
+  username: '',
 } as UserState;
 
 const userSlice = createSlice({

@@ -14,9 +14,7 @@ import MainButton from '../shared/MainButton';
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
 
 export default function ProfileScreen({navigation}: StartScreenProps) {
-  const username = useSelector(
-    (state: RootState) => state.userReducer.username,
-  );
+  const username = useSelector((state: RootState) => state.user.username);
 
   return (
     <View style={styles.container}>
