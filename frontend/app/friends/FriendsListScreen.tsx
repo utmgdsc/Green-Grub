@@ -1,19 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 type User = {
   username: String;
-};
-
-type FriendsListProps = {
-  friends: User[];
 };
 
 type FriendProps = {
@@ -35,30 +24,31 @@ function Friend({friend}: FriendProps) {
   );
 }
 
-function FriendsList({friends}: FriendsListProps) {
+function FriendsList() {
+  const [isLoading, setIsLoading] = useState(true);
+  const {date: friends} = {date: SAMPLE_FRIENDS};
+
+  useEffect(() => {
+    setTimeout(() => setIsLoading(false), 500);
+  }, []);
+
   return (
     <FlatList
       data={friends}
       renderItem={({item}) => <Friend friend={item} />}
+      refreshing={isLoading}
+      onRefresh={() => {
+        setTimeout(() => setIsLoading(false), 500);
+        setIsLoading(true);
+      }}
     />
   );
 }
 
 export default function AddFriendScreen(): JSX.Element {
-  const [isLoading, setIsLoading] = useState(true);
-  const {date: friends} = {date: SAMPLE_FRIENDS};
-
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 200);
-  }, []);
-
   return (
     <View>
-      {isLoading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <FriendsList friends={friends} />
-      )}
+      <FriendsList />
     </View>
   );
 }
