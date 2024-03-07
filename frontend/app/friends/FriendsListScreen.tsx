@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useGetFriendsQuery} from './api';
 
 type User = {
   username: String;
@@ -8,13 +9,6 @@ type User = {
 type FriendProps = {
   friend: User;
 };
-
-const SAMPLE_FRIENDS: User[] = [
-  {username: 'John'},
-  {username: 'Jane'},
-  {username: 'Jack'},
-  {username: 'Jill'},
-];
 
 function Friend({friend}: FriendProps) {
   return (
@@ -25,23 +19,18 @@ function Friend({friend}: FriendProps) {
 }
 
 function FriendsList() {
-  const [isLoading, setIsLoading] = useState(true);
-  const {date: friends} = {date: SAMPLE_FRIENDS};
+  const {data: friends, refetch, isLoading} = useGetFriendsQuery();
 
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 500);
-  }, []);
-
-  return (
+  return friends && friends.length > 0 ? (
     <FlatList
       data={friends}
+      style={{height: '100%', width: '100%'}}
       renderItem={({item}) => <Friend friend={item} />}
       refreshing={isLoading}
-      onRefresh={() => {
-        setTimeout(() => setIsLoading(false), 500);
-        setIsLoading(true);
-      }}
+      onRefresh={refetch}
     />
+  ) : (
+    <Text style={styles.noFriendsText}>You don't have any friends yet</Text>
   );
 }
 
@@ -62,5 +51,12 @@ const styles = StyleSheet.create({
   friendText: {
     fontSize: 20,
     color: 'gray',
+  },
+  noFriendsText: {
+    fontSize: 20,
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 20,
+    fontStyle: 'italic',
   },
 });
