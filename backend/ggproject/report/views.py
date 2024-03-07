@@ -1,17 +1,17 @@
 from django.shortcuts import render
-from rest_framework.response import Response
+from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-import requests
-
-from django.utils import timezone
-from .models import Product, UserHistory
+from rest_framework.response import Response
+from .models import Product, UserHistory, Stats
+from friends.models import Friends 
 from . import scan_parser
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, LeaderboardSerializer
+from django.db.models import Q
 
 # import status
 from rest_framework import status
-
+import requests
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -43,3 +43,30 @@ def user_products(request):
     products = Product.objects.filter(userhistory__in=user_history)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def view_leaderboard(request):
+    friends = Friends.objects.filter(
+        (Q(user1=request.user) | Q(user2=request.user)) & Q(status='accepted')
+    )
+
+    # Extract the friend's user IDs, including the requester's user ID
+    friend_user_ids = set()
+    for friendship in friends:
+        friend_user_ids.add(friendship.user1_id)
+        friend_user_ids.add(friendship.user2_id)
+    friend_user_ids.add(request.user.id)
+
+    # Retrieve the Stats for these users
+    stats = Stats.objects.filter(user_id__in=friend_user_ids).order_by('-score')
+
+    # Serialize the stats
+    serializer = LeaderboardSerializer(stats, many=True)
+    return Response(serializer.data)
+
+# Remember to add the URL pattern in your urls.py:
+# path('view_leaderboard/', ViewLeaderboard.as_view(), name='view_leaderboard'),
+
