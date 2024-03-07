@@ -19,6 +19,7 @@ export type MainTabsParamList = {
   Home: undefined;
   Scan: undefined;
   Explore: undefined;
+  'Saved Items': undefined;
   Friends: undefined;
   Profile: undefined;
 };

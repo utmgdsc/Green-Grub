@@ -19,6 +19,7 @@ import {store} from './app/store';
 import {Provider} from 'react-redux';
 import ProductInformationScreen from './app/scan/ProductInformationScreen';
 import ReceiptScanResultScreen from './app/scan/ReceiptScanResultScreen';
+import SavedItemsScreen from './app/savedItems/SavedItemsScreen';
 
 export type RootStackParamList = {
   Start: undefined;
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   Main: undefined;
   'Product Information': {barcode: string};
   'Receipt Scan Result': {path: string};
+  'Saved Items': undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -68,6 +70,7 @@ export default function App(): React.JSX.Element {
             name="Receipt Scan Result"
             component={ReceiptScanResultScreen}
           />
+          <Stack.Screen name="Saved Items" component={SavedItemsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
