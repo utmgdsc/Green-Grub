@@ -1,5 +1,6 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import userReducer from './userSlice';
+import authReducer from './authSlice'; 
 import {reactotron} from './reactotron';
 import {scanApi} from './scan/api';
 
@@ -13,7 +14,10 @@ export const store = configureStore({
     getDefaultEnhancer().concat(reactotron.createEnhancer()),
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(scanApi.middleware),
-  reducer: rootReducer,
+  reducer: {
+    user: userReducer, 
+    auth: authReducer, 
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './home/HomeScreen';
 import ExploreScreen from './explore/ExploreScreen';
 import ScanScreen from './scan/ScanScreen';
+import ProfileScreen from './profile/ProfileScreen';
 
 export type MainTabsParamList = {
   Home: undefined;
@@ -48,6 +49,15 @@ function App(): React.JSX.Element {
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="compass-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="person" color={color} size={size} />
           ),
         }}
       />
