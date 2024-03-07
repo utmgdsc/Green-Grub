@@ -13,12 +13,14 @@ import HomeScreen from './home/HomeScreen';
 import ExploreScreen from './explore/ExploreScreen';
 import ScanScreen from './scan/ScanScreen';
 import FriendsScreen from './friends/FriendsScreen';
+import ProfileScreen from './profile/ProfileScreen';
 
 export type MainTabsParamList = {
   Home: undefined;
   Scan: undefined;
   Explore: undefined;
   Friends: undefined;
+  Profile: undefined;
 };
 
 const Tabs = createBottomTabNavigator<MainTabsParamList>();
@@ -66,6 +68,15 @@ function App(): React.JSX.Element {
             <Icon name="people" color={color} size={size} />
           ),
           headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="person" color={color} size={size} />
+          ),
         }}
       />
     </Tabs.Navigator>

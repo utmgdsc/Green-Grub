@@ -22,6 +22,7 @@ export default function AddFriendScreen({}: AddFriendScreenProps): JSX.Element {
         title="Username"
         onChangeText={setUsername}
         value={username}
+        isSecureText={false}
       />
       <Text style={styles.responseText}>{message}</Text>
       <MainButton

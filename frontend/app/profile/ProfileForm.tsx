@@ -4,19 +4,19 @@ import {StyleSheet, View} from 'react-native';
 import {WHITE} from '../colors';
 import TextInputField from '../shared/TextInputField';
 
-type LoginFormProps = {
+type ProfileFormProps = {
   username: string;
   setUsername: (text: string) => void;
   password: string;
   setPassword: (text: string) => void;
 };
 
-export default function LoginForm({
+export default function ProfileForm({
   username,
   setUsername,
   password,
   setPassword,
-}: LoginFormProps) {
+}: ProfileFormProps) {
   return (
     <View style={styles.container}>
       <TextInputField
