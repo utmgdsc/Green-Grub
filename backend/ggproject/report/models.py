@@ -2,14 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Stats(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     score = models.IntegerField()
     level = models.IntegerField()
-
-class Friends(models.Model):
-    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
-    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
-    
 
 class Product(models.Model):
     barcode = models.CharField(max_length=255, primary_key=True)

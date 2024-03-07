@@ -18,6 +18,7 @@ export default function TextInputField({
     <TextInput
       style={styles.input}
       placeholder={title}
+      placeholderTextColor={'gray'}
       onChangeText={onChangeText}
       secureTextEntry={isSecureText}
       value={value}

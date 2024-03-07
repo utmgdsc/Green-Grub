@@ -12,12 +12,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './home/HomeScreen';
 import ExploreScreen from './explore/ExploreScreen';
 import ScanScreen from './scan/ScanScreen';
+import FriendsScreen from './friends/FriendsScreen';
 import ProfileScreen from './profile/ProfileScreen';
 
 export type MainTabsParamList = {
   Home: undefined;
   Scan: undefined;
   Explore: undefined;
+  Friends: undefined;
+  Profile: undefined;
 };
 
 const Tabs = createBottomTabNavigator<MainTabsParamList>();
@@ -29,6 +32,7 @@ function App(): React.JSX.Element {
         name="Home"
         component={HomeScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
@@ -38,6 +42,7 @@ function App(): React.JSX.Element {
         name="Scan"
         component={ScanScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Icon name="scan" color={color} size={size} />
           ),
@@ -47,9 +52,22 @@ function App(): React.JSX.Element {
         name="Explore"
         component={ExploreScreen}
         options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (
             <Icon name="compass-outline" color={color} size={size} />
           ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Friends"
+        component={FriendsScreen}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color, size}) => (
+            <Icon name="people" color={color} size={size} />
+          ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen

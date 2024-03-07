@@ -1,10 +1,9 @@
 import React from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
 import {StyleSheet, Text, View} from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
 import {TEXT_HUGE, TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
-import {PRIMARY_BLUE, WHITE} from '../colors';
+import {WHITE} from '../colors';
 import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../authSlice';
 import {RootState} from '../store';
@@ -12,7 +11,7 @@ import ProfileForm from './ProfileForm';
 import ButtonGroup from '../shared/ButtonGroup';
 import MainButton from '../shared/MainButton';
 
-type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
+type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Profile'>;
 
 export default function ProfileScreen({navigation}: StartScreenProps) {
   const dispatch = useDispatch();
