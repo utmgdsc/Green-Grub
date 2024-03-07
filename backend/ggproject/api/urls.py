@@ -25,4 +25,5 @@ urlpatterns = [
     path('friend_requests_sent/', friends_views.view_sent_requests, name='friend_requests'),
     path('friend_requests_received/', friends_views.view_received_requests, name='friend_requests_received'),
     path('view_friends_list/', friends_views.view_friends_list, name='view_friends'),
+    path('view_leaderboard/', report_views.view_leaderboard, name='view_leaderboard')
 ]
