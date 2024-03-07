@@ -11,6 +11,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import StartScreen from './app/start/StartScreen';
 import LoginScreen from './app/login/LoginScreen';
+import RegisterScreen from './app/register/RegisterScreen';
+import ProfileScreen from './app/profile/ProfileScreen';
 import MainTabs from './app/MainTabs';
 
 import {store} from './app/store';
@@ -44,6 +46,16 @@ export default function App(): React.JSX.Element {
             name="Login"
             component={LoginScreen}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{headerShown: true}}
           />
           <Stack.Screen
             name="Main"

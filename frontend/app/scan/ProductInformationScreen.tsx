@@ -1,44 +1,74 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
-import ProductInformation from '../ProductInformation';
+import {TEXT_LARGE} from '../sizing';
+import RatingBar, {RatingBarGroup} from '../RatingBar';
+import {useGetProductInfoQuery} from './api';
+import FoodInfo from '../types/FoodInfo';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 type ScanResultScreenProps = StackScreenProps<
   RootStackParamList,
   'Product Information'
 >;
 
-const sample = {
-  img: 'https://caffeinecam.com/cdn/shop/files/8c1e70ce69bbf30762cfe736b734537e2383ac9e0e917a9bdc3b828e7b6c2162__57752.1598296010.1280.1280.jpg?v=1689680456&width=180',
-  name: 'Lays Chips',
-  nutriScore: 8.1,
-  sustainabilityScore: 7.3,
-};
+function ProductInformation({product}: {product: FoodInfo}) {
+  return (
+    <View style={styles.productInformation}>
+      {product.image ? (
+        <Image src={product.image} style={styles.productImage} />
+      ) : (
+        <View style={styles.productImage}>
+          <Icon name="warning-outline" size={80} color="black" />
+          <Text style={styles.productNotFoundText}>Image not available</Text>
+        </View>
+      )}
+
+      <Text style={styles.productNameText}>{product.product_name}</Text>
+      <RatingBarGroup>
+        <RatingBar
+          label="Nutri Score"
+          min={0}
+          max={5}
+          actual={product.nutri_score}
+        />
+        <RatingBar
+          label="Sustainability Score"
+          min={0}
+          max={5}
+          actual={product.sustainability}
+        />
+      </RatingBarGroup>
+    </View>
+  );
+}
 
 export default function ScanResultScreen({
   navigation,
   route,
 }: ScanResultScreenProps) {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+  const {data: product, isLoading} = useGetProductInfoQuery(
+    route.params.barcode,
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.productInformationContainer}>
-        {loading ? (
+        {isLoading || !product ? (
           <View style={styles.loadingBox}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
+        ) : !product.product_name ? (
+          <View style={styles.productNotFound}>
+            <Icon name="warning-outline" size={200} color="black" />
+            <Text style={styles.productNotFoundText}>Product not found</Text>
+          </View>
         ) : (
-          <ProductInformation product={sample} />
+          <ProductInformation product={product} />
         )}
-        <Text style={styles.scanResultText}>{route.params.barcode}</Text>
       </View>
       <ButtonGroup>
         <MainButton title="Retake" onPress={() => navigation.goBack()} />
@@ -68,5 +98,39 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  productInformation: {
+    elevation: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    flexDirection: 'column',
+    gap: 20,
+    padding: 20,
+    margin: 20,
+    width: '100%',
+  },
+  productImage: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+    resizeMode: 'contain',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  productNameText: {
+    fontSize: TEXT_LARGE,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  productNotFound: {
+    paddingVertical: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  productNotFoundText: {
+    fontSize: TEXT_LARGE,
+    fontWeight: 'bold',
+    color: 'black',
+    textAlign: 'center',
   },
 });

@@ -22,7 +22,7 @@ export default function RatingBar({label, actual, min, max}: RatingBarProps) {
 
   return (
     <View>
-      <Text>
+      <Text style={styles.ratingBarTitle}>
         {label} - {actual}/{max}
       </Text>
       <View style={styles.ratingBar}>
@@ -54,5 +54,8 @@ const styles = StyleSheet.create({
   ratingBarGroup: {
     flexDirection: 'column',
     gap: 5,
+  },
+  ratingBarTitle: {
+    color: 'black',
   },
 });

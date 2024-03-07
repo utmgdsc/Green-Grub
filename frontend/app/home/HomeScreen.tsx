@@ -9,10 +9,8 @@ import ButtonGroup from '../shared/ButtonGroup';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
 
-export default function HomeScreen({navigation}: StartScreenProps) {
-  const username = useSelector(
-    (state: RootState) => state.userReducer.username,
-  );
+export default function LoginScreen({navigation}: StartScreenProps) {
+  const username = useSelector((state: RootState) => state.user.username);
 
   return (
     <View style={styles.container}>
