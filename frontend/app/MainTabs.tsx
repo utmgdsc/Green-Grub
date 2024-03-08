@@ -18,6 +18,7 @@ export type MainTabsParamList = {
   Home: undefined;
   Scan: undefined;
   Explore: undefined;
+  Profile: undefined;
 };
 
 const Tabs = createBottomTabNavigator<MainTabsParamList>();

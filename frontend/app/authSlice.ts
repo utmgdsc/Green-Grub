@@ -76,17 +76,17 @@ const authSlice = createSlice({
   initialState,
   reducers: {
   },
-  extraReducers: (builder) => {
+  extraReducers: (builder: { addCase: (arg0: any, arg1: (state: any, action: PayloadAction<{ token: string; status: AuthStatus; }>) => void) => { (): any; new(): any; addCase: { (arg0: any, arg1: (state: any, action: PayloadAction<string>) => void): { (): any; new(): any; addCase: { (arg0: any, arg1: (state: any, action: any) => void): void; new(): any; }; }; new(): any; }; }; }) => {
     builder
-      .addCase(loadAuthToken.fulfilled, (state, action: PayloadAction<{token: string; status: AuthStatus}>) => {
+      .addCase(loadAuthToken.fulfilled, (state: { status: any; token: any; }, action: PayloadAction<{token: string; status: AuthStatus}>) => {
         state.status = action.payload.status;
         state.token = action.payload.token;
       })
-      .addCase(saveAuthToken.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(saveAuthToken.fulfilled, (state: { token: any; status: string; }, action: PayloadAction<string>) => {
         state.token = action.payload;
         state.status = 'authenticated';
       })
-      .addCase(logout.fulfilled, (state, action) => {
+      .addCase(logout.fulfilled, (state: { token: string; status: string; }, action: any) => {
         state.token = '';
         state.status = 'unauthenticated';
       });
