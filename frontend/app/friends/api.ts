@@ -11,11 +11,13 @@ export const friendsApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['Friends', 'PendingFriends'],
   endpoints: build => ({
-    getFriends: build.query<{username: string}[], void>({
+    getFriends: build.query<string[], void>({
       query: () => ({
         url: '/view_friends_list/',
         method: 'GET',
       }),
+      transformResponse: (response: {usernames: string[]}) =>
+        response.usernames,
       providesTags: ['Friends'],
     }),
     addFriend: build.mutation<StatusMessage, string>({
