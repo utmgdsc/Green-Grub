@@ -1,5 +1,5 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {RootState} from '../store';
+import {createApi} from '@reduxjs/toolkit/query/react';
+import {baseQueryWithReauth} from '../api';
 
 type StatusMessage = {
   message: string;
@@ -8,13 +8,7 @@ type StatusMessage = {
 
 export const friendsApi = createApi({
   reducerPath: 'friendsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://127.0.0.1:8000/api',
-    prepareHeaders: (header: Headers, {getState}) => {
-      const token = (getState() as RootState).auth.accessToken;
-      header.set('Authorization', `Bearer ${token}`);
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Friends', 'PendingFriends'],
   endpoints: build => ({
     getFriends: build.query<{username: string}[], void>({

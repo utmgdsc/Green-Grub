@@ -32,12 +32,12 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 export const loadAuthToken = createAsyncThunk('auth/loadToken', async () => {
   let status: AuthStatus = 'loading';
-  let token: string = '';
+  let refreshToken: string = '';
   try {
     const credentials = await Keychain.getInternetCredentials('greengrub');
     if (credentials) {
-      token = credentials.password;
-      status = 'authenticated';
+      refreshToken = credentials.password;
+      status = 'stale';
     } else {
       status = 'unauthenticated';
     }
@@ -45,7 +45,7 @@ export const loadAuthToken = createAsyncThunk('auth/loadToken', async () => {
     console.error('Failed to load token:', error);
     status = 'unauthenticated';
   }
-  return {token, status};
+  return {refreshToken, status};
 });
 
 export const saveAuthToken = createAsyncThunk(
@@ -70,14 +70,21 @@ export const saveAuthToken = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setAccessToken(state, action: PayloadAction<string>) {
+      state.accessToken = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(
         loadAuthToken.fulfilled,
-        (state, action: PayloadAction<{token: string; status: AuthStatus}>) => {
+        (
+          state,
+          action: PayloadAction<{refreshToken: string; status: AuthStatus}>,
+        ) => {
           state.status = action.payload.status;
-          state.accessToken = action.payload.token;
+          state.refreshToken = action.payload.refreshToken;
         },
       )
       .addCase(
@@ -102,5 +109,5 @@ const authSlice = createSlice({
   },
 });
 
-// Export actions and reducer
+export const {setAccessToken} = authSlice.actions;
 export default authSlice.reducer;
