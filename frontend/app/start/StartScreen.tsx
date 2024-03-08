@@ -1,13 +1,13 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
-import {RootStackParamList} from '../../App';
 import {TEXT_HUGE, TEXT_MEDIUM} from '../sizing';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
-import { PRIMARY_BLUE } from '../colors';
+import {PRIMARY_BLUE} from '../colors';
+import {StartStackParamList} from '../StartStack';
 
-type StartScreenProps = StackScreenProps<RootStackParamList, 'Start'>;
+type StartScreenProps = StackScreenProps<StartStackParamList, 'Start'>;
 
 export default function StartScreen({navigation}: StartScreenProps) {
   return (
@@ -23,7 +23,10 @@ export default function StartScreen({navigation}: StartScreenProps) {
           title="Login"
           onPress={() => navigation.navigate('Login')}
         />
-        <MainButton title="Register" onPress={() => navigation.navigate('Register')} />
+        <MainButton
+          title="Register"
+          onPress={() => navigation.navigate('Register')}
+        />
       </ButtonGroup>
     </View>
   );

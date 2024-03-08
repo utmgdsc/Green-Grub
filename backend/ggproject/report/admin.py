@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Stats, Friends, Product, UserHistory
+from .models import Stats, Product, UserHistory
 
 admin.site.register(Stats)
-admin.site.register(Friends)
 admin.site.register(Product)
 admin.site.register(UserHistory)

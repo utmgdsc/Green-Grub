@@ -1,6 +1,5 @@
 import React from 'react';
 import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
-import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
@@ -9,9 +8,10 @@ import RatingBar, {RatingBarGroup} from '../RatingBar';
 import {useGetProductInfoQuery} from './api';
 import FoodInfo from '../types/FoodInfo';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {ScanStackParamList} from './ScanTab';
 
 type ScanResultScreenProps = StackScreenProps<
-  RootStackParamList,
+  ScanStackParamList,
   'Product Information'
 >;
 
@@ -72,7 +72,10 @@ export default function ScanResultScreen({
       </View>
       <ButtonGroup>
         <MainButton title="Retake" onPress={() => navigation.goBack()} />
-        <MainButton title="Record" />
+        <MainButton
+          title="Add to Saved Items"
+          onPress={() => navigation.goBack()}
+        />
       </ButtonGroup>
     </View>
   );

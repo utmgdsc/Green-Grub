@@ -18,6 +18,7 @@ export default function TextInputField({
     <TextInput
       style={styles.input}
       placeholder={title}
+      placeholderTextColor={'gray'}
       onChangeText={onChangeText}
       secureTextEntry={isSecureText}
       value={value}
@@ -43,5 +44,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 4,
+    color: 'black',
   },
 });

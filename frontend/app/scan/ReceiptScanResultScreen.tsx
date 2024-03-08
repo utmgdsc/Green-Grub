@@ -1,12 +1,12 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {RootStackParamList} from '../../App';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
+import {ScanStackParamList} from './ScanTab';
 
 type ScanResultScreenProps = StackScreenProps<
-  RootStackParamList,
+  ScanStackParamList,
   'Receipt Scan Result'
 >;
 
@@ -18,6 +18,7 @@ export default function ScanResultScreen({
     <View style={styles.container}>
       <Image
         source={{uri: 'file://' + route.params.path}}
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{width: '100%', height: '70%'}}
       />
       <ButtonGroup>
