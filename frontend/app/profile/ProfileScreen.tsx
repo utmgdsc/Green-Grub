@@ -6,20 +6,19 @@ import {TEXT_HUGE, TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
 import {WHITE} from '../colors';
 import {useSelector, useDispatch} from 'react-redux';
 import {logout} from '../authSlice';
-import {RootState} from '../store';
+import {AppDispatch, RootState} from '../store';
 import ProfileForm from './ProfileForm';
 import ButtonGroup from '../shared/ButtonGroup';
 import MainButton from '../shared/MainButton';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Profile'>;
 
-export default function ProfileScreen({navigation}: StartScreenProps) {
-  const dispatch = useDispatch();
+export default function ProfileScreen({}: StartScreenProps) {
+  const dispatch = useDispatch<AppDispatch>();
   const username = useSelector((state: RootState) => state.user.username);
 
   const handleLogout = async () => {
     await dispatch(logout());
-    navigation.navigate('Start');
   };
 
   return (

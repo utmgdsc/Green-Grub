@@ -4,33 +4,41 @@ import {useDispatch} from 'react-redux';
 import {setUsername} from '../userSlice';
 import {saveAuthToken} from '../authSlice';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../../App';
 import {TEXT_HUGE} from '../sizing';
 import {PRIMARY_BLUE, WHITE} from '../colors';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import LoginForm from './LoginForm';
-import axios from 'axios';
+import {StartStackParamList} from '../StartStack';
+import {AppDispatch} from '../store';
 
-type StartScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
+type StartScreenProps = StackScreenProps<StartStackParamList, 'Login'>;
 
-export default function LoginScreen({navigation}: StartScreenProps) {
-  const dispatch = useDispatch();
+export default function LoginScreen({}: StartScreenProps) {
+  const dispatch = useDispatch<AppDispatch>();
   const [username, setLocalUsername] = useState('');
   const [password, setLocalPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', {
-        username,
-        password,
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
-      const {access} = response.data;
+
+      const {access, refresh} = await response.json();
 
       if (access) {
-        await dispatch(saveAuthToken(access));
+        await dispatch(
+          saveAuthToken({accessToken: access, refreshToken: refresh}),
+        );
         dispatch(setUsername(username));
-        navigation.navigate('Main');
       } else {
         Alert.alert('Login Failed', 'No token received.');
       }
@@ -54,10 +62,6 @@ export default function LoginScreen({navigation}: StartScreenProps) {
       />
       <ButtonGroup>
         <MainButton title="Login" onPress={handleLogin} />
-        {/* <MainButton
-          title="Go Back"
-          onPress={navigation.navigate('Main')} 
-        /> */}
       </ButtonGroup>
     </View>
   );

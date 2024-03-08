@@ -9,7 +9,7 @@ import AddFriendScreen from './AddFriendScreen';
 import FriendsListScreen from './FriendsListScreen';
 import {Button, View} from 'react-native';
 
-type FriendScreenProps = BottomTabScreenProps<MainTabsParamList, 'Friends'>;
+type FriendScreenProps = BottomTabScreenProps<MainTabsParamList, 'Friends Tab'>;
 
 export type FriendsStackParamList = {
   'Friends List': undefined;
