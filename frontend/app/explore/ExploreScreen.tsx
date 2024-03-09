@@ -8,41 +8,46 @@ import {
 } from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
+import {useGetTopicsQuery} from './api';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Explore'>;
 
-export default function ExploreScreen({}: StartScreenProps) {
+type TopicProps = {
+  id: number;
+  passed: number;
+  total: number;
+};
+
+function Topic({id, passed, total}: TopicProps) {
+  const progressWidth = total > 0 ? `${(passed / total) * 100}%` : '0%';
+
+  return (
+    <TouchableOpacity style={styles.button}>
+      <View style={styles.progressContainer}>
+        <View style={[styles.progressBar, {width: progressWidth}]} />
+      </View>
+      <Text style={styles.buttonText}>Topic ID: {id}</Text>
+      <Text style={styles.subText}>
+        Passed: {passed}/{total}
+      </Text>
+    </TouchableOpacity>
+  );
+}
+
+function TopicsList() {
+  const {data, isLoading} = useGetTopicsQuery();
+  console.log(data);
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Explore Quizzes</Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Introduction</Text>
-        <Text style={styles.subText}>Start from here</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <View style={styles.progressContainer}>
-          <View style={[styles.progressBar, {width: '55%'}]} />
-        </View>
-        <Text style={styles.buttonText}>Food Waste</Text>
-        <Text style={styles.subText}>
-          Impact of food waste and steps to address it
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <View style={styles.progressContainer}>
-          <View style={[styles.progressBar, {width: '16%'}]} />
-        </View>
-        <Text style={styles.buttonText}>Transportation</Text>
-        <Text style={styles.subText}>
-          Impact of food waste and steps to address it
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Water</Text>
-        <Text style={styles.subText}>
-          Impact of food waste and steps to address it
-        </Text>
-      </TouchableOpacity>
+      {isLoading && <Text>Loading...</Text>}
+      {data?.map(topic => (
+        <Topic
+          key={topic.topic_id}
+          id={topic.topic_id}
+          passed={topic.passed_quizzes}
+          total={topic.total_quizzes}
+        />
+      ))}
     </ScrollView>
   );
 }
@@ -87,3 +92,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+
+export default TopicsList;
