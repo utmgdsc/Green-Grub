@@ -1,7 +1,5 @@
 import React, {useRef, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {MainTabsParamList} from '../MainTabs';
 import {
   Camera,
   useCameraDevice,
@@ -11,11 +9,11 @@ import {
 import MainButton from '../shared/MainButton';
 import {useIsFocused} from '@react-navigation/native';
 import ModeSwitchButton from '../shared/ModeSwitchButton';
-import {RootStackParamList} from '../../App';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {StackScreenProps} from '@react-navigation/stack';
 import TriggerButton from '../shared/TriggerButton';
+import {ScanStackParamList} from './ScanTab';
 
-type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Scan'>;
+type StartScreenProps = StackScreenProps<ScanStackParamList, 'Scan'>;
 
 export default function ScanScreen({navigation}: StartScreenProps) {
   const {hasPermission, requestPermission} = useCameraPermission();
@@ -27,14 +25,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
     codeTypes: ['ean-13'],
     onCodeScanned: codes => {
       if (codes.length > 0 && codes[0].value) {
-        // We can navigate using the parent navigator
-        (
-          navigation as unknown as StackNavigationProp<
-            RootStackParamList,
-            'Main',
-            undefined
-          >
-        ).navigate('Barcode Scan Result', {barcode: codes[0].value});
+        navigation.navigate('Product Information', {barcode: codes[0].value});
       }
     },
   });
@@ -43,13 +34,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
     if (receiptCamera.current) {
       try {
         const photo = await receiptCamera.current.takePhoto();
-        (
-          navigation as unknown as StackNavigationProp<
-            RootStackParamList,
-            'Main',
-            undefined
-          >
-        ).navigate('Receipt Scan Result', {path: photo.path});
+        navigation.navigate('Receipt Scan Result', {path: photo.path});
       } catch (e) {
         console.error(e);
       }
@@ -70,6 +55,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
               codeScanner={codeScanner}
               device={cameraDeviceA}
               isActive={camActive}
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{width: '100%', height: '60%'}}
             />
           ) : (
@@ -79,6 +65,7 @@ export default function ScanScreen({navigation}: StartScreenProps) {
                 onError={error => console.error(error)}
                 device={cameraDeviceB}
                 isActive={camActive}
+                // eslint-disable-next-line react-native/no-inline-styles
                 style={{width: '100%', height: '80%'}}
                 ref={receiptCamera}
                 photo

@@ -1,25 +1,59 @@
+import React, {useState} from 'react';
+import {Text, StyleSheet, View, Alert} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {setUsername} from '../userSlice';
+import {saveAuthToken} from '../authSlice';
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
-import {RootStackParamList} from '../../App';
-import {TEXT_HUGE, TEXT_LARGE} from '../sizing';
+import {TEXT_HUGE} from '../sizing';
+import {PRIMARY_BLUE, WHITE} from '../colors';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import LoginForm from './LoginForm';
-import {useDispatch} from 'react-redux';
-import {setUsername} from '../userSlice';
+import {StartStackParamList} from '../StartStack';
+import {AppDispatch} from '../store';
 
-type StartScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
+type StartScreenProps = StackScreenProps<StartStackParamList, 'Login'>;
 
-export default function LoginScreen({navigation}: StartScreenProps) {
-  const dispatch = useDispatch();
-  const [username, setLocalUsername] = React.useState('');
-  const [password, setLocalPassword] = React.useState('');
+export default function LoginScreen({}: StartScreenProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const [username, setLocalUsername] = useState('');
+  const [password, setLocalPassword] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      const {access, refresh} = await response.json();
+
+      if (access) {
+        await dispatch(
+          saveAuthToken({accessToken: access, refreshToken: refresh}),
+        );
+        dispatch(setUsername(username));
+      } else {
+        Alert.alert('Login Failed', 'No token received.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Alert.alert(
+        'Login Error',
+        'Failed to log in. Please check your credentials and try again.',
+      );
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Green Grub</Text>
-      <Text style={styles.subtitle}>login</Text>
+      <Text style={styles.title}>Log In</Text>
       <LoginForm
         username={username}
         setUsername={setLocalUsername}
@@ -27,13 +61,7 @@ export default function LoginScreen({navigation}: StartScreenProps) {
         setPassword={setLocalPassword}
       />
       <ButtonGroup>
-        <MainButton
-          title="Login"
-          onPress={() => {
-            dispatch(setUsername(username));
-            navigation.navigate('Main');
-          }}
-        />
+        <MainButton title="Login" onPress={handleLogin} />
       </ButtonGroup>
     </View>
   );
@@ -42,20 +70,14 @@ export default function LoginScreen({navigation}: StartScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 100,
+    backgroundColor: PRIMARY_BLUE,
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
     fontSize: TEXT_HUGE,
-    fontFamily: 'Roboto',
-    fontStyle: 'italic',
-    color: 'gray',
-  },
-  subtitle: {
-    fontSize: TEXT_LARGE,
-    fontFamily: 'Roboto',
-    fontStyle: 'italic',
-    color: 'gray',
+    fontFamily: 'Pacifico-Regular',
+    marginTop: 100,
+    color: WHITE,
   },
 });

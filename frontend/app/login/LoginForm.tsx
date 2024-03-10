@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {StyleSheet, View} from 'react-native';
-import {TEXT_HUGE} from '../sizing';
 import TextInputField from '../shared/TextInputField';
 
 type LoginFormProps = {
@@ -23,11 +22,13 @@ export default function LoginForm({
         title="Username"
         onChangeText={setUsername}
         value={username}
+        isSecureText={false}
       />
       <TextInputField
         title="Password"
         onChangeText={setPassword}
         value={password}
+        isSecureText={true}
       />
     </View>
   );
@@ -39,11 +40,5 @@ const styles = StyleSheet.create({
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: TEXT_HUGE,
-    marginBottom: 20,
-    fontFamily: 'Roboto',
-    fontStyle: 'italic',
   },
 });
