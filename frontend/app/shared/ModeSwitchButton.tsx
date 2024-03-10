@@ -22,10 +22,12 @@ function Mode({
       onPress={onSelect}
       style={[
         styles.modeContainer,
+        // eslint-disable-next-line react-native/no-inline-styles
         {
           backgroundColor: active ? 'gray' : 'white',
         },
       ]}>
+      {/* eslint-disable-next-line react-native/no-inline-styles */}
       <Text style={{color: active ? 'white' : 'gray'}}>{name}</Text>
     </TouchableOpacity>
   );

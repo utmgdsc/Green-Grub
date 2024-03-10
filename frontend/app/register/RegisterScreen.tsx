@@ -4,39 +4,52 @@ import {useDispatch} from 'react-redux';
 import {setUsername} from '../userSlice';
 import {saveAuthToken} from '../authSlice';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../../App';
-import {TEXT_HUGE, TEXT_LARGE} from '../sizing';
+import {TEXT_HUGE} from '../sizing';
 import {PRIMARY_BLUE, WHITE} from '../colors';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import RegisterForm from './RegisterForm';
-import axios from 'axios';
+import {AppDispatch} from '../store';
+import {StartStackParamList} from '../StartStack';
 
-type StartScreenProps = StackScreenProps<RootStackParamList, 'Register'>;
+type StartScreenProps = StackScreenProps<StartStackParamList, 'Register'>;
 
-export default function RegisterScreen({navigation}: StartScreenProps) {
-  const dispatch = useDispatch();
+export default function RegisterScreen({}: StartScreenProps) {
+  const dispatch = useDispatch<AppDispatch>();
   const [username, setLocalUsername] = useState('');
   const [password, setLocalPassword] = useState('');
 
   const handleRegister = async () => {
     try {
-      await axios.post('http://localhost:8000/api/signup/', {
-        username,
-        password,
+      await fetch('http://localhost:8000/api/signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
 
-      const response = await axios.post('http://localhost:8000/api/login/', {
-        username,
-        password,
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
 
-      const {access} = response.data;
+      const {refresh, access} = await response.json();
 
-      if (access) {
-        await dispatch(saveAuthToken(access));
+      if (access && refresh) {
+        await dispatch(
+          saveAuthToken({accessToken: access, refreshToken: refresh}),
+        );
         dispatch(setUsername(username));
-        navigation.navigate('Main');
       } else {
         Alert.alert(
           'Error',
@@ -63,10 +76,6 @@ export default function RegisterScreen({navigation}: StartScreenProps) {
       />
       <ButtonGroup>
         <MainButton title="Register" onPress={handleRegister} />
-        {/* <MainButton
-          title="Go Back"
-          onPress={navigation.navigate('Main')} 
-        /> */}
       </ButtonGroup>
     </View>
   );

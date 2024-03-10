@@ -2,18 +2,14 @@ import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useGetFriendsQuery} from './api';
 
-type User = {
-  username: String;
-};
-
 type FriendProps = {
-  friend: User;
+  friend: string;
 };
 
 function Friend({friend}: FriendProps) {
   return (
     <TouchableOpacity style={styles.friend}>
-      <Text style={styles.friendText}>{friend.username}</Text>
+      <Text style={styles.friendText}>{friend}</Text>
     </TouchableOpacity>
   );
 }
@@ -24,6 +20,7 @@ function FriendsList() {
   return friends && friends.length > 0 ? (
     <FlatList
       data={friends}
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{height: '100%', width: '100%'}}
       renderItem={({item}) => <Friend friend={item} />}
       refreshing={isLoading}

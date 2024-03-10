@@ -1,4 +1,5 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {createApi} from '@reduxjs/toolkit/query/react';
+import {baseQueryWithReauth} from '../api';
 
 type StatusMessage = {
   message: string;
@@ -7,21 +8,16 @@ type StatusMessage = {
 
 export const friendsApi = createApi({
   reducerPath: 'friendsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://127.0.0.1:8000/api',
-    prepareHeaders: (header: Headers) => {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA5ODUwOTA4LCJpYXQiOjE3MDk4NDc5MDgsImp0aSI6ImI0ZmU2NTdhM2Y4NjQyYWM5ZmJjMjc3ODBjMjc3ODFiIiwidXNlcl9pZCI6MX0.KzoSnLxdrPYFUTwe2kymTDj3FtnjTakjXkk_AwUqKco';
-      header.set('Authorization', `Bearer ${token}`);
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Friends', 'PendingFriends'],
   endpoints: build => ({
-    getFriends: build.query<{username: string}[], void>({
+    getFriends: build.query<string[], void>({
       query: () => ({
         url: '/view_friends_list/',
         method: 'GET',
       }),
+      transformResponse: (response: {usernames: string[]}) =>
+        response.usernames,
       providesTags: ['Friends'],
     }),
     addFriend: build.mutation<StatusMessage, string>({

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {FriendsStackParamList} from './FriendsScreen';
+import {FriendsStackParamList} from './FriendsTab';
 import {StackScreenProps} from '@react-navigation/stack';
 import TextInputField from '../shared/TextInputField';
 import MainButton from '../shared/MainButton';
