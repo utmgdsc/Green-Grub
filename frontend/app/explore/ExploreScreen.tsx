@@ -6,46 +6,58 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {MainTabsParamList} from '../MainTabs';
+import {QuizzesStackParamList} from './ExploreTab';
 import {useGetTopicsQuery} from './api';
+import {StackScreenProps} from '@react-navigation/stack';
 
-type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Explore'>;
+type ExploreScreenProps = StackScreenProps<QuizzesStackParamList, 'Explore'>;
 
 type TopicProps = {
-  id: number;
-  passed: number;
-  total: number;
+  topic_id: number;
+  passed_quizzes: number;
+  total_quizzes: number;
+  navigation: ExploreScreenProps['navigation'];
 };
 
-function Topic({id, passed, total}: TopicProps) {
-  const progressWidth = total > 0 ? `${(passed / total) * 100}%` : '0%';
+function Topic({
+  topic_id,
+  passed_quizzes,
+  total_quizzes,
+  navigation,
+}: TopicProps) {
+  const progressWidth =
+    total_quizzes > 0 ? `${(passed_quizzes / total_quizzes) * 100}%` : '0%';
+
+  const handlePress = () => {
+    console.log('topic id', topic_id);
+    navigation.navigate('QuizList', {topicId: topic_id});
+  };
 
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={handlePress}>
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, {width: progressWidth}]} />
       </View>
-      <Text style={styles.buttonText}>Topic ID: {id}</Text>
+      <Text style={styles.buttonText}>Topic ID: {topic_id}</Text>
       <Text style={styles.subText}>
-        Passed: {passed}/{total}
+        Passed: {passed_quizzes}/{total_quizzes}
       </Text>
     </TouchableOpacity>
   );
 }
 
-function TopicsList() {
+function TopicsList({navigation}: ExploreScreenProps) {
   const {data, isLoading} = useGetTopicsQuery();
-  console.log(data);
   return (
     <ScrollView style={styles.container}>
       {isLoading && <Text>Loading...</Text>}
-      {data?.map(topic => (
+      {data?.map((topic: TopicProps) => (
         <Topic
           key={topic.topic_id}
-          id={topic.topic_id}
-          passed={topic.passed_quizzes}
-          total={topic.total_quizzes}
+          topic_id={topic.topic_id}
+          passed_quizzes={topic.passed_quizzes}
+          total_quizzes={topic.total_quizzes}
+          navigation={navigation}
         />
       ))}
     </ScrollView>

@@ -17,8 +17,15 @@ export const quizApi = createApi({
         method: 'GET',
       }),
       providesTags: ['Topics'],
-    })
+    }),
+    getQuizzes: build.query<string[], void>({
+        query: (topicId: number) => ({
+          url: `/topic/${topicId}/`,
+          method: 'GET',
+        }),
+        providesTags: ['Quizzes'],
+      })
   }),
 });
 
-export const {useGetTopicsQuery} = quizApi;
+export const {useGetTopicsQuery, useGetQuizzesQuery} = quizApi;

@@ -14,11 +14,13 @@ import ExploreScreen from './explore/ExploreScreen';
 import ScanTab from './scan/ScanTab';
 import FriendsTab from './friends/FriendsTab';
 import ProfileScreen from './profile/ProfileScreen';
+import QuizListScreen from './explore/QuizListScreen';
+import QuizDetailsScreen from './explore/QuizDetailsScreen';
 
 export type MainTabsParamList = {
   Home: undefined;
   'Scan Tab': undefined;
-  Explore: undefined;
+  'Explore Tab': undefined;
   'Saved Items': undefined;
   'Friends Tab': undefined;
   Profile: undefined;
@@ -52,7 +54,7 @@ function App(): React.JSX.Element {
       />
 
       <Tabs.Screen
-        name="Explore"
+        name="Explore Tab"
         component={ExploreScreen}
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
