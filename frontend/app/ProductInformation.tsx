@@ -3,13 +3,16 @@ import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
 import {TEXT_LARGE} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
-import {Product} from './savedItems/api';
+import FoodInfo from './types/FoodInfo';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-type ProductInformationProps = {product: Product};
-type ShortProductInformationProps = {product: Product; onSelected?: () => void};
+type ShortProductInformationProps = {
+  product: FoodInfo;
+  onSelected?: () => void;
+};
 type ShortProductInformationListProps = {
-  products: Product[];
-  onSelected?: (product: Product) => void;
+  products: FoodInfo[];
+  onSelected?: (product: FoodInfo) => void;
 };
 
 export function ShortProductInformationList({
@@ -39,29 +42,39 @@ export function ShortProductInformation({
     <TouchableOpacity
       style={styles.shortProductInformation}
       onPress={onSelected}>
-      <Image src={product.img} style={styles.shortProductInformationImage} />
-      <Text style={styles.shortProductInformationText}>{product.name}</Text>
+      <Image src={product.image} style={styles.shortProductInformationImage} />
+      <Text style={styles.shortProductInformationText}>
+        {product.product_name}
+      </Text>
     </TouchableOpacity>
   );
 }
 
-export default function ProductInformation({product}: ProductInformationProps) {
+export function ProductInformation({product}: {product: FoodInfo}) {
   return (
     <View style={styles.productInformation}>
-      <Image src={product.img} style={styles.productImage} />
-      <Text style={styles.productNameText}>{product.name}</Text>
+      {product.image ? (
+        <Image src={product.image} style={styles.productImage} />
+      ) : (
+        <View style={styles.productImage}>
+          <Icon name="warning-outline" size={80} color="black" />
+          <Text style={styles.productNotFoundText}>Image not available</Text>
+        </View>
+      )}
+
+      <Text style={styles.productNameText}>{product.product_name}</Text>
       <RatingBarGroup>
         <RatingBar
           label="Nutri Score"
           min={0}
-          max={10}
-          actual={product.nutriScore}
+          max={5}
+          actual={product.nutri_score}
         />
         <RatingBar
           label="Sustainability Score"
           min={0}
-          max={10}
-          actual={product.sustainabilityScore}
+          max={5}
+          actual={product.sustainability}
         />
       </RatingBarGroup>
     </View>
@@ -83,10 +96,14 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center',
+    resizeMode: 'contain',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   productNameText: {
     fontSize: TEXT_LARGE,
     fontWeight: 'bold',
+    color: 'black',
   },
   shortProductInformationList: {
     width: '90%',
@@ -117,5 +134,17 @@ const styles = StyleSheet.create({
   shortProductInformationText: {
     fontSize: TEXT_LARGE,
     flex: 6,
+    color: 'black',
+  },
+  productNotFound: {
+    paddingVertical: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  productNotFoundText: {
+    fontSize: TEXT_LARGE,
+    fontWeight: 'bold',
+    color: 'black',
+    textAlign: 'center',
   },
 });

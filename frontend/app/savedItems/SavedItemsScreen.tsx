@@ -1,11 +1,13 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useState} from 'react';
 import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
-import ProductInformation, {
+import {
+  ProductInformation,
   ShortProductInformationList,
 } from '../ProductInformation';
 import {HomeStackParamList} from '../home/HomeTab';
-import {Product, useGetSavedItemsQuery} from './api';
+import {useGetSavedItemsQuery} from './api';
+import FoodInfo from '../types/FoodInfo';
 
 type SavedItemsScreenProps = StackScreenProps<
   HomeStackParamList,
@@ -13,7 +15,7 @@ type SavedItemsScreenProps = StackScreenProps<
 >;
 
 export default function SavedItemsScreen({}: SavedItemsScreenProps) {
-  const [productDetail, setProductDetail] = useState<Product | null>(null);
+  const [productDetail, setProductDetail] = useState<FoodInfo | null>(null);
   const {data: products, isLoading} = useGetSavedItemsQuery();
 
   return (

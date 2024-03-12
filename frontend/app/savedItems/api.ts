@@ -1,19 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {baseQueryWithReauth} from '../api';
-
-type ServerProduct = {
-  image: string;
-  name: string;
-  nutriScore: number;
-  sustainabilityScore: number;
-};
-
-export type Product = {
-  img: string;
-  name: string;
-  nutriScore: number;
-  sustainabilityScore: number;
-};
+import FoodInfo from '../types/FoodInfo';
 
 export const savedItemsApi = createApi({
   reducerPath: 'savedItemsApi',
@@ -27,17 +14,14 @@ export const savedItemsApi = createApi({
       }),
       invalidatesTags: ['SavedItems'],
     }),
-    getSavedItems: build.query<Product[], void>({
+    getSavedItems: build.query<FoodInfo[], void>({
       query: () => ({
         url: '/user_products/',
         method: 'GET',
       }),
       providesTags: ['SavedItems'],
-      transformResponse: (response: {[key: string]: ServerProduct}) =>
-        Object.values(response).map(p => ({
-          img: p.image,
-          ...p,
-        })),
+      transformResponse: (response: {[key: string]: FoodInfo}) =>
+        Object.values(response),
     }),
   }),
 });
