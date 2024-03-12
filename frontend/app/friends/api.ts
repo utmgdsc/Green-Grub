@@ -69,4 +69,8 @@ export const friendsApi = createApi({
   }),
 });
 
-export const {useGetFriendsQuery, useAddFriendMutation} = friendsApi;
+export const {
+  useGetFriendsQuery,
+  useAddFriendMutation,
+  useRemoveFriendMutation,
+} = friendsApi;

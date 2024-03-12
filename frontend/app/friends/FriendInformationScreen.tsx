@@ -5,11 +5,19 @@ import {TEXT_LARGE} from '../sizing';
 import Card from '../Card';
 import MainButton from '../shared/MainButton';
 
-export function FriendInformation({friend}: {friend: Friend}) {
+type FriendInformationProps = {
+  friend: Friend;
+  onUnfriend?: () => void;
+};
+
+export function FriendInformation({
+  friend,
+  onUnfriend,
+}: FriendInformationProps) {
   return (
     <Card>
       <Text style={styles.friendInformationText}>{friend.username}</Text>
-      <MainButton title="Unfriend" />
+      {onUnfriend && <MainButton title="Unfriend" onPress={onUnfriend} />}
     </Card>
   );
 }

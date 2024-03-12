@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useGetFriendsQuery, Friend} from './api';
+import {useGetFriendsQuery, Friend, useRemoveFriendMutation} from './api';
 import {FriendInformation} from './FriendInformationScreen';
 
 type FriendProps = {
@@ -26,6 +26,7 @@ function ShortFriendInfo({friend, onSelected}: FriendProps) {
 function FriendsList() {
   const [viewFriend, setViewFriend] = React.useState<Friend | null>(null);
   const {data: friends, refetch, isLoading} = useGetFriendsQuery();
+  const [unfriend] = useRemoveFriendMutation();
 
   return friends && friends.length > 0 ? (
     <View>
@@ -34,7 +35,17 @@ function FriendsList() {
         visible={!!viewFriend}
         onRequestClose={() => setViewFriend(null)}>
         <View style={styles.friendInfoModal}>
-          {viewFriend !== null ? <FriendInformation friend={viewFriend} /> : ''}
+          {viewFriend !== null ? (
+            <FriendInformation
+              friend={viewFriend}
+              onUnfriend={() => {
+                unfriend(viewFriend.username);
+                setViewFriend(null);
+              }}
+            />
+          ) : (
+            ''
+          )}
         </View>
       </Modal>
       <FlatList
