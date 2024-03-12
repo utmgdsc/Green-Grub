@@ -1,15 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {MainTabsParamList} from '../MainTabs';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
+import {StackScreenProps} from '@react-navigation/stack';
+import {HomeStackParamList} from './HomeTab';
 
-type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home'>;
+type HomeScreenProps = StackScreenProps<HomeStackParamList, 'Home'>;
 
-export default function LoginScreen({navigation}: StartScreenProps) {
+export default function LoginScreen({navigation}: HomeScreenProps) {
   const username = useSelector((state: RootState) => state.user.username);
 
   return (

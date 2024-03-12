@@ -9,6 +9,7 @@ import {useGetProductInfoQuery} from './api';
 import FoodInfo from '../types/FoodInfo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ScanStackParamList} from './ScanTab';
+import {useUpdateSavedItemsMutation} from '../savedItems/api';
 
 type ScanResultScreenProps = StackScreenProps<
   ScanStackParamList,
@@ -53,6 +54,7 @@ export default function ScanResultScreen({
   const {data: product, isLoading} = useGetProductInfoQuery(
     route.params.barcode,
   );
+  const [update] = useUpdateSavedItemsMutation();
 
   return (
     <View style={styles.container}>
@@ -74,7 +76,10 @@ export default function ScanResultScreen({
         <MainButton title="Retake" onPress={() => navigation.goBack()} />
         <MainButton
           title="Add to Saved Items"
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            update(route.params.barcode);
+            navigation.goBack();
+          }}
         />
       </ButtonGroup>
     </View>

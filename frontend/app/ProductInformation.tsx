@@ -3,13 +3,7 @@ import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
 import {TEXT_LARGE} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
-
-export type Product = {
-  img: string;
-  name: string;
-  nutriScore: number;
-  sustainabilityScore: number;
-};
+import {Product} from './savedItems/api';
 
 type ProductInformationProps = {product: Product};
 type ShortProductInformationProps = {product: Product; onSelected?: () => void};
