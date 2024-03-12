@@ -1,31 +1,56 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useGetFriendsQuery} from './api';
+import {
+  FlatList,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {useGetFriendsQuery, Friend} from './api';
+import {FriendInformation} from './FriendInformationScreen';
 
 type FriendProps = {
-  friend: string;
+  friend: Friend;
+  onSelected?: () => void;
 };
 
-function Friend({friend}: FriendProps) {
+function ShortFriendInfo({friend, onSelected}: FriendProps) {
   return (
-    <TouchableOpacity style={styles.friend}>
-      <Text style={styles.friendText}>{friend}</Text>
+    <TouchableOpacity style={styles.friend} onPress={onSelected}>
+      <Text style={styles.friendText}>{friend.username}</Text>
     </TouchableOpacity>
   );
 }
 
 function FriendsList() {
+  const [viewFriend, setViewFriend] = React.useState<Friend | null>(null);
   const {data: friends, refetch, isLoading} = useGetFriendsQuery();
 
   return friends && friends.length > 0 ? (
-    <FlatList
-      data={friends}
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{height: '100%', width: '100%'}}
-      renderItem={({item}) => <Friend friend={item} />}
-      refreshing={isLoading}
-      onRefresh={refetch}
-    />
+    <View>
+      <Modal
+        animationType="slide"
+        visible={!!viewFriend}
+        onRequestClose={() => setViewFriend(null)}>
+        <View style={styles.friendInfoModal}>
+          {viewFriend !== null ? <FriendInformation friend={viewFriend} /> : ''}
+        </View>
+      </Modal>
+      <FlatList
+        data={friends}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{height: '100%', width: '100%'}}
+        renderItem={({item}) => (
+          <ShortFriendInfo
+            friend={item}
+            onSelected={() => setViewFriend(item)}
+          />
+        )}
+        refreshing={isLoading}
+        onRefresh={refetch}
+      />
+    </View>
   ) : (
     <Text style={styles.noFriendsText}>You don't have any friends yet</Text>
   );
@@ -55,5 +80,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     fontStyle: 'italic',
+  },
+  friendInfoModal: {
+    paddingHorizontal: 20,
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 });

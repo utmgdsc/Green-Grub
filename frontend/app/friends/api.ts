@@ -1,9 +1,13 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {baseQueryWithReauth} from '../api';
 
-type StatusMessage = {
+export type StatusMessage = {
   message: string;
   code: string;
+};
+
+export type Friend = {
+  username: string;
 };
 
 export const friendsApi = createApi({
@@ -11,13 +15,13 @@ export const friendsApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['Friends', 'PendingFriends'],
   endpoints: build => ({
-    getFriends: build.query<string[], void>({
+    getFriends: build.query<Friend[], void>({
       query: () => ({
         url: '/view_friends_list/',
         method: 'GET',
       }),
       transformResponse: (response: {usernames: string[]}) =>
-        response.usernames,
+        response.usernames.map(username => ({username})),
       providesTags: ['Friends'],
     }),
     addFriend: build.mutation<StatusMessage, string>({
@@ -48,14 +52,14 @@ export const friendsApi = createApi({
       }),
       invalidatesTags: ['PendingFriends'],
     }),
-    getFriendRequestsSent: build.query<{username: string}[], void>({
+    getFriendRequestsSent: build.query<Friend[], void>({
       query: () => ({
         url: '/friend_requests_sent/',
         method: 'GET',
       }),
       providesTags: ['PendingFriends'],
     }),
-    getFriendsRequestsReceived: build.query<{username: string}[], void>({
+    getFriendsRequestsReceived: build.query<Friend[], void>({
       query: () => ({
         url: '/friend_requests_received/',
         method: 'GET',
