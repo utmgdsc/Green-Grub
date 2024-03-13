@@ -20,7 +20,7 @@ export type MainTabsParamList = {
   'Scan Tab': undefined;
   Explore: undefined;
   'Saved Items': undefined;
-  'Friends Tab': undefined;
+  Friends: undefined;
   Profile: undefined;
 };
 
@@ -63,7 +63,7 @@ function App(): React.JSX.Element {
       />
 
       <Tabs.Screen
-        name="Friends Tab"
+        name="Friends"
         component={FriendsTab}
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components

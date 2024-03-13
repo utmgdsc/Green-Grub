@@ -43,7 +43,7 @@ export const friendsApi = createApi({
         url: `/accept_friend/${username}/`,
         method: 'POST',
       }),
-      invalidatesTags: ['PendingFriends'],
+      invalidatesTags: ['PendingFriends', 'Friends'],
     }),
     declineFriend: build.mutation<StatusMessage, string>({
       query: username => ({

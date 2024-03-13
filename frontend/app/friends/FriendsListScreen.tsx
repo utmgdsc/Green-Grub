@@ -20,7 +20,7 @@ import {FriendsStackParamList} from './FriendsTab';
 
 type FriendsListScreenProps = StackScreenProps<
   FriendsStackParamList,
-  'Friends List'
+  'Your Friends'
 >;
 
 type FriendProps = {
@@ -39,7 +39,7 @@ function ShortFriendInfo({friend, onSelected}: FriendProps) {
 function FriendsList({
   navigation,
 }: {
-  navigation: StackNavigationProp<FriendsStackParamList, 'Friends List'>;
+  navigation: StackNavigationProp<FriendsStackParamList, 'Your Friends'>;
 }) {
   const [viewFriend, setViewFriend] = React.useState<Friend | null>(null);
   const {data: friendInvitations} = useGetFriendsRequestsReceivedQuery();

@@ -16,6 +16,7 @@ import {
 import {FriendInformation} from './FriendInformationScreen';
 import ButtonGroup from '../shared/ButtonGroup';
 import MainButton from '../shared/MainButton';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 type FriendProps = {
   friend: Friend;
@@ -23,9 +24,20 @@ type FriendProps = {
 };
 
 function ShortPendingFriendInfo({friend, onSelected}: FriendProps) {
+  const [acceptFriend] = useAcceptFriendMutation();
+  const [declineFriend] = useDeclineFriendMutation();
+
   return (
     <TouchableOpacity style={styles.friend} onPress={onSelected}>
       <Text style={styles.friendText}>{friend.username}</Text>
+      <View style={styles.friendInfoDirectAction}>
+        <TouchableOpacity onPress={() => acceptFriend(friend.username)}>
+          <Icon name="checkcircle" size={40} color="green" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => declineFriend(friend.username)}>
+          <Icon name="closecircle" size={40} color="red" />
+        </TouchableOpacity>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -80,7 +92,9 @@ function FriendsList() {
       />
     </View>
   ) : (
-    <Text style={styles.noFriendsText}>You don't have any friends yet</Text>
+    <Text style={styles.noFriendsText}>
+      You don't have any friend invitations
+    </Text>
   );
 }
 
@@ -97,10 +111,16 @@ const styles = StyleSheet.create({
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   friendText: {
     fontSize: 20,
     color: 'gray',
+  },
+  friendInfoDirectAction: {
+    flexDirection: 'row',
+    gap: 15,
   },
   noFriendsText: {
     fontSize: 20,
