@@ -1,28 +1,31 @@
-import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import React, {PropsWithChildren} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {Friend} from './api';
 import {TEXT_LARGE} from '../sizing';
 import Card from '../Card';
-import MainButton from '../shared/MainButton';
 
-type FriendInformationProps = {
+type FriendInformationProps = PropsWithChildren<{
   friend: Friend;
-  onUnfriend?: () => void;
-};
+}>;
 
-export function FriendInformation({
-  friend,
-  onUnfriend,
-}: FriendInformationProps) {
+export function FriendInformation({friend, children}: FriendInformationProps) {
   return (
     <Card>
-      <Text style={styles.friendInformationText}>{friend.username}</Text>
-      {onUnfriend && <MainButton title="Unfriend" onPress={onUnfriend} />}
+      <View style={styles.friendInfo}>
+        <Text style={styles.friendInformationText}>{friend.username}</Text>
+        {children}
+      </View>
     </Card>
   );
 }
 
 const styles = StyleSheet.create({
+  friendInfo: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+  },
   friendInformationText: {
     fontSize: TEXT_LARGE,
     textAlign: 'center',

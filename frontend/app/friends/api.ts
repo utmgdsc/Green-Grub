@@ -64,6 +64,8 @@ export const friendsApi = createApi({
         url: '/friend_requests_received/',
         method: 'GET',
       }),
+      transformResponse: (response: {usernames: string[]}) =>
+        response.usernames.map(username => ({username})),
       providesTags: ['PendingFriends'],
     }),
   }),
@@ -73,4 +75,8 @@ export const {
   useGetFriendsQuery,
   useAddFriendMutation,
   useRemoveFriendMutation,
+  useAcceptFriendMutation,
+  useDeclineFriendMutation,
+  useGetFriendRequestsSentQuery,
+  useGetFriendsRequestsReceivedQuery,
 } = friendsApi;

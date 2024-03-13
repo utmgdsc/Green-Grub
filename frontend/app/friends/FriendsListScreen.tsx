@@ -7,8 +7,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useGetFriendsQuery, Friend, useRemoveFriendMutation} from './api';
+import {
+  useGetFriendsQuery,
+  Friend,
+  useRemoveFriendMutation,
+  useGetFriendsRequestsReceivedQuery,
+} from './api';
 import {FriendInformation} from './FriendInformationScreen';
+import MainButton from '../shared/MainButton';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {FriendsStackParamList} from './FriendsTab';
+
+type FriendsListScreenProps = StackScreenProps<
+  FriendsStackParamList,
+  'Friends List'
+>;
 
 type FriendProps = {
   friend: Friend;
@@ -23,59 +36,84 @@ function ShortFriendInfo({friend, onSelected}: FriendProps) {
   );
 }
 
-function FriendsList() {
+function FriendsList({
+  navigation,
+}: {
+  navigation: StackNavigationProp<FriendsStackParamList, 'Friends List'>;
+}) {
   const [viewFriend, setViewFriend] = React.useState<Friend | null>(null);
+  const {data: friendInvitations} = useGetFriendsRequestsReceivedQuery();
   const {data: friends, refetch, isLoading} = useGetFriendsQuery();
   const [unfriend] = useRemoveFriendMutation();
 
-  return friends && friends.length > 0 ? (
-    <View>
-      <Modal
-        animationType="slide"
-        visible={!!viewFriend}
-        onRequestClose={() => setViewFriend(null)}>
-        <View style={styles.friendInfoModal}>
-          {viewFriend !== null ? (
-            <FriendInformation
-              friend={viewFriend}
-              onUnfriend={() => {
-                unfriend(viewFriend.username);
-                setViewFriend(null);
-              }}
-            />
-          ) : (
-            ''
-          )}
-        </View>
-      </Modal>
-      <FlatList
-        data={friends}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{height: '100%', width: '100%'}}
-        renderItem={({item}) => (
-          <ShortFriendInfo
-            friend={item}
-            onSelected={() => setViewFriend(item)}
+  return (
+    <View style={styles.friendsList}>
+      {friendInvitations && friendInvitations.length > 0 ? (
+        <MainButton
+          title="Pending Friend Invitations"
+          onPress={() => navigation.navigate('Invitations')}
+        />
+      ) : (
+        ''
+      )}
+      {friends && friends.length > 0 ? (
+        <View>
+          <Modal
+            animationType="slide"
+            visible={!!viewFriend}
+            onRequestClose={() => setViewFriend(null)}>
+            <View style={styles.friendInfoModal}>
+              {viewFriend !== null ? (
+                <FriendInformation friend={viewFriend}>
+                  <MainButton
+                    title="Unfriend"
+                    onPress={() => {
+                      unfriend(viewFriend.username);
+                      setViewFriend(null);
+                    }}
+                  />
+                </FriendInformation>
+              ) : (
+                ''
+              )}
+            </View>
+          </Modal>
+          <FlatList
+            data={friends}
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{height: '100%', width: '100%'}}
+            renderItem={({item}) => (
+              <ShortFriendInfo
+                friend={item}
+                onSelected={() => setViewFriend(item)}
+              />
+            )}
+            refreshing={isLoading}
+            onRefresh={refetch}
           />
-        )}
-        refreshing={isLoading}
-        onRefresh={refetch}
-      />
+        </View>
+      ) : (
+        <Text style={styles.noFriendsText}>You don't have any friends yet</Text>
+      )}
     </View>
-  ) : (
-    <Text style={styles.noFriendsText}>You don't have any friends yet</Text>
   );
 }
 
-export default function AddFriendScreen(): JSX.Element {
+export default function AddFriendScreen({
+  navigation,
+}: FriendsListScreenProps): JSX.Element {
   return (
     <View>
-      <FriendsList />
+      <FriendsList navigation={navigation} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  friendsList: {
+    paddingTop: 20,
+    paddingHorizontal: 10,
+  },
   friend: {
     padding: 15,
     borderBottomWidth: 1,
