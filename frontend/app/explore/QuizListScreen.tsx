@@ -39,6 +39,7 @@ const QuizItem = ({
   navigation,
 }: QuizProps) => {
   const handlePress = () => {
+    console.log('quiz id', id);
     navigation.navigate('QuizDetails', {quizId: id, questionNumber: 1});
   };
 
@@ -53,27 +54,50 @@ const QuizItem = ({
 const QuizListScreen = ({route, navigation}: QuizListScreenProps) => {
   const {topicId} = route.params;
   const {data, isLoading} = useGetQuizzesQuery(topicId);
+  console.log(data);
+
+  if (isLoading) {
+    return (
+      <ScrollView style={styles.container}>
+        <Text>Loading...</Text>
+      </ScrollView>
+    );
+  }
+
+  if (!data)
+    return (
+      <ScrollView style={styles.container}>
+        <Text>No topics found</Text>
+      </ScrollView>
+    );
+
   const unAttemptedQuizzes = data.unattempted_or_not_passed_quizzes;
   const passedQuizzes = data.passed_quizzes;
 
-  console.log(data);
-  console.log(unAttemptedQuizzes);
   return (
     <ScrollView style={styles.container}>
-      {isLoading && <Text>Loading...</Text>}
       {unAttemptedQuizzes && unAttemptedQuizzes.length > 0 ? (
         unAttemptedQuizzes.map(quiz => (
-          <QuizItem key={quiz.id} quizId={quiz.id} {...quiz} navigation={navigation} />
+          <QuizItem
+            key={quiz.id}
+            id={quiz.id}
+            {...quiz}
+            navigation={navigation}
+          />
         ))
       ) : (
         <Text>No quizzes to complete available for this topic.</Text>
       )}
-
-      if (unAttemptedQuizzes && unAttemptedQuizzes.length > 0)  { (
+      {passedQuizzes &&
+        passedQuizzes.length > 0 &&
         passedQuizzes.map(quiz => (
-          <QuizItem key={quiz.id} quizId={quiz.id} {...quiz} navigation={navigation} />
-        ))
-      ) }
+          <QuizItem
+            key={quiz.id}
+            id={quiz.id}
+            {...quiz}
+            navigation={navigation}
+          />
+        ))}
     </ScrollView>
   );
 };

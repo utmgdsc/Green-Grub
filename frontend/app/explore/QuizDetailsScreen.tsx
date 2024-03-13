@@ -1,18 +1,24 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {useGetQuestionQuery} from './api';
 
-const QuizDetailsScreen = () => {
-  // Dummy data for the quiz
-  const question = 'How much does a household in Canada waste food?';
-  const answers = ['50 kg', '100 kg', '120 kg'];
-  const currentQuestion = 2;
-  const totalQuestions = 6;
+const QuizDetailsScreen = ({route}) => {
+  const {quizId} = route.params;
+  const questionId = 1;
+
+  const {data, error, isLoading} = useGetQuestionQuery({quizId, questionId});
 
   const handleAnswerPress = answer => {
     // Handle the answer selection
   };
 
-  const renderAnswerButtons = () => {
+  const renderAnswerButtons = answers => {
     return answers.map((answer, index) => (
       <TouchableOpacity
         key={index}
@@ -23,10 +29,30 @@ const QuizDetailsScreen = () => {
     ));
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>Error occurred!</Text>
+      </View>
+    );
+  }
+
+  const answers = data ? [data.option1, data.option2, data.option3] : [];
+
+  const currentQuestion = 1;
+  const totalQuestions = 6;
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Explore Quizzes</Text>
-      <Text style={styles.category}>Food Waste</Text>
+      <Text style={styles.category}>Category Name</Text>
       <View style={styles.progressBarBackground}>
         <View
           style={[
@@ -38,9 +64,11 @@ const QuizDetailsScreen = () => {
       <Text style={styles.progressText}>
         {currentQuestion}/{totalQuestions}
       </Text>
-      <Text style={styles.question}>{question}</Text>
-      <View style={styles.answersContainer}>{renderAnswerButtons()}</View>
-    </View>
+      <Text style={styles.question}>{data?.question}</Text>
+      <View style={styles.answersContainer}>
+        {renderAnswerButtons(answers)}
+      </View>
+    </ScrollView>
   );
 };
 

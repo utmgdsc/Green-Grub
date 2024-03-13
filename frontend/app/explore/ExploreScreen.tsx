@@ -47,9 +47,11 @@ function Topic({topic_id, passed_quizzes, total_quizzes}: TopicProps) {
 
 function ExploreScreen({}) {
   const {data, isLoading} = useGetTopicsQuery();
+
   return (
     <ScrollView style={styles.container}>
       {isLoading && <Text>Loading...</Text>}
+      {!data && <Text>No topics found</Text>}
       {data?.map((topic: TopicProps) => (
         <Topic
           key={topic.topic_id}

@@ -9,7 +9,7 @@ type StatusMessage = {
 export const quizApi = createApi({
   reducerPath: 'quizApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Topics', 'Quizzes'],
+  tagTypes: ['Topics', 'Quizzes', 'Questions'],
   endpoints: (build: { query: (arg0: { query: (() => { url: string; method: string; }) | (() => { url: string; method: string; }) | (() => { url: string; method: string; }); transformResponse?: (response: { usernames: string[]; }) => string[]; providesTags: string[]; }) => any; mutation: (arg0: { query: ((username: any) => { url: string; method: string; }) | ((username: any) => { url: string; method: string; }) | ((username: any) => { url: string; method: string; }) | ((username: any) => { url: string; method: string; }); invalidatesTags: string[]; }) => any; }) => ({
     getTopics: build.query<string[], void>({
       query: () => ({
@@ -36,7 +36,7 @@ export const quizApi = createApi({
         article_link: string | null;
       }, { quizId: number; questionId: number }>({
         query: ({ quizId, questionId }) => ({
-          url: `/api/quiz/${quizId}/question/${questionId}`,
+          url: `/quiz/${quizId}/question/${questionId}`,
           method: 'GET',
         }),
         providesTags: ['Questions'],
