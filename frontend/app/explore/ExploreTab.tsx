@@ -1,27 +1,27 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import TopicsList from './ExploreScreen';
+import ExploreScreen from './ExploreScreen';
 import QuizListScreen from './QuizListScreen';
 import QuizDetailsScreen from './QuizDetailsScreen';
 
 export type QuizzesStackParamList = {
   TopicsList: undefined;
-  QuizList: {topicId: number};
+  QuizListScreen: {topicId: number};
   QuizDetails: {quizId: number; questionNumber: number};
 };
 
 const QuizzesStackNavigator = createStackNavigator<QuizzesStackParamList>();
 
-const ExploreScreen = () => {
+const ExploreTab = () => {
   return (
     <QuizzesStackNavigator.Navigator initialRouteName="TopicsList">
       <QuizzesStackNavigator.Screen
         name="TopicsList"
-        component={TopicsList}
+        component={ExploreScreen}
         options={{title: 'Explore Topics'}}
       />
       <QuizzesStackNavigator.Screen
-        name="QuizList"
+        name="QuizListScreen"
         component={QuizListScreen}
       />
       <QuizzesStackNavigator.Screen
@@ -32,4 +32,4 @@ const ExploreScreen = () => {
   );
 };
 
-export default ExploreScreen;
+export default ExploreTab;

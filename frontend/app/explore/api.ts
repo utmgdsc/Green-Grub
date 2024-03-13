@@ -24,8 +24,25 @@ export const quizApi = createApi({
           method: 'GET',
         }),
         providesTags: ['Quizzes'],
-      })
+    }),
+    getQuestion: build.query<{
+        topic_id: number;
+        question: string;
+        option1: string;
+        option2: string;
+        option3: string;
+        answer: number;
+        explanation: string;
+        article_link: string | null;
+      }, { quizId: number; questionId: number }>({
+        query: ({ quizId, questionId }) => ({
+          url: `/api/quiz/${quizId}/question/${questionId}`,
+          method: 'GET',
+        }),
+        providesTags: ['Questions'],
+      }),
+ 
   }),
 });
 
-export const {useGetTopicsQuery, useGetQuizzesQuery} = quizApi;
+export const {useGetTopicsQuery, useGetQuizzesQuery, useGetQuestionQuery} = quizApi;

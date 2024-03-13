@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {QuizzesStackParamList} from './ExploreTab';
+import ExploreTab, {QuizzesStackParamList} from './ExploreTab';
 import {useGetTopicsQuery} from './api';
 import {StackScreenProps} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
 
 type ExploreScreenProps = StackScreenProps<QuizzesStackParamList, 'Explore'>;
 
@@ -19,18 +20,16 @@ type TopicProps = {
   navigation: ExploreScreenProps['navigation'];
 };
 
-function Topic({
-  topic_id,
-  passed_quizzes,
-  total_quizzes,
-  navigation,
-}: TopicProps) {
+function Topic({topic_id, passed_quizzes, total_quizzes}: TopicProps) {
+  const navigation = useNavigation();
+
   const progressWidth =
     total_quizzes > 0 ? `${(passed_quizzes / total_quizzes) * 100}%` : '0%';
 
   const handlePress = () => {
     console.log('topic id', topic_id);
-    navigation.navigate('QuizList', {topicId: topic_id});
+    console.log(navigation);
+    navigation.navigate('QuizListScreen', {topicId: topic_id});
   };
 
   return (
@@ -46,7 +45,7 @@ function Topic({
   );
 }
 
-function TopicsList({navigation}: ExploreScreenProps) {
+function ExploreScreen({}) {
   const {data, isLoading} = useGetTopicsQuery();
   return (
     <ScrollView style={styles.container}>
@@ -57,7 +56,6 @@ function TopicsList({navigation}: ExploreScreenProps) {
           topic_id={topic.topic_id}
           passed_quizzes={topic.passed_quizzes}
           total_quizzes={topic.total_quizzes}
-          navigation={navigation}
         />
       ))}
     </ScrollView>
@@ -105,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopicsList;
+export default ExploreScreen;

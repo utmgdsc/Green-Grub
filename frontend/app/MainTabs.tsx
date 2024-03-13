@@ -10,7 +10,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './home/HomeScreen';
-import ExploreScreen from './explore/ExploreScreen';
+import ExploreTab from './explore/ExploreTab';
 import ScanTab from './scan/ScanTab';
 import FriendsTab from './friends/FriendsTab';
 import ProfileScreen from './profile/ProfileScreen';
@@ -55,7 +55,7 @@ function App(): React.JSX.Element {
 
       <Tabs.Screen
         name="Explore Tab"
-        component={ExploreScreen}
+        component={ExploreTab}
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (

@@ -39,7 +39,6 @@ const QuizItem = ({
   navigation,
 }: QuizProps) => {
   const handlePress = () => {
-    // Assuming the ID is the quiz ID and the first question is always question number 1
     navigation.navigate('QuizDetails', {quizId: id, questionNumber: 1});
   };
 
@@ -52,21 +51,29 @@ const QuizItem = ({
 };
 
 const QuizListScreen = ({route, navigation}: QuizListScreenProps) => {
-  // Extract the topicId parameter from the route
   const {topicId} = route.params;
-  // Fetch the quizzes for the given topicId
-  const {data, isLoading} = useGetQuizzesQuery(topicId); // Adjust your API hook accordingly
+  const {data, isLoading} = useGetQuizzesQuery(topicId);
+  const unAttemptedQuizzes = data.unattempted_or_not_passed_quizzes;
+  const passedQuizzes = data.passed_quizzes;
 
+  console.log(data);
+  console.log(unAttemptedQuizzes);
   return (
     <ScrollView style={styles.container}>
       {isLoading && <Text>Loading...</Text>}
-      {data && data.length > 0 ? (
-        data.map(quiz => (
-          <QuizItem key={quiz.id} {...quiz} navigation={navigation} />
+      {unAttemptedQuizzes && unAttemptedQuizzes.length > 0 ? (
+        unAttemptedQuizzes.map(quiz => (
+          <QuizItem key={quiz.id} quizId={quiz.id} {...quiz} navigation={navigation} />
         ))
       ) : (
-        <Text>No quizzes available for this topic.</Text>
+        <Text>No quizzes to complete available for this topic.</Text>
       )}
+
+      if (unAttemptedQuizzes && unAttemptedQuizzes.length > 0)  { (
+        passedQuizzes.map(quiz => (
+          <QuizItem key={quiz.id} quizId={quiz.id} {...quiz} navigation={navigation} />
+        ))
+      ) }
     </ScrollView>
   );
 };
