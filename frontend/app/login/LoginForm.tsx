@@ -1,9 +1,10 @@
 import React from 'react';
 
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import TextInputField from '../shared/TextInputField';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
+import {TEXT_SMALL} from '../sizing';
 
 type LoginFormProps = {
   username: string;
@@ -11,6 +12,7 @@ type LoginFormProps = {
   password: string;
   setPassword: (text: string) => void;
   handleLogin: () => void;
+  errorMessage: string;
 };
 
 export default function LoginForm({
@@ -19,6 +21,7 @@ export default function LoginForm({
   password,
   setPassword,
   handleLogin,
+  errorMessage,
 }: LoginFormProps) {
   return (
     <View style={styles.container}>
@@ -34,6 +37,7 @@ export default function LoginForm({
         value={password}
         isSecureText={true}
       />
+      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
       <ButtonGroup>
         <MainButton title="Login" onPress={handleLogin} />
       </ButtonGroup>
@@ -46,5 +50,14 @@ const styles = StyleSheet.create({
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  errorText: {
+    backgroundColor: '#eb3443',
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    padding: 5,
+    borderRadius: 5,
+    fontSize: TEXT_SMALL,
   },
 });

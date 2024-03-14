@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, View, Alert, ActivityIndicator} from 'react-native';
+import {Text, StyleSheet, View, ActivityIndicator} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {setUsername} from '../userSlice';
 import {saveAuthToken} from '../authSlice';
@@ -17,11 +17,16 @@ export default function LoginScreen({}: StartScreenProps) {
   const [username, setLocalUsername] = useState('');
   const [password, setLocalPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
     setLoading(true);
     try {
+      const controller = new AbortController();
+
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
       const response = await fetch('http://localhost:8000/api/login/', {
+        signal: controller.signal,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,23 +37,24 @@ export default function LoginScreen({}: StartScreenProps) {
         }),
       });
 
+      clearTimeout(timeoutId);
+
       const {access, refresh} = await response.json();
 
-      if (access) {
+      if (response.ok && access) {
         await dispatch(
           saveAuthToken({accessToken: access, refreshToken: refresh}),
         );
         dispatch(setUsername(username));
-        setLoading(false);
+      } else if (response.status === 401) {
+        setErrorMessage('Incorrect credentials. Please try again.');
       } else {
-        Alert.alert('Login Failed', 'No token received.');
+        throw new Error('Failed to log in');
       }
     } catch (error) {
-      console.error('Login error:', error);
-      Alert.alert(
-        'Login Error',
-        'Failed to log in. Please check your credentials and try again.',
-      );
+      setErrorMessage('Failed to log in. Please check back later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,6 +70,7 @@ export default function LoginScreen({}: StartScreenProps) {
             setUsername={setLocalUsername}
             password={password}
             setPassword={setLocalPassword}
+            errorMessage={errorMessage}
             handleLogin={handleLogin}
           />
         </>
