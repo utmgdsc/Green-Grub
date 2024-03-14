@@ -2,12 +2,15 @@ import React from 'react';
 
 import {StyleSheet, View} from 'react-native';
 import TextInputField from '../shared/TextInputField';
+import MainButton from '../shared/MainButton';
+import ButtonGroup from '../shared/ButtonGroup';
 
 type LoginFormProps = {
   username: string;
   setUsername: (text: string) => void;
   password: string;
   setPassword: (text: string) => void;
+  handleLogin: () => void;
 };
 
 export default function LoginForm({
@@ -15,6 +18,7 @@ export default function LoginForm({
   setUsername,
   password,
   setPassword,
+  handleLogin,
 }: LoginFormProps) {
   return (
     <View style={styles.container}>
@@ -30,13 +34,15 @@ export default function LoginForm({
         value={password}
         isSecureText={true}
       />
+      <ButtonGroup>
+        <MainButton title="Login" onPress={handleLogin} />
+      </ButtonGroup>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '80%',
     justifyContent: 'center',
     alignItems: 'center',
