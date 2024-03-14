@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
 import {TEXT_LARGE} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
+import Card from './Card';
 
 export type Product = {
   img: string;
@@ -53,7 +54,7 @@ export function ShortProductInformation({
 
 export default function ProductInformation({product}: ProductInformationProps) {
   return (
-    <View style={styles.productInformation}>
+    <Card>
       <Image src={product.img} style={styles.productImage} />
       <Text style={styles.productNameText}>{product.name}</Text>
       <RatingBarGroup>
@@ -70,21 +71,11 @@ export default function ProductInformation({product}: ProductInformationProps) {
           actual={product.sustainabilityScore}
         />
       </RatingBarGroup>
-    </View>
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
-  productInformation: {
-    elevation: 10,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    flexDirection: 'column',
-    gap: 20,
-    padding: 20,
-    margin: 20,
-    width: '100%',
-  },
   productImage: {
     width: 200,
     height: 200,
