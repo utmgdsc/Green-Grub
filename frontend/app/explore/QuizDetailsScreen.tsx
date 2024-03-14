@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,23 +7,69 @@ import {
   ScrollView,
 } from 'react-native';
 import {useGetQuestionQuery} from './api';
+import {useNavigation} from '@react-navigation/native';
 
-const QuizDetailsScreen = ({route}) => {
-  const {quizId} = route.params;
-  const questionId = 1;
+const QuizDetailsScreen = ({route, navigation}) => {
+  //   const navigation = useNavigation();
+  const {quizId, quizTopic} = route.params;
+  const [currentQuestionId, setCurrentQuestionId] = useState(
+    route.params.questionId || 1,
+  );
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [currentExplanation, setCurrentExplanation] = useState('');
+  const [currentLearnMoreLink, setCurrentLearnMoreLink] = useState('');
 
-  const {data, error, isLoading} = useGetQuestionQuery({quizId, questionId});
+  const {data, error, isLoading} = useGetQuestionQuery({
+    quizId,
+    questionId: currentQuestionId,
+  });
 
-  const handleAnswerPress = answer => {
-    // Handle the answer selection
+  const handleAnswerPress = (answer, index) => {
+    console.log(index);
+    const isCorrect = index === data.answer;
+    if (isCorrect) {
+      setCorrectAnswersCount(prevCount => prevCount + 1);
+    }
+    setSelectedAnswer(answer);
+    setCurrentExplanation(data.explanation);
+    setCurrentLearnMoreLink(data.article_link);
+    setShowExplanation(true);
+
+    setTimeout(() => {
+      setSelectedAnswer(null);
+      setShowExplanation(false); // Hide explanation for the next question
+      const nextQuestionId = currentQuestionId + 1;
+
+      if (nextQuestionId <= 6) {
+        // Navigate to the next question or the same screen with an incremented question ID
+        navigation.navigate('QuizDetailsScreen', {
+          quizId: quizId,
+          quizTopic: quizTopic,
+          questionId: nextQuestionId,
+        });
+        setCurrentQuestionId(nextQuestionId);
+      } else {
+        // If the last question has been answered, navigate to the Results Screen
+        navigation.navigate('ResultsScreen', {
+          correctAnswersCount: correctAnswersCount + (isCorrect ? 1 : 0),
+        });
+      }
+    }, 1200); // Delay to allow for any necessary UI feedback
   };
 
   const renderAnswerButtons = answers => {
     return answers.map((answer, index) => (
       <TouchableOpacity
         key={index}
-        style={styles.answerButton}
-        onPress={() => handleAnswerPress(answer)}>
+        style={[
+          styles.answerButton,
+          selectedAnswer === answer ? styles.correctAnswer : {},
+          selectedAnswer && selectedAnswer !== answer ? styles.wrongAnswer : {},
+        ]}
+        onPress={() => handleAnswerPress(answer, index)}
+        disabled={selectedAnswer !== null}>
         <Text style={styles.answerText}>{answer}</Text>
       </TouchableOpacity>
     ));
@@ -36,6 +82,7 @@ const QuizDetailsScreen = ({route}) => {
       </View>
     );
   }
+
   if (error) {
     return (
       <View style={styles.container}>
@@ -44,30 +91,25 @@ const QuizDetailsScreen = ({route}) => {
     );
   }
 
+  // Assuming `data.answer` is the correct answer.
   const answers = data ? [data.option1, data.option2, data.option3] : [];
-
-  const currentQuestion = 1;
-  const totalQuestions = 6;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Explore Quizzes</Text>
-      <Text style={styles.category}>Category Name</Text>
-      <View style={styles.progressBarBackground}>
-        <View
-          style={[
-            styles.progressBar,
-            {width: `${(currentQuestion / totalQuestions) * 100}%`},
-          ]}
-        />
-      </View>
-      <Text style={styles.progressText}>
-        {currentQuestion}/{totalQuestions}
-      </Text>
+      <Text style={styles.header}>{quizTopic}</Text>
       <Text style={styles.question}>{data?.question}</Text>
       <View style={styles.answersContainer}>
         {renderAnswerButtons(answers)}
       </View>
+      {showExplanation && (
+        <View style={styles.explanationContainer}>
+          <Text style={styles.explanationText}>{currentExplanation}</Text>
+          <TouchableOpacity
+            onPress={() => Linking.openURL(currentLearnMoreLink)}>
+            <Text style={styles.learnMoreText}>Learn More</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -84,31 +126,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 20,
   },
-  category: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  progressBarBackground: {
-    width: '100%',
-    height: 20,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginVertical: 10,
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: 'black',
-  },
-  progressText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   question: {
-    fontSize: 18,
+    fontSize: 22,
     textAlign: 'center',
+    fontWeight: 'bold',
     marginBottom: 20,
   },
   answersContainer: {
@@ -124,6 +145,12 @@ const styles = StyleSheet.create({
   answerText: {
     fontSize: 18,
     color: '#000',
+  },
+  correctAnswer: {
+    backgroundColor: 'green',
+  },
+  wrongAnswer: {
+    backgroundColor: 'red',
   },
 });
 

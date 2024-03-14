@@ -40,7 +40,11 @@ const QuizItem = ({
 }: QuizProps) => {
   const handlePress = () => {
     console.log('quiz id', id);
-    navigation.navigate('QuizDetails', {quizId: id, questionNumber: 1});
+    navigation.navigate('QuizDetailsScreen', {
+      quizId: id,
+      quizTopic: topic_title,
+      questionNumber: 1,
+    });
   };
 
   return (
