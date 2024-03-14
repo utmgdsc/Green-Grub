@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
 import {TEXT_LARGE} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
 import FoodInfo from './types/FoodInfo';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Card from './Card';
 
 type ShortProductInformationProps = {
   product: FoodInfo;
@@ -52,7 +53,7 @@ export function ShortProductInformation({
 
 export function ProductInformation({product}: {product: FoodInfo}) {
   return (
-    <View style={styles.productInformation}>
+    <Card>
       {product.image ? (
         <Image src={product.image} style={styles.productImage} />
       ) : (
@@ -77,21 +78,11 @@ export function ProductInformation({product}: {product: FoodInfo}) {
           actual={product.sustainability}
         />
       </RatingBarGroup>
-    </View>
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
-  productInformation: {
-    elevation: 10,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    flexDirection: 'column',
-    gap: 20,
-    padding: 20,
-    margin: 20,
-    width: '100%',
-  },
   productImage: {
     width: 200,
     height: 200,
