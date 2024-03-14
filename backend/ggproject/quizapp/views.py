@@ -10,29 +10,55 @@ from .models import Quiz, UserQuizzes, Question, IncorrectQuestions
 
 
 
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def explore(request):
+#     # Get the current user
+#     user = request.user
+
+#     # Count the total number of quizzes per topic
+#     quizzes_per_topic = Quiz.objects.values('topic_id').annotate(total_quizzes=Count('topic_id')).order_by('topic_id')
+
+#     print("quizzes per topic", quizzes_per_topic)
+
+#     # Count the number of quizzes passed by the user per topic
+#     passed_quizzes_per_topic = UserQuizzes.objects.filter(user=user, pass_q=True)\
+#         .values('quiz__topic_id')\
+#         .annotate(passed_quizzes=Count('quiz__topic_id'))\
+#         .order_by('quiz__topic_id')
+
+#     # Combine the two querysets into a single response
+#     # This example assumes that each topic_id in quizzes_per_topic also exists in passed_quizzes_per_topic
+#     # Adjust logic as needed if this assumption does not hold
+#     print("BEFORE FOR LOOP", quizzes_per_topic)
+#     for topic in quizzes_per_topic:
+#         topic['passed_quizzes'] = next((item['passed_quizzes'] for item in passed_quizzes_per_topic if item['quiz__topic_id'] == topic['topic_id']), 0)
+
+#     test = quizzes_per_topic
+    
+#     print("FINAL RETURNED", quizzes_per_topic)
+
+#     return Response(quizzes_per_topic)
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def explore(request):
-    # Get the current user
     user = request.user
+    
+    quizzes_per_topic = Quiz.objects.values('topic_id', 'topic_title')\
+        .annotate(total_quizzes=Count('topic_id'))\
+        .order_by('topic_id')
 
-    # Count the total number of quizzes per topic
-    quizzes_per_topic = Quiz.objects.values('topic_id').annotate(total_quizzes=Count('topic_id')).order_by('topic_id')
-
-    # Count the number of quizzes passed by the user per topic
     passed_quizzes_per_topic = UserQuizzes.objects.filter(user=user, pass_q=True)\
         .values('quiz__topic_id')\
         .annotate(passed_quizzes=Count('quiz__topic_id'))\
         .order_by('quiz__topic_id')
 
-    # Combine the two querysets into a single response
-    # This example assumes that each topic_id in quizzes_per_topic also exists in passed_quizzes_per_topic
-    # Adjust logic as needed if this assumption does not hold
     for topic in quizzes_per_topic:
-        topic['passed_quizzes'] = next((item['passed_quizzes'] for item in passed_quizzes_per_topic if item['quiz__topic_id'] == topic['topic_id']), 0)
+        topic['passed_quizzes'] = next(
+            (item['passed_quizzes'] for item in passed_quizzes_per_topic if item['quiz__topic_id'] == topic['topic_id']), 0)
 
     return Response(quizzes_per_topic)
-
 
 
 @api_view(['GET'])
@@ -137,7 +163,7 @@ def submit_quiz_answers(request, quiz_id):
             passed = correct_answers_count >= 4  # Assuming passing criteria is getting at least 4 questions correct
             
             # Update UserQuizzes
-            UserQuizzes.objects.create(user=user, quiz=quiz, pass_q=passed)
+            UserQuizzes.objects.create(user=user, quiz=quiz, pass_q=passed, num_correct=correct_answers_count) 
             
             # Update IncorrectQuestions for each incorrect answer
             for question in incorrect_questions:
