@@ -11,6 +11,6 @@ def hello(request):
 
 @api_view(['GET'])
 def scan(request, barcode):
-    response = requests.get(f'https://world.openfoodfacts.net/api/v2/product/{barcode}')
+    response = requests.get(f'https://world.openfoodfacts.org/api/v2/product/{barcode}')
     return Response(scan_parser.parse_and_organize_response(response))
 

@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, View, Alert} from 'react-native';
+import {Text, StyleSheet, View, ActivityIndicator} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {setUsername} from '../userSlice';
 import {saveAuthToken} from '../authSlice';
 import {StackScreenProps} from '@react-navigation/stack';
 import {TEXT_HUGE} from '../sizing';
 import {PRIMARY_BLUE, WHITE} from '../colors';
-import MainButton from '../shared/MainButton';
-import ButtonGroup from '../shared/ButtonGroup';
 import LoginForm from './LoginForm';
 import {StartStackParamList} from '../StartStack';
 import {AppDispatch} from '../store';
@@ -18,10 +16,17 @@ export default function LoginScreen({}: StartScreenProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [username, setLocalUsername] = useState('');
   const [password, setLocalPassword] = useState('');
+  const [isLoading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
+      const controller = new AbortController();
+
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
       const response = await fetch('http://localhost:8000/api/login/', {
+        signal: controller.signal,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,47 +37,55 @@ export default function LoginScreen({}: StartScreenProps) {
         }),
       });
 
+      clearTimeout(timeoutId);
+
       const {access, refresh} = await response.json();
 
-      if (access) {
+      if (response.ok && access) {
         await dispatch(
           saveAuthToken({accessToken: access, refreshToken: refresh}),
         );
         dispatch(setUsername(username));
+      } else if (response.status === 401) {
+        setErrorMessage('Incorrect credentials. Please try again.');
       } else {
-        Alert.alert('Login Failed', 'No token received.');
+        throw new Error('Failed to log in');
       }
     } catch (error) {
-      console.error('Login error:', error);
-      Alert.alert(
-        'Login Error',
-        'Failed to log in. Please check your credentials and try again.',
-      );
+      setErrorMessage('Failed to log in. Please check back later.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Log In</Text>
-      <LoginForm
-        username={username}
-        setUsername={setLocalUsername}
-        password={password}
-        setPassword={setLocalPassword}
-      />
-      <ButtonGroup>
-        <MainButton title="Login" onPress={handleLogin} />
-      </ButtonGroup>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={WHITE} />
+      ) : (
+        <>
+          <LoginForm
+            username={username}
+            setUsername={setLocalUsername}
+            password={password}
+            setPassword={setLocalPassword}
+            errorMessage={errorMessage}
+            handleLogin={handleLogin}
+          />
+        </>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: PRIMARY_BLUE,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
   title: {
     fontSize: TEXT_HUGE,

@@ -16,9 +16,8 @@ import requests
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def scan_and_save(request, barcode):
-    response = requests.get(f'https://world.openfoodfacts.net/api/v2/product/{barcode}')
-  
-
+    response = requests.get(f'https://world.openfoodfacts.org/api/v2/product/{barcode}')
+    
     parsed_data = scan_parser.parse_and_organize_response(response)
 
     product, created = Product.objects.get_or_create(

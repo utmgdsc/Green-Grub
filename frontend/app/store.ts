@@ -5,6 +5,7 @@ import {reactotron} from './reactotron';
 import {scanApi} from './scan/api';
 import {friendsApi} from './friends/api';
 import {quizApi} from './explore/api';
+import {savedItemsApi} from './savedItems/api';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -12,13 +13,19 @@ const rootReducer = combineReducers({
   [scanApi.reducerPath]: scanApi.reducer,
   [friendsApi.reducerPath]: friendsApi.reducer,
   [quizApi.reducerPath]: quizApi.reducer,
+  [savedItemsApi.reducerPath]: savedItemsApi.reducer,
 });
 
 export const store = configureStore({
   enhancers: getDefaultEnhancer =>
     getDefaultEnhancer().concat(reactotron.createEnhancer()),
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(scanApi.middleware, friendsApi.middleware, quizApi.middleware),
+    getDefaultMiddleware().concat(
+      scanApi.middleware,
+      friendsApi.middleware,
+      quizApi.middleware,
+      savedItemsApi.middleware,
+    ),
   reducer: rootReducer,
 });
 
