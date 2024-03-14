@@ -11,7 +11,6 @@ import {Animated} from 'react-native';
 import {PRIMARY_GREEN} from '../colors';
 
 const QuizDetailsScreen = ({route, navigation}) => {
-  //   const navigation = useNavigation();
   const {quizId, quizTopic} = route.params;
   const [currentQuestionId, setCurrentQuestionId] = useState(
     route.params.questionId || 1,
