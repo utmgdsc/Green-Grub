@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,8 @@ import {
   ScrollView,
 } from 'react-native';
 import {useGetQuestionQuery} from './api';
-import {useNavigation} from '@react-navigation/native';
+import {Animated} from 'react-native';
+import {PRIMARY_GREEN} from '../colors';
 
 const QuizDetailsScreen = ({route, navigation}) => {
   //   const navigation = useNavigation();
@@ -20,6 +21,7 @@ const QuizDetailsScreen = ({route, navigation}) => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [currentExplanation, setCurrentExplanation] = useState('');
   const [currentLearnMoreLink, setCurrentLearnMoreLink] = useState('');
+  const opacityAnim = useRef(new Animated.Value(0)).current;
 
   const {data, error, isLoading} = useGetQuestionQuery({
     quizId,
@@ -27,51 +29,68 @@ const QuizDetailsScreen = ({route, navigation}) => {
   });
 
   const handleAnswerPress = (answer, index) => {
-    console.log(index);
     const isCorrect = index === data.answer;
-    if (isCorrect) {
-      setCorrectAnswersCount(prevCount => prevCount + 1);
-    }
-    setSelectedAnswer(answer);
+    setSelectedAnswer(index);
     setCurrentExplanation(data.explanation);
     setCurrentLearnMoreLink(data.article_link);
     setShowExplanation(true);
 
-    setTimeout(() => {
-      setSelectedAnswer(null);
-      setShowExplanation(false); // Hide explanation for the next question
-      const nextQuestionId = currentQuestionId + 1;
+    if (isCorrect) {
+      setCorrectAnswersCount(prevCount => prevCount + 1);
+    }
 
-      if (nextQuestionId <= 6) {
-        // Navigate to the next question or the same screen with an incremented question ID
-        navigation.navigate('QuizDetailsScreen', {
-          quizId: quizId,
-          quizTopic: quizTopic,
-          questionId: nextQuestionId,
-        });
-        setCurrentQuestionId(nextQuestionId);
-      } else {
-        // If the last question has been answered, navigate to the Results Screen
-        navigation.navigate('ResultsScreen', {
-          correctAnswersCount: correctAnswersCount + (isCorrect ? 1 : 0),
-        });
-      }
-    }, 1200); // Delay to allow for any necessary UI feedback
+    Animated.timing(opacityAnim, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        setShowExplanation(false);
+        Animated.timing(opacityAnim, {
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: true,
+        }).start();
+
+        const nextQuestionId = currentQuestionId + 1;
+        setSelectedAnswer(null);
+        if (nextQuestionId <= 6) {
+          navigation.navigate('QuizDetailsScreen', {
+            quizId: quizId,
+            quizTopic: quizTopic,
+            questionId: nextQuestionId,
+          });
+          setCurrentQuestionId(nextQuestionId);
+        } else {
+          navigation.navigate('ResultsScreen', {
+            correctAnswersCount: correctAnswersCount + (isCorrect ? 1 : 0),
+          });
+        }
+      }, 1000);
+    });
   };
 
   const renderAnswerButtons = answers => {
     return answers.map((answer, index) => (
-      <TouchableOpacity
-        key={index}
-        style={[
-          styles.answerButton,
-          selectedAnswer === answer ? styles.correctAnswer : {},
-          selectedAnswer && selectedAnswer !== answer ? styles.wrongAnswer : {},
-        ]}
-        onPress={() => handleAnswerPress(answer, index)}
-        disabled={selectedAnswer !== null}>
-        <Text style={styles.answerText}>{answer}</Text>
-      </TouchableOpacity>
+      <View key={index} style={styles.answerButton}>
+        {selectedAnswer === index && (
+          <Animated.View
+            style={[
+              StyleSheet.absoluteFillObject,
+              {
+                backgroundColor: index === data.answer ? PRIMARY_GREEN : 'red',
+                opacity: opacityAnim,
+                borderRadius: 25,
+              },
+            ]}
+          />
+        )}
+        <TouchableOpacity
+          onPress={() => handleAnswerPress(answer, index)}
+          disabled={selectedAnswer !== null}>
+          <Text style={styles.answerText}>{answer}</Text>
+        </TouchableOpacity>
+      </View>
     ));
   };
 
@@ -91,7 +110,6 @@ const QuizDetailsScreen = ({route, navigation}) => {
     );
   }
 
-  // Assuming `data.answer` is the correct answer.
   const answers = data ? [data.option1, data.option2, data.option3] : [];
 
   return (
@@ -146,11 +164,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#000',
   },
-  correctAnswer: {
-    backgroundColor: 'green',
+
+  explanationContainer: {
+    marginTop: 20,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: '#f8f8f8',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
-  wrongAnswer: {
-    backgroundColor: 'red',
+  explanationText: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 10,
+    lineHeight: 24,
+  },
+  learnMoreText: {
+    fontSize: 16,
+    color: '#1e90ff',
+    textDecorationLine: 'underline',
   },
 });
 
