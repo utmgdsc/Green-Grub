@@ -7,11 +7,8 @@ from ggauth.views import SignupView, UserUpdateView
 
 from . import views
 from report import views as report_views
-<<<<<<< HEAD
 from friends import views as friends_views
-=======
 from quizapp import views as quiz_views
->>>>>>> quiz-retrieval
 
 urlpatterns = [
     path('test/', views.hello, name='hello'),
@@ -22,7 +19,6 @@ urlpatterns = [
     path('scan/<str:barcode>/', views.scan, name='scan'),
     path('scan_and_save/<str:barcode>/', report_views.scan_and_save, name='scan_and_save'),
     path('user_products/', report_views.user_products, name='user_products'),
-<<<<<<< HEAD
     path('add_friend/<str:username>/', friends_views.add_friend, name='add_friend'),
     path('accept_friend/<str:username>/', friends_views.accept_friend, name='accept_friend'),
     path('decline_friend/<str:username>/', friends_views.decline_friend, name='decline_friend'),
@@ -30,9 +26,8 @@ urlpatterns = [
     path('friend_requests_sent/', friends_views.view_sent_requests, name='friend_requests'),
     path('friend_requests_received/', friends_views.view_received_requests, name='friend_requests_received'),
     path('view_friends_list/', friends_views.view_friends_list, name='view_friends'),
-    path('view_leaderboard/', report_views.view_leaderboard, name='view_leaderboard')
-]
-=======
+    path('view_leaderboard/', report_views.view_leaderboard, name='view_leaderboard'),
+
     path('explore/', quiz_views.explore, name='explore'),
     path('topic/<int:topic_id>/', quiz_views.topic_quizzes, name='topic_quizzes'),
     path('quiz/<int:quiz_id>/question/<int:question_id>/', quiz_views.get_question_for_quiz, name='get_question_for_quiz'),
@@ -43,4 +38,3 @@ urlpatterns = [
 
 
 
->>>>>>> quiz-retrieval
