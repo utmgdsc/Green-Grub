@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Stats(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     score = models.IntegerField()
-    level = models.IntegerField()
+    # level = models.IntegerField()
 
 class Product(models.Model):
     barcode = models.CharField(max_length=255, primary_key=True)

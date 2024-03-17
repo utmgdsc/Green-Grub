@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from django.db import transaction
 from .models import Quiz, UserQuizzes, Question, IncorrectQuestions
-
+from report.models import Stats
 
 
 
@@ -162,6 +162,13 @@ def submit_quiz_answers(request, quiz_id):
             # Check if user passed the quiz
             passed = correct_answers_count >= 4  # Assuming passing criteria is getting at least 4 questions correct
             
+            # TODO: get the stats object for user and update the score 
+            # get stats object for user
+            stats = Stats.objects.get(user=user)
+            stats.score += correct_answers_count * 10 # can be any value
+            stats.save()
+            
+            
             # Update UserQuizzes
             UserQuizzes.objects.create(user=user, quiz=quiz, pass_q=passed, num_correct=correct_answers_count) 
             
@@ -177,3 +184,4 @@ def submit_quiz_answers(request, quiz_id):
         return JsonResponse({'error': str(e)}, status=400)
 
 
+# implement solve incorrect question

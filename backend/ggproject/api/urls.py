@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from ggauth.views import SignupView, UserUpdateView
+from ggauth.views import SignupView, UserUpdateView, GetUserInfo
 
 from . import views
 from report import views as report_views
@@ -16,6 +16,8 @@ urlpatterns = [
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('signup/', SignupView.as_view(), name='signup'),
     path('update_user/', UserUpdateView.as_view(), name='update_user'),
+    path('get_user_info/', GetUserInfo.as_view(), name='get_user_info'),
+    
     path('scan/<str:barcode>/', views.scan, name='scan'),
     path('scan_and_save/<str:barcode>/', report_views.scan_and_save, name='scan_and_save'),
     path('user_products/', report_views.user_products, name='user_products'),

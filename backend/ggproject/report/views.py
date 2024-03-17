@@ -31,6 +31,10 @@ def scan_and_save(request, barcode):
     )
 
     UserHistory.objects.create(user=request.user, product=product)
+    stats = Stats.objects.get(user=request.user)
+    print(f"For user {request.user.username}, the score is {stats.score}")
+    stats.score += parsed_data['sustainability'] * 2
+    stats.save()
 
     return Response({'message': 'Product scanned and saved successfully'})
 
@@ -65,7 +69,4 @@ def view_leaderboard(request):
     # Serialize the stats
     serializer = LeaderboardSerializer(stats, many=True)
     return Response(serializer.data)
-
-# Remember to add the URL pattern in your urls.py:
-# path('view_leaderboard/', ViewLeaderboard.as_view(), name='view_leaderboard'),
 
