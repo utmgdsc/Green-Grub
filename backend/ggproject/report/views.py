@@ -16,9 +16,8 @@ import requests
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def scan_and_save(request, barcode):
-    response = requests.get(f'https://world.openfoodfacts.net/api/v2/product/{barcode}')
-  
-
+    response = requests.get(f'https://world.openfoodfacts.org/api/v2/product/{barcode}')
+    
     parsed_data = scan_parser.parse_and_organize_response(response)
 
     product, created = Product.objects.get_or_create(
@@ -32,6 +31,10 @@ def scan_and_save(request, barcode):
     )
 
     UserHistory.objects.create(user=request.user, product=product)
+    stats = Stats.objects.get(user=request.user)
+    print(f"For user {request.user.username}, the score is {stats.score}")
+    stats.score += parsed_data['sustainability'] * 2
+    stats.save()
 
     return Response({'message': 'Product scanned and saved successfully'})
 
@@ -66,7 +69,4 @@ def view_leaderboard(request):
     # Serialize the stats
     serializer = LeaderboardSerializer(stats, many=True)
     return Response(serializer.data)
-
-# Remember to add the URL pattern in your urls.py:
-# path('view_leaderboard/', ViewLeaderboard.as_view(), name='view_leaderboard'),
 

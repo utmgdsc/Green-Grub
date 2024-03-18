@@ -10,4 +10,4 @@ class LeaderboardSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='user.username') 
     class Meta:
         model = Stats
-        fields = ['username', 'score', 'level']
+        fields = ['username', 'score']
