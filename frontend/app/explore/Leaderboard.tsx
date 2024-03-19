@@ -1,12 +1,17 @@
 import React from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {LeaderboardEntry, useGetLeaderboardQuery} from './api';
+import LinearGradient from 'react-native-linear-gradient';
 
 function LeaderboardItem({username}: LeaderboardEntry) {
   return (
-    <View style={styles.leaderboardItem}>
+    <LinearGradient
+      colors={['#3AC765', '#E9F8EE']}
+      start={{x: 0.3, y: 0}}
+      end={{x: 0.7, y: 1}}
+      style={styles.leaderboardItem}>
       <Text style={styles.leaderboardItemText}>{username}</Text>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -16,6 +21,8 @@ export default function Leaderboard({}) {
   return (
     <View style={styles.container}>
       <FlatList
+        style={styles.listContainer}
+        contentContainerStyle={styles.listContentContainer}
         data={leaderboard}
         renderItem={({item}) => <LeaderboardItem {...item} />}
       />
@@ -25,15 +32,24 @@ export default function Leaderboard({}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginVertical: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  listContainer: {
+    width: '100%',
+    height: '100%',
+  },
+  listContentContainer: {
+    width: '100%',
+    padding: 20,
+  },
   leaderboardItem: {
-    borderBottomColor: 'gray',
+    elevation: 10,
+    borderRadius: 20,
+    width: '100%',
+    padding: 20,
   },
   leaderboardItemText: {
-    color: 'gray',
+    color: 'black',
   },
 });
