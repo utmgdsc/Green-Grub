@@ -16,7 +16,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','*.razeenali.com','10.88.111.2', '68.183.200.180']
 
 
 
@@ -130,11 +130,20 @@ WSGI_APPLICATION = 'ggproject.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+#    'default': {
+ #       'ENGINE': 'django.db.backends.sqlite3',
+  #      'NAME': BASE_DIR / 'db.sqlite3',
+    #}
+    # 'default': dj_database_url.config(default=os.getenv('DB_URL')
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DBNAME'),
+        'USER': os.getenv('DBUSER'),
+        'PASSWORD': os.getenv('DBPASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '',
     }
-    # 'default': dj_database_url.config(default=os.getenv('DB_URL'))
+
 }
 
 
@@ -170,5 +179,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+#need to be changed
 CORS_ALLOW_ALL_ORIGINS = True
+
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
