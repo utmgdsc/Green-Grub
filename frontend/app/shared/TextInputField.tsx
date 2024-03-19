@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import React, {PropsWithChildren} from 'react';
+import {StyleSheet, TextInput, View} from 'react-native';
 
 type TextInputFieldProps = {
   title: string;
@@ -7,6 +7,10 @@ type TextInputFieldProps = {
   isSecureText: boolean;
   onChangeText: (text: string) => void;
 };
+
+export function TextInputGroup({children}: PropsWithChildren) {
+  return <View style={styles.inputGroup}>{children}</View>;
+}
 
 export default function TextInputField({
   title,
@@ -27,6 +31,12 @@ export default function TextInputField({
 }
 
 const styles = StyleSheet.create({
+  inputGroup: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
   input: {
     width: '90%',
     borderWidth: 1,

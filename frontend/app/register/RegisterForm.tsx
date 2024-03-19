@@ -1,36 +1,98 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-import {StyleSheet, View} from 'react-native';
-import {WHITE} from '../colors';
-import TextInputField from '../shared/TextInputField';
+import {Alert, StyleSheet, View} from 'react-native';
+import TextInputField, {TextInputGroup} from '../shared/TextInputField';
+import ButtonGroup from '../shared/ButtonGroup';
+import MainButton from '../shared/MainButton';
+import {useDispatch} from 'react-redux';
+import {saveAuthToken} from '../authSlice';
+import {setUsername} from '../userSlice';
+import {AppDispatch} from '../store';
 
-type RegisterFormProps = {
-  username: string;
-  setUsername: (text: string) => void;
-  password: string;
-  setPassword: (text: string) => void;
-};
+export default function RegisterForm({}) {
+  const dispatch = useDispatch<AppDispatch>();
+  const [username, setLocalUsername] = useState('');
+  const [password, setLocalPassword] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
+  const [city, setCity] = useState('');
 
-export default function RegisterForm({
-  username,
-  setUsername,
-  password,
-  setPassword,
-}: RegisterFormProps) {
+  const handleRegister = async () => {
+    try {
+      await fetch('http://localhost:8000/api/signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      const {refresh, access} = await response.json();
+
+      if (access && refresh) {
+        await dispatch(
+          saveAuthToken({accessToken: access, refreshToken: refresh}),
+        );
+        dispatch(setUsername(username));
+      } else {
+        Alert.alert(
+          'Error',
+          'Registration succeeded but no token was received.',
+        );
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      Alert.alert(
+        'Registration Error',
+        'An error occurred during registration.',
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <TextInputField
-        title="Username"
-        onChangeText={setUsername}
-        value={username}
-        isSecureText={false}
-      />
-      <TextInputField
-        title="Password"
-        onChangeText={setPassword}
-        value={password}
-        isSecureText={true}
-      />
+      <TextInputGroup>
+        <TextInputField
+          title="Username"
+          onChangeText={setLocalUsername}
+          value={username}
+          isSecureText={false}
+        />
+        <TextInputField
+          title="Email Address"
+          onChangeText={setEmailAddress}
+          value={emailAddress}
+          isSecureText={false}
+        />
+        <TextInputField
+          title="City"
+          onChangeText={setCity}
+          value={city}
+          isSecureText={false}
+        />
+        <TextInputField
+          title="Password"
+          onChangeText={setLocalPassword}
+          value={password}
+          isSecureText={true}
+        />
+      </TextInputGroup>
+      <ButtonGroup>
+        <MainButton title="Register" onPress={handleRegister} />
+      </ButtonGroup>
     </View>
   );
 }
