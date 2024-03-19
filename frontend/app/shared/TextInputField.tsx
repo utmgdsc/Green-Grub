@@ -1,5 +1,6 @@
 import React, {PropsWithChildren} from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {TEXT_SMALL} from '../sizing';
 
 type TextInputFieldProps = {
   title: string;
@@ -19,14 +20,17 @@ export default function TextInputField({
   isSecureText,
 }: TextInputFieldProps) {
   return (
-    <TextInput
-      style={styles.input}
-      placeholder={title}
-      placeholderTextColor={'gray'}
-      onChangeText={onChangeText}
-      secureTextEntry={isSecureText}
-      value={value}
-    />
+    <View style={styles.inputView}>
+      <Text style={styles.inputTitle}>{title}</Text>
+      <TextInput
+        style={styles.input}
+        placeholder={title}
+        placeholderTextColor={'gray'}
+        onChangeText={onChangeText}
+        secureTextEntry={isSecureText}
+        value={value}
+      />
+    </View>
   );
 }
 
@@ -35,10 +39,19 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 10,
+    gap: 5,
+  },
+  inputTitle: {
+    fontSize: TEXT_SMALL,
+    paddingHorizontal: 10,
+    fontWeight: 'bold',
+  },
+  inputView: {
+    width: '100%',
+    paddingHorizontal: 40,
   },
   input: {
-    width: '90%',
+    width: '100%',
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 10,

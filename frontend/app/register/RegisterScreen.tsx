@@ -19,15 +19,14 @@ export default function RegisterScreen({}: StartScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: '100%',
     backgroundColor: PRIMARY_BLUE,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   title: {
     fontSize: TEXT_HUGE,
     fontFamily: 'Pacifico-Regular',
-    marginTop: 100,
     color: WHITE,
   },
 });
