@@ -6,6 +6,7 @@ import {scanApi} from './scan/api';
 import {friendsApi} from './friends/api';
 import {exploreApi} from './explore/api';
 import {savedItemsApi} from './savedItems/api';
+import {setupListeners} from '@reduxjs/toolkit/query';
 
 const rootReducer = combineReducers({
   user: userReducer,
