@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux';
 import {saveAuthToken} from '../authSlice';
 import {setUsername} from '../userSlice';
 import {AppDispatch} from '../store';
+import ColorPickerField from '../shared/ColorPickerField';
 
 export default function RegisterForm({}) {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,6 +16,7 @@ export default function RegisterForm({}) {
   const [password, setLocalPassword] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [city, setCity] = useState('');
+  const [avatarColor, setAvatarColor] = useState('#000000');
 
   const handleRegister = async () => {
     try {
@@ -89,6 +91,7 @@ export default function RegisterForm({}) {
           value={password}
           isSecureText={true}
         />
+        <ColorPickerField color={avatarColor} setColor={setAvatarColor} />
       </TextInputGroup>
       <ButtonGroup>
         <MainButton title="Register" onPress={handleRegister} />
