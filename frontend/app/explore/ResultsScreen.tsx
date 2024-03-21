@@ -8,6 +8,11 @@ const ResultsScreen = ({route, navigation}) => {
     <View style={styles.container}>
       <Text style={styles.header}>Quiz Results</Text>
       <Text style={styles.resultText}>
+        {correctAnswersCount > 4
+          ? 'Good work! You passed!'
+          : 'Unfortunately, you did not pass. Try again!'}
+      </Text>
+      <Text style={styles.resultText}>
         You got {correctAnswersCount} out of 6 answers correct!
       </Text>
       <Button

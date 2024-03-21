@@ -32,7 +32,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       try {
         const refreshToken = (api.getState() as RootState).auth.refreshToken;
         const refreshResult = await fetch(
-          'http://localhost:8000/api/refresh/',
+          'http://127.0.0.1:8000/api/refresh/',
           {
             method: 'POST',
             headers: {
