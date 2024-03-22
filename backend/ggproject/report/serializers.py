@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Stats
+from .models import Product, Stats, UserHistory
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,3 +11,4 @@ class LeaderboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stats
         fields = ['username', 'score']
+        

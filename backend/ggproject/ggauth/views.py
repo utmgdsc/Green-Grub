@@ -5,12 +5,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from django.contrib.auth.models import User
+from django.db import transaction
 # import isauthenticated
 from rest_framework.permissions import IsAuthenticated
-
+from .serializers import UserSerializer, UserWithExtraInfoSerializer
 from report.models import Stats
 
 class SignupView(APIView):
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -33,15 +35,7 @@ class UserUpdateView(APIView):
 
 class GetUserInfo(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request, *args, **kwargs):
         user = request.user
-        serializer = UserSerializer(user)
-        # get the score of the user from stats
-        stats = Stats.objects.get(user=user)
-        return Response({
-            "user_info": serializer.data,
-            "stats": {
-            "score": stats.score
-            }
-        }, status=status.HTTP_200_OK)
+        serializer = UserWithExtraInfoSerializer(user, context={'request': request})
+        return Response(serializer.data)
