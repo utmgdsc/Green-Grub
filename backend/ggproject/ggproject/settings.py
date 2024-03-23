@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'quizapp',
     'report',
     'friends',
+    'cart'
 ]
 
 # Raz - adding jwt config
