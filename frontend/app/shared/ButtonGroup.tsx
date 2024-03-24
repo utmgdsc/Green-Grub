@@ -5,7 +5,7 @@ import {View, StyleSheet, ViewStyle} from 'react-native';
 export default function ButtonGroup({
   children,
   style,
-}: PropsWithChildren<{style: ViewStyle}>) {
+}: PropsWithChildren<{style?: ViewStyle}>) {
   return <View style={[styles.container, style]}>{children}</View>;
 }
 

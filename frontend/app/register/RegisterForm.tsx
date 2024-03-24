@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
@@ -8,7 +9,7 @@ import {useDispatch} from 'react-redux';
 import {saveAuthToken} from '../authSlice';
 import {setUsername} from '../userSlice';
 import {AppDispatch} from '../store';
-import ColorPickerField from '../shared/ColorPickerField';
+import ImagePickerField from '../shared/ImagePickerField';
 
 export default function RegisterForm({}) {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +20,7 @@ export default function RegisterForm({}) {
   const [lastName, setLastName] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
-  const [avatarColor, setAvatarColor] = useState('#000000');
+  const [imageUri, setImageUri] = useState('');
 
   const handleRegister = async () => {
     try {
@@ -68,7 +69,6 @@ export default function RegisterForm({}) {
   };
 
   return (
-    // eslint-disable-next-line react-native/no-inline-styles
     <ScrollView style={{width: '100%'}}>
       <View style={styles.container}>
         <TextInputGroup>
@@ -114,7 +114,7 @@ export default function RegisterForm({}) {
             value={password}
             isSecureText={true}
           />
-          <ColorPickerField color={avatarColor} setColor={setAvatarColor} />
+          <ImagePickerField imageUri={imageUri} setImageUri={setImageUri} />
         </TextInputGroup>
         <ButtonGroup style={{marginVertical: 20}}>
           <MainButton title="Register" onPress={handleRegister} />
