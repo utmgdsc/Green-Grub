@@ -45,7 +45,7 @@ from report.models import Stats
 def explore(request):
     user = request.user
     
-    quizzes_per_topic = Quiz.objects.values('topic_id', 'topic_title')\
+    quizzes_per_topic = Quiz.objects.values('topic_id', 'topic_title', 'topic_image')\
         .annotate(total_quizzes=Count('topic_id'))\
         .order_by('topic_id')
 
@@ -79,7 +79,7 @@ def topic_quizzes(request, topic_id):
     # Convert unattempted or not passed quizzes to a list of dictionaries for JSON response
     unattempted_or_not_passed_quizzes_list = [{
         'id': quiz.id,
-        'topic_title': quiz.topic_title,
+        'topic_title': quiz.quiz_title,
         'order': quiz.order,
         'success_url': f'GET /quiz/{quiz.id}/question/1'
     } for quiz in unattempted_or_not_passed_quizzes]
@@ -90,7 +90,7 @@ def topic_quizzes(request, topic_id):
     # Convert passed quizzes to a list of dictionaries for JSON response
     passed_quizzes_list = [{
         'id': quiz.id,
-        'topic_title': quiz.topic_title,
+        'topic_title': quiz.quiz_title,
         'order': quiz.order,
         'success_url': f'GET /quiz/{quiz.id}/question/1'
     } for quiz in passed_quizzes_list]
