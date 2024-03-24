@@ -69,6 +69,30 @@ const QuizDetailsScreen = ({route, navigation}) => {
     });
   };
 
+  const goToNextQuestion = () => {
+    const nextQuestionId = currentQuestionId + 1;
+    setSelectedAnswer(null);
+    setShowExplanation(false);
+    Animated.timing(opacityAnim, {
+      toValue: 0,
+      duration: 400,
+      useNativeDriver: true,
+    }).start(() => {
+      if (nextQuestionId <= 6) { 
+        navigation.navigate('QuizDetailsScreen', {
+          quizId: quizId,
+          quizTopic: quizTopic,
+          questionId: nextQuestionId,
+        });
+        setCurrentQuestionId(nextQuestionId);
+      } else {
+        navigation.navigate('ResultsScreen', {
+          correctAnswersCount: correctAnswersCount,
+        });
+      }
+    });
+  };
+
   const renderAnswerButtons = answers => {
     return answers.map((answer, index) => (
       <View key={index} style={styles.answerButton}>

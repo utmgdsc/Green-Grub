@@ -5,48 +5,64 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import ExploreTab, {QuizzesStackParamList} from './ExploreTab';
 import {useGetTopicsQuery} from './api';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 
+const image = require('./wildlife.png');
+const imageURL =
+  'https://res.cloudinary.com/adelcloud/image/upload/v1711258468/renewable_yb4vzt.png';
+
 type ExploreScreenProps = StackScreenProps<QuizzesStackParamList, 'Explore'>;
 
 type TopicProps = {
   topic_id: number;
+  topic_title: string;
+  topic_image: string;
   passed_quizzes: number;
   total_quizzes: number;
   navigation: ExploreScreenProps['navigation'];
 };
 
-function Topic({topic_id, passed_quizzes, total_quizzes}: TopicProps) {
+function Topic({
+  topic_id,
+  topic_title,
+  topic_image,
+  passed_quizzes,
+  total_quizzes,
+}: TopicProps) {
   const navigation = useNavigation();
 
   const progressWidth =
     total_quizzes > 0 ? `${(passed_quizzes / total_quizzes) * 100}%` : '0%';
 
   const handlePress = () => {
-    console.log('topic id', topic_id);
     console.log(navigation);
     navigation.navigate('QuizListScreen', {topicId: topic_id});
   };
+  console.log(topic_title);
+  console.log(topic_image);
 
   return (
-    <TouchableOpacity style={styles.button} onPress={handlePress}>
-      <View style={styles.progressContainer}>
-        <View style={[styles.progressBar, {width: progressWidth}]} />
-      </View>
-      <Text style={styles.buttonText}>Topic ID: {topic_id}</Text>
-      <Text style={styles.subText}>
-        Passed: {passed_quizzes}/{total_quizzes}
-      </Text>
+    <TouchableOpacity style={styles.topicSection} onPress={handlePress}>
+      <ImageBackground
+        source={{uri: topic_image}}
+        style={styles.backgroundImage}>
+        <View style={styles.overlay} />
+        <Text style={styles.buttonText}>
+          {topic_title} ({passed_quizzes}/{total_quizzes})
+        </Text>
+      </ImageBackground>
     </TouchableOpacity>
   );
 }
 
 function ExploreScreen({}) {
   const {data, isLoading} = useGetTopicsQuery();
+  console.log(data);
 
   return (
     <ScrollView style={styles.container}>
@@ -56,6 +72,8 @@ function ExploreScreen({}) {
         <Topic
           key={topic.topic_id}
           topic_id={topic.topic_id}
+          topic_title={topic.topic_title}
+          topic_image={topic.topic_image}
           passed_quizzes={topic.passed_quizzes}
           total_quizzes={topic.total_quizzes}
         />
@@ -76,24 +94,40 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 24,
   },
-  button: {
-    backgroundColor: '#F0F0F0',
-    padding: 20,
+  backgroundImage: {
+    flex: 1,
+    justifyContent: 'center', // Align children components
+  },
+  topicSection: {
+    height: 150,
     borderRadius: 8,
     marginBottom: 16,
+    overflow: 'hidden',
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 22,
+    alignSelf: 'center',
     fontWeight: 'bold',
+    color: '#000',
+    textShadowColor: 'rgba(255, 255, 255, 0.4)', // White shadow for darker text
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 10,
     marginBottom: 4,
+    paddingLeft: 20,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(200, 200, 200, 0.3)',
   },
   subText: {
     fontSize: 16,
+    paddingLeft: 20,
   },
   progressContainer: {
     height: 20,
     flexDirection: 'row',
-    width: '100%',
+    alignSelf: 'center',
+    width: '90%',
     backgroundColor: '#E0E0E0',
     borderRadius: 10,
     marginBottom: 8,

@@ -10,7 +10,7 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {MainTabsParamList} from '../MainTabs';
 import {useGetQuizzesQuery} from './api';
-
+import {PRIMARY_BLUE} from '../colors';
 type QuizListScreenNavigationProp = StackNavigationProp<
   MainTabsParamList,
   'QuizList'
@@ -49,8 +49,7 @@ const QuizItem = ({
 
   return (
     <TouchableOpacity style={styles.button} onPress={handlePress}>
-      <Text style={styles.buttonText}>{topic_title}</Text>
-      <Text style={styles.subText}>Order: {order}</Text>
+      <Text style={styles.buttonText}>{topic_title} </Text>
     </TouchableOpacity>
   );
 };
@@ -119,15 +118,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: PRIMARY_BLUE,
     padding: 20,
     borderRadius: 8,
     marginBottom: 16,
+    height: 80,
   },
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 4,
+    color: 'white',
   },
   subText: {
     fontSize: 16,
