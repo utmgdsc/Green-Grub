@@ -9,16 +9,20 @@ import React from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
+import HomeScreen from './home/HomeScreen';
+import ExploreTab from './explore/ExploreTab';
 import HomeTab from './home/HomeTab';
 import ExploreScreen from './explore/ExploreScreen';
 import ScanTab from './scan/ScanTab';
 import FriendsTab from './friends/FriendsTab';
 import ProfileScreen from './profile/ProfileScreen';
+import QuizListScreen from './explore/QuizListScreen';
+import QuizDetailsScreen from './explore/QuizDetailsScreen';
 
 export type MainTabsParamList = {
   'Home Tab': undefined;
   'Scan Tab': undefined;
-  Explore: undefined;
+  'Explore Tab': undefined;
   'Saved Items': undefined;
   Friends: undefined;
   Profile: undefined;
@@ -52,8 +56,8 @@ function App(): React.JSX.Element {
       />
 
       <Tabs.Screen
-        name="Explore"
-        component={ExploreScreen}
+        name="Explore Tab"
+        component={ExploreTab}
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size}) => (

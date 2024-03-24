@@ -1,7 +1,7 @@
 // https://coolors.co/56cbf9-054a91-fac748-35ff69-ef476f
 
 const PRIMARY_BLUE = '#75BDCA';
-const PRIMARY_GREEN = '#4BD680';
+const PRIMARY_GREEN = '#99D998';
 const GRAY = '#FAFAFA';
 
 const WHITE = '#ffffff';

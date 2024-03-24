@@ -9,6 +9,7 @@ from . import views
 from report import views as report_views
 from friends import views as friends_views
 from quizapp import views as quiz_views
+from cart import views as cart_views
 
 urlpatterns = [
     path('test/', views.hello, name='hello'),
@@ -35,6 +36,12 @@ urlpatterns = [
     path('quiz/<int:quiz_id>/question/<int:question_id>/', quiz_views.get_question_for_quiz, name='get_question_for_quiz'),
     path('quiz/<int:quiz_id>/', quiz_views.submit_quiz_answers, name='submit_quiz_answers'),
 
+    path('create_cart/', cart_views.CreateCartView.as_view(), name='create_cart'),
+    path('modify_cart/', cart_views.ModifyCartView.as_view(), name='modify_cart'),
+    path('get_cart/<int:cart_id>/', cart_views.ViewCartView.as_view(), name='get_cart'),
+    path('delete_cart/<int:cart_id>/', cart_views.DeleteCartView.as_view(), name='delete_cart'),
+    path('finalize_cart/<int:cart_id>/', cart_views.FinalizeCartView.as_view(), name='finalize_cart'),
+    path('get_all_carts/', cart_views.ViewUserCartsView.as_view(), name='get_all_carts')
 ]
 
 

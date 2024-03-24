@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 # class Topic(models.Model):
 #     topic_id = models.IntegerField()
 #     topic_title = models.CharField(max_length=255, unique=True)
+#     topic_image = models.CharField(max_length=1000, null=True)
 
 
 class Question(models.Model):
@@ -21,7 +22,9 @@ class Question(models.Model):
 class Quiz(models.Model): # the quiz topic id needs to be the same as all the questions topic-id
     # topic_id = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='quiz_topic_id')
     topic_id = models.IntegerField(default = 0)
+    quiz_title = models.CharField(max_length=255, default='Sustainability')
     topic_title = models.CharField(max_length=255, default='Sustainability')
+    topic_image = models.CharField(max_length=1000, null=True)
     q1 = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='q1')
     q2 = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='q2')
     q3 = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='q3')
