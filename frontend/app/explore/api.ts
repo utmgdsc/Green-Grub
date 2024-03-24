@@ -6,6 +6,11 @@ type StatusMessage = {
   code: string;
 };
 
+type QuizSubmission = {
+  quizId: number;
+  score: number;
+};
+
 export const quizApi = createApi({
   reducerPath: 'quizApi',
   baseQuery: baseQueryWithReauth,
@@ -41,8 +46,18 @@ export const quizApi = createApi({
         }),
         providesTags: ['Questions'],
       }),
- 
+    postQuizResults: build.mutation<StatusMessage, QuizSubmission>({
+        query: (submission) => ({
+          url: `/quiz/${submission.quizId}/`, 
+          method: 'POST',
+          body: submission, 
+        }),
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        invalidatesTags: ['Quizzes'], 
+      }),
   }),
 });
 
-export const {useGetTopicsQuery, useGetQuizzesQuery, useGetQuestionQuery} = quizApi;
+export const {useGetTopicsQuery, useGetQuizzesQuery, useGetQuestionQuery, usePostQuizResultsMutation} = quizApi;

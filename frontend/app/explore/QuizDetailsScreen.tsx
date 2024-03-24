@@ -5,9 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Linking,
 } from 'react-native';
 import {useGetQuestionQuery} from './api';
 import {Animated} from 'react-native';
+import {usePostQuizResultsMutation} from './api';
 import {PRIMARY_GREEN} from '../colors';
 
 const QuizDetailsScreen = ({route, navigation}) => {
@@ -20,6 +22,8 @@ const QuizDetailsScreen = ({route, navigation}) => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [currentExplanation, setCurrentExplanation] = useState('');
   const [currentLearnMoreLink, setCurrentLearnMoreLink] = useState('');
+  const [postQuizResults, {postSata, postIsLoading, postError}] =
+    usePostQuizResultsMutation();
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
   const {data, error, isLoading} = useGetQuestionQuery({
@@ -42,31 +46,17 @@ const QuizDetailsScreen = ({route, navigation}) => {
       toValue: 1,
       duration: 400,
       useNativeDriver: true,
-    }).start(() => {
-      setTimeout(() => {
-        setShowExplanation(false);
-        Animated.timing(opacityAnim, {
-          toValue: 0,
-          duration: 400,
-          useNativeDriver: true,
-        }).start();
+    }).start();
+  };
 
-        const nextQuestionId = currentQuestionId + 1;
-        setSelectedAnswer(null);
-        if (nextQuestionId <= 6) {
-          navigation.navigate('QuizDetailsScreen', {
-            quizId: quizId,
-            quizTopic: quizTopic,
-            questionId: nextQuestionId,
-          });
-          setCurrentQuestionId(nextQuestionId);
-        } else {
-          navigation.navigate('ResultsScreen', {
-            correctAnswersCount: correctAnswersCount + (isCorrect ? 1 : 0),
-          });
-        }
-      }, 1000);
-    });
+  const submitResults = async () => {
+    try {
+      const payload = {quizId: quizId, score: correctAnswersCount};
+      const result = await postQuizResults(payload).unwrap();
+      console.log('Submission successful', result);
+    } catch (err) {
+      console.error('Failed to submit quiz results', err);
+    }
   };
 
   const goToNextQuestion = () => {
@@ -78,7 +68,7 @@ const QuizDetailsScreen = ({route, navigation}) => {
       duration: 400,
       useNativeDriver: true,
     }).start(() => {
-      if (nextQuestionId <= 6) { 
+      if (nextQuestionId <= 6) {
         navigation.navigate('QuizDetailsScreen', {
           quizId: quizId,
           quizTopic: quizTopic,
@@ -86,6 +76,7 @@ const QuizDetailsScreen = ({route, navigation}) => {
         });
         setCurrentQuestionId(nextQuestionId);
       } else {
+        submitResults();
         navigation.navigate('ResultsScreen', {
           correctAnswersCount: correctAnswersCount,
         });
@@ -95,25 +86,28 @@ const QuizDetailsScreen = ({route, navigation}) => {
 
   const renderAnswerButtons = answers => {
     return answers.map((answer, index) => (
-      <View key={index} style={styles.answerButton}>
-        {selectedAnswer === index && (
-          <Animated.View
-            style={[
-              StyleSheet.absoluteFillObject,
-              {
-                backgroundColor: index === data.answer ? PRIMARY_GREEN : 'red',
-                opacity: opacityAnim,
-                borderRadius: 25,
-              },
-            ]}
-          />
-        )}
-        <TouchableOpacity
-          onPress={() => handleAnswerPress(answer, index)}
-          disabled={selectedAnswer !== null}>
-          <Text style={styles.answerText}>{answer}</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        key={index}
+        style={styles.answerButton}
+        onPress={() => handleAnswerPress(answer, index)}
+        disabled={selectedAnswer !== null}>
+        <Animated.View
+          style={[
+            StyleSheet.absoluteFillObject,
+            {
+              backgroundColor:
+                selectedAnswer === index
+                  ? index === data.answer
+                    ? PRIMARY_GREEN
+                    : '#E84747'
+                  : 'transparent',
+              opacity: opacityAnim,
+              borderRadius: 15,
+            },
+          ]}
+        />
+        <Text style={styles.answerText}>{answer}</Text>
+      </TouchableOpacity>
     ));
   };
 
@@ -135,9 +129,37 @@ const QuizDetailsScreen = ({route, navigation}) => {
 
   const answers = data ? [data.option1, data.option2, data.option3] : [];
 
+  const ProgressBar = ({current, total}) => {
+    const progress = current / total;
+    let backgroundColor;
+
+    if (progress < 0.34) {
+      backgroundColor = '#E84747'; // Red for low progress
+    } else if (progress < 0.67) {
+      backgroundColor = '#FAC213'; // Yellow for medium progress
+    } else {
+      backgroundColor = '#4CAF50'; // Green for high progress
+    }
+
+    return (
+      <View style={styles.progressContainer}>
+        <Text
+          style={styles.progressText}>{`Question ${current} of ${total}`}</Text>
+        <View style={styles.progressBarContainer}>
+          <View
+            style={[
+              styles.progressBar,
+              {width: `${progress * 100}%`, backgroundColor},
+            ]}
+          />
+        </View>
+      </View>
+    );
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>{quizTopic}</Text>
+      <ProgressBar current={currentQuestionId} total={6} />
       <Text style={styles.question}>{data?.question}</Text>
       <View style={styles.answersContainer}>
         {renderAnswerButtons(answers)}
@@ -150,6 +172,13 @@ const QuizDetailsScreen = ({route, navigation}) => {
             <Text style={styles.learnMoreText}>Learn More</Text>
           </TouchableOpacity>
         </View>
+      )}
+      {showExplanation && (
+        <TouchableOpacity
+          style={styles.nextQuestionButton}
+          onPress={goToNextQuestion}>
+          <Text style={styles.nextQuestionButtonText}>Next Question</Text>
+        </TouchableOpacity>
       )}
     </ScrollView>
   );
@@ -164,11 +193,31 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 22,
-    fontWeight: 'bold',
     marginVertical: 20,
   },
+  progressContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  progressBarContainer: {
+    height: 20,
+    width: '100%',
+    backgroundColor: '#e0e0e0',
+    borderRadius: 10,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  progressBar: {
+    height: '100%',
+    borderRadius: 10,
+  },
+  progressText: {
+    fontSize: 18,
+    color: '#000',
+  },
   question: {
-    fontSize: 22,
+    fontSize: 20,
     textAlign: 'center',
     fontWeight: 'bold',
     marginBottom: 20,
@@ -179,8 +228,9 @@ const styles = StyleSheet.create({
   answerButton: {
     backgroundColor: '#F0F0F0',
     paddingVertical: 15,
+    fontWeight: 'bold',
     alignItems: 'center',
-    borderRadius: 25,
+    borderRadius: 15,
     marginBottom: 10,
   },
   answerText: {
@@ -192,6 +242,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 20,
     borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#f8f8f8',
     shadowColor: '#000',
     shadowOffset: {
@@ -203,7 +255,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   explanationText: {
-    fontSize: 16,
+    textAlign: 'center',
+    fontSize: 18,
     color: '#333',
     marginBottom: 10,
     lineHeight: 24,
@@ -212,6 +265,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1e90ff',
     textDecorationLine: 'underline',
+  },
+  nextQuestionButton: {
+    marginTop: 20,
+    backgroundColor: PRIMARY_GREEN,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 15,
+    alignSelf: 'center',
+  },
+  nextQuestionButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

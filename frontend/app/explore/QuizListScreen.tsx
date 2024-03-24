@@ -27,6 +27,7 @@ type QuizProps = {
   id: number;
   topic_title: string;
   order: number;
+  completed: boolean;
   success_url: string;
   navigation: QuizListScreenNavigationProp;
 };
@@ -34,6 +35,7 @@ type QuizProps = {
 const QuizItem = ({
   id,
   topic_title,
+  completed,
   order,
   success_url,
   navigation,
@@ -50,6 +52,9 @@ const QuizItem = ({
   return (
     <TouchableOpacity style={styles.button} onPress={handlePress}>
       <Text style={styles.buttonText}>{topic_title} </Text>
+      <Text style={{color: 'white', marginBottom: 10, marginTop: 15}}>
+        {completed ? 'Completed' : ''}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -84,12 +89,15 @@ const QuizListScreen = ({route, navigation}: QuizListScreenProps) => {
           <QuizItem
             key={quiz.id}
             id={quiz.id}
+            completed={false}
             {...quiz}
             navigation={navigation}
           />
         ))
       ) : (
-        <Text>No quizzes to complete available for this topic.</Text>
+        <Text style={{marginBottom: 20, marginLeft: 10}}>
+          No quizzes to complete available for this topic.
+        </Text>
       )}
       {passedQuizzes &&
         passedQuizzes.length > 0 &&
@@ -97,6 +105,7 @@ const QuizListScreen = ({route, navigation}: QuizListScreenProps) => {
           <QuizItem
             key={quiz.id}
             id={quiz.id}
+            completed={true}
             {...quiz}
             navigation={navigation}
           />
@@ -122,7 +131,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 8,
     marginBottom: 16,
-    height: 80,
   },
   buttonText: {
     fontSize: 18,

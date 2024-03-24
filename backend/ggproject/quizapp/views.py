@@ -106,14 +106,21 @@ def topic_quizzes(request, topic_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_question_for_quiz(request, quiz_id, question_id):
-    # Ensure the quiz exists and the question ID belongs to this quiz
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    question = get_object_or_404(Question, pk=question_id)
-    
-    # Check if the question belongs to the specified quiz
-    questions_in_quiz = [quiz.q1_id, quiz.q2_id, quiz.q3_id, quiz.q4_id, quiz.q5_id, quiz.q6_id]
-    if question.id not in questions_in_quiz:
-        return JsonResponse({'error': 'Question does not belong to the specified quiz'}, status=400)
+    if question_id == 1:
+        question = quiz.q1
+    elif question_id == 2:
+        question = quiz.q2
+    elif question_id == 3:
+        question = quiz.q3
+    elif question_id == 4:
+        question = quiz.q4
+    elif question_id == 5:
+        question = quiz.q5
+    elif question_id == 6:
+        question = quiz.q6
+    else:
+        raise Http404("Quiz does not contain more than 6 questions")
     
     # Construct the response with question details
     question_details = {
@@ -141,40 +148,40 @@ def submit_quiz_answers(request, quiz_id):
         quiz = Quiz.objects.get(pk=quiz_id)
         
         # Parse the submitted answers
-        submitted_answers = request.data.get('answers', {})
+        # submitted_answers = request.data.get('answers', {})
         
-        correct_answers_count = 0
-        incorrect_questions = []
+        correct_answers_count = request.data.get('score')
+        # incorrect_questions = []
 
         # Begin a transaction to ensure data integrity
-        with transaction.atomic():
-            for question_attr in ['q1', 'q2', 'q3', 'q4', 'q5', 'q6']:
-                question = getattr(quiz, question_attr)
-                # Convert question ID to string since JSON keys are always strings
-                question_id_str = str(question.id)
-                if question_id_str in submitted_answers:
-                    is_correct = submitted_answers[question_id_str] in [True, 'true', 'True']
-                    if is_correct:
-                        correct_answers_count += 1
-                    else:
-                        incorrect_questions.append(question)
+        # with transaction.atomic():
+        #     for question_attr in ['q1', 'q2', 'q3', 'q4', 'q5', 'q6']:
+        #         question = getattr(quiz, question_attr)
+        #         # Convert question ID to string since JSON keys are always strings
+        #         question_id_str = str(question.id)
+        #         if question_id_str in submitted_answers:
+        #             is_correct = submitted_answers[question_id_str] in [True, 'true', 'True']
+        #             if is_correct:
+        #                 correct_answers_count += 1
+        #             else:
+        #                 incorrect_questions.append(question)
 
             # Check if user passed the quiz
-            passed = correct_answers_count >= 4  # Assuming passing criteria is getting at least 4 questions correct
-            
-            # TODO: get the stats object for user and update the score 
-            # get stats object for user
-            stats = Stats.objects.get(user=user)
-            stats.score += correct_answers_count * 10 # can be any value
-            stats.save()
-            
-            
-            # Update UserQuizzes
-            UserQuizzes.objects.create(user=user, quiz=quiz, pass_q=passed, num_correct=correct_answers_count) 
+        passed = correct_answers_count >= 4  # Assuming passing criteria is getting at least 4 questions correct
+        
+        # TODO: get the stats object for user and update the score 
+        # get stats object for user
+        stats = Stats.objects.get(user=user)
+        stats.score += correct_answers_count * 10 # can be any value
+        stats.save()
+        
+        
+        # Update UserQuizzes
+        UserQuizzes.objects.create(user=user, quiz=quiz, pass_q=passed, num_correct=correct_answers_count) 
             
             # Update IncorrectQuestions for each incorrect answer
-            for question in incorrect_questions:
-                IncorrectQuestions.objects.create(user=user, quiz=quiz, question=question)
+            # for question in incorrect_questions:
+            #     IncorrectQuestions.objects.create(user=user, quiz=quiz, question=question)
 
         return JsonResponse({'message': 'Quiz results processed', 'passed': passed, 'correct_answers_count': correct_answers_count})
     
