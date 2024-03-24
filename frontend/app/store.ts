@@ -4,7 +4,8 @@ import authReducer from './authSlice';
 import {reactotron} from './reactotron';
 import {scanApi} from './scan/api';
 import {friendsApi} from './friends/api';
-import {exploreApi} from './explore/api';
+import {quizApi} from './explore/api';
+import {leaderboardApi} from './leaderboard/api';
 import {savedItemsApi} from './savedItems/api';
 import {setupListeners} from '@reduxjs/toolkit/query';
 
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   [scanApi.reducerPath]: scanApi.reducer,
   [friendsApi.reducerPath]: friendsApi.reducer,
-  [exploreApi.reducerPath]: exploreApi.reducer,
+  [quizApi.reducerPath]: quizApi.reducer,
+  [leaderboardApi.reducerPath]: leaderboardApi.reducer,
   [savedItemsApi.reducerPath]: savedItemsApi.reducer,
 });
 
@@ -24,7 +26,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       scanApi.middleware,
       friendsApi.middleware,
-      exploreApi.middleware,
+      quizApi.middleware,
+      leaderboardApi.middleware,
       savedItemsApi.middleware,
     ),
   reducer: rootReducer,
