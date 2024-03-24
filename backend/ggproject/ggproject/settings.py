@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
-import dj_database_url
+# import dj_database_url
 
 # Load .env file
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -19,7 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ALLOWED_HOSTS = []
 
-
+MEDIA_URL = '/avatars/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars')
 
 
 # Application definition
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'quizapp',
     'report',
     'friends',
+    'cart'
 ]
 
 # Raz - adding jwt config

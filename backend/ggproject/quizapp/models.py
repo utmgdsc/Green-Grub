@@ -34,6 +34,8 @@ class UserQuizzes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     pass_q = models.BooleanField() # pass if user gets 4/6 questions correct on a quiz
+    num_correct = models.IntegerField(default = 0)
+    
 
 class IncorrectQuestions(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
