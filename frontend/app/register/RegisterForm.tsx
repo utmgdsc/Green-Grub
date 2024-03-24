@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {Alert, StyleSheet, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import TextInputField, {TextInputGroup} from '../shared/TextInputField';
 import ButtonGroup from '../shared/ButtonGroup';
 import MainButton from '../shared/MainButton';
@@ -15,7 +15,10 @@ export default function RegisterForm({}) {
   const [username, setLocalUsername] = useState('');
   const [password, setLocalPassword] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
   const [avatarColor, setAvatarColor] = useState('#000000');
 
   const handleRegister = async () => {
@@ -65,38 +68,59 @@ export default function RegisterForm({}) {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInputGroup>
-        <TextInputField
-          title="Username"
-          onChangeText={setLocalUsername}
-          value={username}
-          isSecureText={false}
-        />
-        <TextInputField
-          title="Email Address"
-          onChangeText={setEmailAddress}
-          value={emailAddress}
-          isSecureText={false}
-        />
-        <TextInputField
-          title="City"
-          onChangeText={setCity}
-          value={city}
-          isSecureText={false}
-        />
-        <TextInputField
-          title="Password"
-          onChangeText={setLocalPassword}
-          value={password}
-          isSecureText={true}
-        />
-        <ColorPickerField color={avatarColor} setColor={setAvatarColor} />
-      </TextInputGroup>
-      <ButtonGroup>
-        <MainButton title="Register" onPress={handleRegister} />
-      </ButtonGroup>
-    </View>
+    // eslint-disable-next-line react-native/no-inline-styles
+    <ScrollView style={{width: '100%'}}>
+      <View style={styles.container}>
+        <TextInputGroup>
+          <TextInputField
+            title="Username"
+            onChangeText={setLocalUsername}
+            value={username}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="Email Address"
+            onChangeText={setEmailAddress}
+            value={emailAddress}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="First Name"
+            onChangeText={setFirstName}
+            value={firstName}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="Last Name"
+            onChangeText={setLastName}
+            value={lastName}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="City"
+            onChangeText={setCity}
+            value={city}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="Country"
+            onChangeText={setCountry}
+            value={country}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="Password"
+            onChangeText={setLocalPassword}
+            value={password}
+            isSecureText={true}
+          />
+          <ColorPickerField color={avatarColor} setColor={setAvatarColor} />
+        </TextInputGroup>
+        <ButtonGroup style={{marginVertical: 20}}>
+          <MainButton title="Register" onPress={handleRegister} />
+        </ButtonGroup>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -104,5 +128,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
+    paddingVertical: 30,
   },
 });
