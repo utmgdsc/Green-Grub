@@ -21,6 +21,7 @@ export default function RegisterForm({}) {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [imageUri, setImageUri] = useState('');
+  const [image, setImage] = useState('');
 
   const handleRegister = async () => {
     try {
@@ -32,6 +33,12 @@ export default function RegisterForm({}) {
         body: JSON.stringify({
           username,
           password,
+          email: emailAddress,
+          first_name: firstName,
+          last_name: lastName,
+          city,
+          country,
+          avatar: image,
         }),
       });
 
@@ -114,7 +121,11 @@ export default function RegisterForm({}) {
             value={password}
             isSecureText={true}
           />
-          <ImagePickerField imageUri={imageUri} setImageUri={setImageUri} />
+          <ImagePickerField
+            imageUri={imageUri}
+            setImageUri={setImageUri}
+            setImage={setImage}
+          />
         </TextInputGroup>
         <ButtonGroup style={{marginVertical: 20}}>
           <MainButton title="Register" onPress={handleRegister} />
