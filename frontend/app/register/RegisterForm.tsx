@@ -21,25 +21,26 @@ export default function RegisterForm({}) {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [imageUri, setImageUri] = useState('');
-  const [image, setImage] = useState('');
 
   const handleRegister = async () => {
     try {
+      const formData = new FormData();
+      formData.append('avatar', {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'avatar.jpg',
+      });
+      formData.append('username', username);
+      formData.append('password', password);
+      formData.append('email', emailAddress);
+      formData.append('first_name', firstName);
+      formData.append('last_name', lastName);
+      formData.append('city', city);
+      formData.append('country', country);
+
       await fetch('http://localhost:8000/api/signup/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-          email: emailAddress,
-          first_name: firstName,
-          last_name: lastName,
-          city,
-          country,
-          avatar: image,
-        }),
+        body: formData,
       });
 
       const response = await fetch('http://localhost:8000/api/login/', {
@@ -121,11 +122,7 @@ export default function RegisterForm({}) {
             value={password}
             isSecureText={true}
           />
-          <ImagePickerField
-            imageUri={imageUri}
-            setImageUri={setImageUri}
-            setImage={setImage}
-          />
+          <ImagePickerField imageUri={imageUri} setImageUri={setImageUri} />
         </TextInputGroup>
         <ButtonGroup style={{marginVertical: 20}}>
           <MainButton title="Register" onPress={handleRegister} />

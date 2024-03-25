@@ -8,11 +8,9 @@ import {launchImageLibrary} from 'react-native-image-picker';
 export default function ImagePickerField({
   imageUri,
   setImageUri,
-  setImage,
 }: {
   imageUri: string;
   setImageUri: (image: string) => void;
-  setImage: (image: string) => void;
 }) {
   async function chooseImage() {
     const result = await launchImageLibrary({
@@ -22,11 +20,6 @@ export default function ImagePickerField({
     if (!result.didCancel && result.assets && result.assets.length > 0) {
       const asset = result.assets[0];
       setImageUri(asset.uri ?? '');
-      console.log(asset.type);
-      const base64 =
-        `data:${asset.type};base64,` + result.assets[0].base64 ?? '';
-      console.log(base64.slice(0, 50));
-      setImage(base64);
     }
   }
 

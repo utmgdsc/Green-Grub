@@ -3,6 +3,8 @@
 
 ggproject/db.sqlite3
 
+avatars
+
 # recursively ignore all files in the migrations directory
 **/migrations/
 **/__pycache__/
