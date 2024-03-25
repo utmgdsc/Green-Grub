@@ -239,8 +239,8 @@ const styles = StyleSheet.create({
   },
 
   explanationContainer: {
-    marginTop: 20,
-    padding: 20,
+    marginTop: 15,
+    padding: 10,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   },
   explanationText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 16,
     color: '#333',
     marginBottom: 10,
     lineHeight: 24,

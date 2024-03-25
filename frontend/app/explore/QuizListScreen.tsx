@@ -95,7 +95,13 @@ const QuizListScreen = ({route, navigation}: QuizListScreenProps) => {
           />
         ))
       ) : (
-        <Text style={{marginBottom: 20, marginLeft: 10}}>
+        <Text
+          style={{
+            marginBottom: 20,
+            marginLeft: 10,
+            fontSize: 16,
+            textAlign: 'center',
+          }}>
           No quizzes to complete available for this topic.
         </Text>
       )}

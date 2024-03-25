@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Align children components
   },
   topicSection: {
-    height: 150,
+    height: 140,
     borderRadius: 8,
     marginBottom: 16,
     overflow: 'hidden',
