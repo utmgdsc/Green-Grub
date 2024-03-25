@@ -1,49 +1,38 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {MainTabsParamList} from '../MainTabs';
 import {TEXT_HUGE, TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
-import {WHITE} from '../colors';
-import {useSelector, useDispatch} from 'react-redux';
-import {logout} from '../authSlice';
-import {AppDispatch, RootState} from '../store';
+import {PRIMARY_BLUE, WHITE} from '../colors';
 import ProfileForm from './ProfileForm';
-import ButtonGroup from '../shared/ButtonGroup';
-import MainButton from '../shared/MainButton';
+import {useGetUserQuery} from '../login/api';
 
 type StartScreenProps = BottomTabScreenProps<MainTabsParamList, 'Profile'>;
 
 export default function ProfileScreen({}: StartScreenProps) {
-  const dispatch = useDispatch<AppDispatch>();
-  const username = useSelector((state: RootState) => state.user.username);
+  const {data: user, isFetching} = useGetUserQuery();
 
-  const handleLogout = async () => {
-    await dispatch(logout());
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.loginText}>Hello, {username}!</Text>
-      <ProfileForm
-        username={username}
-        setUsername={() => {}}
-        password={''}
-        setPassword={() => {}}
-      />
-      <ButtonGroup>
-        <MainButton title="Update" />
-        <MainButton title="Log out" onPress={handleLogout} />
-      </ButtonGroup>
-    </View>
-  );
+  if (isFetching || !user) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <ProfileForm user={user} />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 100,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: PRIMARY_BLUE,
   },
   loginText: {
     color: 'gray',
