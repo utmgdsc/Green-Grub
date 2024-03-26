@@ -9,10 +9,12 @@ import {PRIMARY_BLUE, WHITE} from '../colors';
 import LoginForm from './LoginForm';
 import {StartStackParamList} from '../StartStack';
 import {AppDispatch} from '../store';
+import MainButton from '../shared/MainButton';
+import ButtonGroup from '../shared/ButtonGroup';
 
 type StartScreenProps = StackScreenProps<StartStackParamList, 'Login'>;
 
-export default function LoginScreen({}: StartScreenProps) {
+export default function LoginScreen({navigation}: StartScreenProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [username, setLocalUsername] = useState('');
   const [password, setLocalPassword] = useState('');
@@ -58,6 +60,10 @@ export default function LoginScreen({}: StartScreenProps) {
     }
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Log In</Text>
@@ -73,6 +79,10 @@ export default function LoginScreen({}: StartScreenProps) {
             errorMessage={errorMessage}
             handleLogin={handleLogin}
           />
+          <ButtonGroup>
+            <MainButton title="Login" onPress={handleLogin} />
+            <MainButton title="Back" onPress={handleBack} />
+          </ButtonGroup>
         </>
       )}
     </View>
@@ -82,10 +92,11 @@ export default function LoginScreen({}: StartScreenProps) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: PRIMARY_BLUE,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     height: '100%',
+    paddingBottom: 100,
   },
   title: {
     fontSize: TEXT_HUGE,

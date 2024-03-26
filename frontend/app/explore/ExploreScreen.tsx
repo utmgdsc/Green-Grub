@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,10 +11,9 @@ import ExploreTab, {QuizzesStackParamList} from './ExploreTab';
 import {useGetTopicsQuery} from './api';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
-
-const image = require('./wildlife.png');
-const imageURL =
-  'https://res.cloudinary.com/adelcloud/image/upload/v1711258468/renewable_yb4vzt.png';
+import {BLACK} from '../colors';
+import {TEXT_LARGER, BUTTON_BORDERRADIUS} from '../sizing';
+import {useIsFocused} from '@react-navigation/native';
 
 type ExploreScreenProps = StackScreenProps<QuizzesStackParamList, 'Explore'>;
 
@@ -43,8 +42,7 @@ function Topic({
     console.log(navigation);
     navigation.navigate('QuizListScreen', {topicId: topic_id});
   };
-  console.log(topic_title);
-  console.log(topic_image);
+  const isFocused = useIsFocused();
 
   return (
     <TouchableOpacity style={styles.topicSection} onPress={handlePress}>
@@ -61,11 +59,18 @@ function Topic({
 }
 
 function ExploreScreen({}) {
-  const {data, isLoading} = useGetTopicsQuery();
-  console.log(data);
+  const {data, isLoading, refetch} = useGetTopicsQuery();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [isFocused]);
 
   return (
     <ScrollView style={styles.container}>
+      <Text style={styles.title}>Explore Topics</Text>
       {isLoading && <Text>Loading...</Text>}
       {!data && <Text>No topics found</Text>}
       {data?.map((topic: TopicProps) => (
@@ -88,6 +93,15 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#FFF',
   },
+  title: {
+    fontSize: TEXT_LARGER,
+    textAlign: 'center',
+    fontFamily: 'Pacifico-Regular',
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    color: BLACK,
+  },
   header: {
     fontSize: 34,
     fontWeight: 'bold',
@@ -99,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Align children components
   },
   topicSection: {
-    height: 150,
+    height: 140,
     borderRadius: 8,
     marginBottom: 16,
     overflow: 'hidden',

@@ -11,6 +11,7 @@ import {useGetQuestionQuery} from './api';
 import {Animated} from 'react-native';
 import {usePostQuizResultsMutation} from './api';
 import {PRIMARY_GREEN} from '../colors';
+import { BUTTON_BORDERRADIUS } from '../sizing';
 
 const QuizDetailsScreen = ({route, navigation}) => {
   const {quizId, quizTopic} = route.params;
@@ -239,8 +240,8 @@ const styles = StyleSheet.create({
   },
 
   explanationContainer: {
-    marginTop: 20,
-    padding: 20,
+    marginTop: 15,
+    padding: 10,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
   },
   explanationText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 16,
     color: '#333',
     marginBottom: 10,
     lineHeight: 24,
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY_GREEN,
     paddingVertical: 12,
     paddingHorizontal: 25,
-    borderRadius: 15,
+    borderRadius: BUTTON_BORDERRADIUS,
     alignSelf: 'center',
   },
   nextQuestionButtonText: {
