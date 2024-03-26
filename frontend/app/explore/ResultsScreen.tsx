@@ -8,15 +8,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {PRIMARY_GREEN} from '../colors';
-import { BUTTON_BORDERRADIUS } from '../sizing';
+import {BUTTON_BORDERRADIUS} from '../sizing';
 
 const ResultsScreen = ({route, navigation}) => {
   const {correctAnswersCount} = route.params;
 
   const getImageSource = () => {
     return correctAnswersCount > 3
-      ? 'https://res.cloudinary.com/adelcloud/image/upload/v1711267434/trophy_bcru48.png'
-      : 'https://res.cloudinary.com/adelcloud/image/upload/v1711267647/failedtest_jtez9f.png';
+      ? 'http://127.0.0.1:8000/assets/trophy.png'
+      : 'http://127.0.0.1:8000/assets/failedtest.png';
   };
 
   return (
