@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
-import {LeaderboardEntry, useGetLeaderboardQuery} from '../explore/api';
+import {LeaderboardEntry, useGetLeaderboardQuery} from './api';
 import LinearGradient from 'react-native-linear-gradient';
 import {TEXT_LARGE, TEXT_MEDIUM, TEXT_XLARGE} from '../sizing';
 

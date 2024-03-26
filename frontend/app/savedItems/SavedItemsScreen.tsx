@@ -11,7 +11,8 @@ import FoodInfo from '../types/FoodInfo';
 
 type SavedItemsScreenProps = StackScreenProps<
   HomeStackParamList,
-  'Saved Items'
+  'Saved Items',
+  'Leaderboard'
 >;
 
 export default function SavedItemsScreen({}: SavedItemsScreenProps) {

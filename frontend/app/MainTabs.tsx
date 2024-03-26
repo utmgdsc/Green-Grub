@@ -24,6 +24,7 @@ export type MainTabsParamList = {
   'Scan Tab': undefined;
   'Explore Tab': undefined;
   'Saved Items': undefined;
+  Leaderboard: undefined;
   Friends: undefined;
   Profile: undefined;
 };
