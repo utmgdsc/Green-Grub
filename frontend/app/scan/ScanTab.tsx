@@ -14,7 +14,10 @@ const Stack = createStackNavigator<ScanStackParamList>();
 
 export default function App(): React.JSX.Element {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        cardStyle: {backgroundColor: '#fdfdfd'},
+      }}>
       <Stack.Screen name="Scan" component={ScanScreen} />
       <Stack.Screen
         name="Product Information"

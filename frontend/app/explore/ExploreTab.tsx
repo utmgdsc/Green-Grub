@@ -19,7 +19,7 @@ const ExploreTab = () => {
       <QuizzesStackNavigator.Screen
         name="ExploreScreen"
         component={ExploreScreen}
-        options={{title: 'Explore Topics'}}
+        options={{headerShown: false}}
       />
       <QuizzesStackNavigator.Screen
         name="QuizListScreen"

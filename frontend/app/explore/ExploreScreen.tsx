@@ -11,10 +11,8 @@ import ExploreTab, {QuizzesStackParamList} from './ExploreTab';
 import {useGetTopicsQuery} from './api';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
-
-const image = require('./wildlife.png');
-const imageURL =
-  'https://res.cloudinary.com/adelcloud/image/upload/v1711258468/renewable_yb4vzt.png';
+import {BLACK} from '../colors';
+import {TEXT_LARGER, BUTTON_BORDERRADIUS} from '../sizing';
 
 type ExploreScreenProps = StackScreenProps<QuizzesStackParamList, 'Explore'>;
 
@@ -66,6 +64,7 @@ function ExploreScreen({}) {
 
   return (
     <ScrollView style={styles.container}>
+      <Text style={styles.title}>Explore Topics</Text>
       {isLoading && <Text>Loading...</Text>}
       {!data && <Text>No topics found</Text>}
       {data?.map((topic: TopicProps) => (
@@ -87,6 +86,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#FFF',
+  },
+  title: {
+    fontSize: TEXT_LARGER,
+    textAlign: 'center',
+    fontFamily: 'Pacifico-Regular',
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    color: BLACK,
   },
   header: {
     fontSize: 34,

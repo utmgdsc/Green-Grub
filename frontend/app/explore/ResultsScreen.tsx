@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {PRIMARY_GREEN} from '../colors';
+import { BUTTON_BORDERRADIUS } from '../sizing';
 
 const ResultsScreen = ({route, navigation}) => {
   const {correctAnswersCount} = route.params;
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY_GREEN,
     paddingVertical: 12,
     paddingHorizontal: 25,
-    borderRadius: 15,
+    borderRadius: BUTTON_BORDERRADIUS,
     alignSelf: 'center',
   },
   backQuizzesButtonText: {
