@@ -19,9 +19,12 @@ export default function FriendsScreen({}: HomeScreenProps) {
     <Stack.Navigator
       screenOptions={{
         cardStyle: {backgroundColor: '#fdfdfd'},
-        headerShown: false,
       }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="Saved Items" component={SavedItemsScreen} />
     </Stack.Navigator>
   );

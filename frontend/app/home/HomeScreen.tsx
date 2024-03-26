@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useIsFocused} from '@react-navigation/native';
 import {StyleSheet, Text, View, TouchableOpacity, Modal} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store';
@@ -12,7 +13,14 @@ import {TEXT_LARGER, BUTTON_BORDERRADIUS} from '../sizing';
 type DashboardScreenProps = StackScreenProps<HomeStackParamList, 'Dashboard'>;
 
 export default function DashboardScreen({navigation}: DashboardScreenProps) {
-  const {data, isLoading} = useGetDashboardInfoQuery();
+  const {data, isLoading, refetch} = useGetDashboardInfoQuery();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [isFocused]);
 
   // User's scores
   const totalScore = data ? data.score : 0;
@@ -75,22 +83,23 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
         <AnimatedCircularProgress
           size={200}
           width={20}
-          fill={totalScore / 10}
+          fill={sustainabilityScore}
           tintColor={PRIMARY_GREEN}
           backgroundColor="#DDD"
           padding={10}
           rotation={0}>
           {fill => (
-            <Text style={styles.progressText}>{`${totalScore / 10}/100`}</Text>
+            <Text
+              style={styles.progressText}>{`${sustainabilityScore}/5`}</Text>
           )}
         </AnimatedCircularProgress>
       </TouchableOpacity>
 
       <Text style={styles.scoreLabel}>Sustainability Score</Text>
-      <ProgressBar current={4} total={7} />
+      <ProgressBar current={nutritionScore} total={5} />
       <TouchableOpacity onPress={openNutritionModal}>
         <Text style={styles.nutritionScoreLabel}>
-          {`Your Nutrition Score ${nutritionScore}/100`}
+          {`Your Nutrition Score ${nutritionScore}/5`}
         </Text>
       </TouchableOpacity>
 

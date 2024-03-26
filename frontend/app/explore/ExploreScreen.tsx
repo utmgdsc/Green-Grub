@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -13,6 +13,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {BLACK} from '../colors';
 import {TEXT_LARGER, BUTTON_BORDERRADIUS} from '../sizing';
+import {useIsFocused} from '@react-navigation/native';
 
 type ExploreScreenProps = StackScreenProps<QuizzesStackParamList, 'Explore'>;
 
@@ -41,8 +42,7 @@ function Topic({
     console.log(navigation);
     navigation.navigate('QuizListScreen', {topicId: topic_id});
   };
-  console.log(topic_title);
-  console.log(topic_image);
+  const isFocused = useIsFocused();
 
   return (
     <TouchableOpacity style={styles.topicSection} onPress={handlePress}>
@@ -59,8 +59,14 @@ function Topic({
 }
 
 function ExploreScreen({}) {
-  const {data, isLoading} = useGetTopicsQuery();
-  console.log(data);
+  const {data, isLoading, refetch} = useGetTopicsQuery();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [isFocused]);
 
   return (
     <ScrollView style={styles.container}>

@@ -38,9 +38,6 @@ export default function LoginForm({
         isSecureText={true}
       />
       {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
-      <ButtonGroup>
-        <MainButton title="Login" onPress={handleLogin} />
-      </ButtonGroup>
     </View>
   );
 }
