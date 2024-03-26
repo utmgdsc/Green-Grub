@@ -31,9 +31,8 @@ export const baseQueryWithReauth: BaseQueryFn<
       const release = await mutex.acquire();
       try {
         const refreshToken = (api.getState() as RootState).auth.refreshToken;
-        console.log(refreshToken);
         const refreshResult = await fetch(
-          'http://localhost:8000/api/refresh/',
+          'http://127.0.0.1:8000/api/refresh/',
           {
             method: 'POST',
             headers: {
@@ -61,6 +60,5 @@ export const baseQueryWithReauth: BaseQueryFn<
     }
   }
 
-  console.log(result);
   return result;
 };

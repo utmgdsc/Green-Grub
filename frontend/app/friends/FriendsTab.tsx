@@ -8,21 +8,26 @@ import {
 import AddFriendScreen from './AddFriendScreen';
 import FriendsListScreen from './FriendsListScreen';
 import {Button, View} from 'react-native';
+import FriendInvitationScreen from './FriendInvitationsScreen';
 
-type FriendScreenProps = BottomTabScreenProps<MainTabsParamList, 'Friends Tab'>;
+type FriendScreenProps = BottomTabScreenProps<MainTabsParamList, 'Friends'>;
 
 export type FriendsStackParamList = {
-  'Friends List': undefined;
+  'Your Friends': undefined;
   'Add Friend': undefined;
+  Invitations: undefined;
 };
 
 const Stack = createStackNavigator<FriendsStackParamList>();
 
 export default function FriendsScreen({navigation}: FriendScreenProps) {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        cardStyle: {backgroundColor: '#fdfdfd'},
+      }}>
       <Stack.Screen
-        name="Friends List"
+        name="Your Friends"
         component={FriendsListScreen}
         options={{
           headerLeft: () => null,
@@ -36,7 +41,7 @@ export default function FriendsScreen({navigation}: FriendScreenProps) {
                   (
                     navigation as unknown as StackNavigationProp<
                       FriendsStackParamList,
-                      'Friends List',
+                      'Your Friends',
                       undefined
                     >
                   ).navigate('Add Friend');
@@ -47,6 +52,7 @@ export default function FriendsScreen({navigation}: FriendScreenProps) {
         }}
       />
       <Stack.Screen name="Add Friend" component={AddFriendScreen} />
+      <Stack.Screen name="Invitations" component={FriendInvitationScreen} />
     </Stack.Navigator>
   );
 }

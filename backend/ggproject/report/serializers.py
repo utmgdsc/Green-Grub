@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Stats
+from .models import Product, Stats, UserHistory
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,4 +10,5 @@ class LeaderboardSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='user.username') 
     class Meta:
         model = Stats
-        fields = ['username', 'score', 'level']
+        fields = ['username', 'score']
+        

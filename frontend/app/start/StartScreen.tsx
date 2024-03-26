@@ -15,7 +15,8 @@ export default function StartScreen({navigation}: StartScreenProps) {
       <View style={styles.textContainer}>
         <Text style={styles.title}>GreenGrub</Text>
         <Text style={styles.subtitle}>
-          Healthy and sustainable food options
+          Track healthy and sustainable purchases, gather points and compete
+          with friends
         </Text>
       </View>
       <ButtonGroup>
@@ -35,7 +36,7 @@ export default function StartScreen({navigation}: StartScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: PRIMARY_BLUE,
   },
@@ -51,6 +52,8 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: TEXT_MEDIUM,
+    textAlign: 'center',
+    paddingHorizontal: 28,
     color: 'white',
   },
 });

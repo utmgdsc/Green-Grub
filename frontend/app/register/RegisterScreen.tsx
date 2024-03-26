@@ -14,7 +14,7 @@ import {StartStackParamList} from '../StartStack';
 
 type StartScreenProps = StackScreenProps<StartStackParamList, 'Register'>;
 
-export default function RegisterScreen({}: StartScreenProps) {
+export default function RegisterScreen({navigation}: StartScreenProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [username, setLocalUsername] = useState('');
   const [password, setLocalPassword] = useState('');
@@ -65,6 +65,10 @@ export default function RegisterScreen({}: StartScreenProps) {
     }
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
@@ -76,6 +80,7 @@ export default function RegisterScreen({}: StartScreenProps) {
       />
       <ButtonGroup>
         <MainButton title="Register" onPress={handleRegister} />
+        <MainButton title="Back" onPress={handleBack} />
       </ButtonGroup>
     </View>
   );
@@ -85,8 +90,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: PRIMARY_BLUE,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    paddingBottom: 100,
   },
   title: {
     fontSize: TEXT_HUGE,

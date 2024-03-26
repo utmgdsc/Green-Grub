@@ -14,9 +14,21 @@ export function normalize(size: number) {
   }
 }
 
+const BUTTON_BORDERRADIUS = 12;
+
 const TEXT_SMALL = normalize(15);
 const TEXT_MEDIUM = normalize(18);
 const TEXT_LARGE = normalize(22);
+const TEXT_LARGER = normalize(25);
+const TEXT_XLARGE = normalize(35);
 const TEXT_HUGE = normalize(50);
 
-export {TEXT_SMALL, TEXT_MEDIUM, TEXT_LARGE, TEXT_HUGE};
+export {
+  BUTTON_BORDERRADIUS,
+  TEXT_SMALL,
+  TEXT_MEDIUM,
+  TEXT_LARGE,
+  TEXT_LARGER,
+  TEXT_XLARGE,
+  TEXT_HUGE,
+};
