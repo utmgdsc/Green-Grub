@@ -21,14 +21,25 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
 
   console.log(data);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSustainabilityModalVisible, setIsSustainabilityModalVisible] =
+    useState(false);
 
-  const openModal = () => {
-    setIsModalVisible(true);
+  const [isNutritionModalVisible, setIsNutritionModalVisible] = useState(false);
+
+  const openSustainabilityModal = () => {
+    setIsSustainabilityModalVisible(true);
   };
 
-  const closeModal = () => {
-    setIsModalVisible(false);
+  const closeSustainabilityModal = () => {
+    setIsSustainabilityModalVisible(false);
+  };
+
+  const openNutritionModal = () => {
+    setIsNutritionModalVisible(true);
+  };
+
+  const closeNutritionModal = () => {
+    setIsNutritionModalVisible(false);
   };
 
   const ProgressBar = ({current, total}) => {
@@ -60,7 +71,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dashboard </Text>
-      <TouchableOpacity onPress={openModal}>
+      <TouchableOpacity onPress={openSustainabilityModal}>
         <AnimatedCircularProgress
           size={200}
           width={20}
@@ -76,14 +87,15 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
       </TouchableOpacity>
 
       <Text style={styles.scoreLabel}>Sustainability Score</Text>
-
       <ProgressBar current={4} total={7} />
-      <Text style={styles.nutritionScoreLabel}>
-        {`Your Nutrition Score ${nutritionScore}/100`}
-      </Text>
+      <TouchableOpacity onPress={openNutritionModal}>
+        <Text style={styles.nutritionScoreLabel}>
+          {`Your Nutrition Score ${nutritionScore}/100`}
+        </Text>
+      </TouchableOpacity>
 
       <Text style={styles.infoText}>
-        Scan sustainable products & complete quizzes to earn points
+        To earn more points scan sustainable products & complete quizzes
       </Text>
       <Text style={styles.infoText}>View your past scanned items below</Text>
 
@@ -101,8 +113,8 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
       <Modal
         animationType="fade"
         transparent={true}
-        visible={isModalVisible}
-        onRequestClose={closeModal}>
+        visible={isSustainabilityModalVisible}
+        onRequestClose={closeSustainabilityModal}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Sustainability Score Details</Text>
@@ -111,7 +123,35 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
               quizzes and 40% from the average sustainability rating of your
               past scanned products.
             </Text>
-            <TouchableOpacity style={[styles.button]} onPress={closeModal}>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={closeSustainabilityModal}>
+              <Text style={styles.buttonText}>Hide Details</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isNutritionModalVisible}
+        onRequestClose={closeNutritionModal}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Nutrition Score Details</Text>
+            <Text style={styles.modalNutritionDescription}>
+              This is your average nutrition score from the past scanned items.
+              It does not count towards your main score and is not used for
+              comparisons in the leaderboard.
+            </Text>
+            <Text style={styles.modalNutritionDescription}>
+              Keep the nutrition score high by scanning more nutritious
+              products.
+            </Text>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={closeNutritionModal}>
               <Text style={styles.buttonText}>Hide Details</Text>
             </TouchableOpacity>
           </View>
@@ -199,6 +239,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modalSustainabilityDescription: {
+    textAlign: 'center',
+    fontSize: 17,
+    marginBottom: 20,
+  },
+  modalNutritionDescription: {
     textAlign: 'center',
     fontSize: 17,
     marginBottom: 20,
