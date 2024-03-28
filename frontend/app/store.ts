@@ -9,6 +9,7 @@ import {userDashboardApi} from './home/api';
 import {leaderboardApi} from './leaderboard/api';
 import {savedItemsApi} from './savedItems/api';
 import {cartApi} from './cart/api';
+import {userApi} from './login/api';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   [leaderboardApi.reducerPath]: leaderboardApi.reducer,
   [savedItemsApi.reducerPath]: savedItemsApi.reducer,
   [cartApi.reducerPath]: cartApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 });
 
 export const store = configureStore({
@@ -34,6 +36,7 @@ export const store = configureStore({
       leaderboardApi.middleware,
       savedItemsApi.middleware,
       cartApi.middleware,
+      userApi.middleware,
     ),
   reducer: rootReducer,
 });
