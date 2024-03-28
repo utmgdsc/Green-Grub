@@ -58,7 +58,9 @@ export function ShortCartInformationList({
   );
 }
 
-export default function CartOverviewScreen({}: CartOverviewScreenProps) {
+export default function CartOverviewScreen({
+  navigation,
+}: CartOverviewScreenProps) {
   const {data: carts, isFetching, refetch} = useGetAllCartsQuery();
   const activeCart = carts?.find(cart => !cart.finalized);
   const oldCarts = carts?.filter(cart => cart.finalized);
@@ -78,10 +80,15 @@ export default function CartOverviewScreen({}: CartOverviewScreenProps) {
         {isFetching ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : oldCarts && oldCarts.length > 0 ? (
-          <ShortCartInformationList carts={oldCarts} />
+          <ShortCartInformationList
+            carts={oldCarts}
+            onSelected={cart =>
+              navigation.navigate('Cart Details', {cartId: cart.id})
+            }
+          />
         ) : (
           <View style={{padding: 20, gap: 20}}>
-            <Text style={styles.noCartsFound}>No carts found</Text>
+            <Text style={styles.noCartsFound}>You have no completed cards</Text>
             <MainButton title="Refresh" onPress={refetch} />
           </View>
         )}

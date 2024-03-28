@@ -20,19 +20,27 @@ export function ShortProductInformationList({
   products,
   onSelected,
 }: ShortProductInformationListProps) {
-  return (
-    <FlatList
-      contentContainerStyle={styles.shortProductInformationList}
-      style={styles.shortProductInformationListContainer}
-      renderItem={({item: product}) => (
-        <ShortProductInformation
-          product={product}
-          onSelected={onSelected ? () => onSelected(product) : undefined}
-        />
-      )}
-      data={products}
-    />
-  );
+  if (products.length === 0) {
+    return (
+      <View style={styles.productNotFound}>
+        <Text style={styles.productNotFoundText}>No products found</Text>
+      </View>
+    );
+  } else {
+    return (
+      <FlatList
+        contentContainerStyle={styles.shortProductInformationList}
+        style={styles.shortProductInformationListContainer}
+        renderItem={({item: product}) => (
+          <ShortProductInformation
+            product={product}
+            onSelected={onSelected ? () => onSelected(product) : undefined}
+          />
+        )}
+        data={products}
+      />
+    );
+  }
 }
 
 export function ShortProductInformation({

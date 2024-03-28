@@ -35,9 +35,9 @@ export const cartApi = createApi({
       }),
       invalidatesTags: ['CartItem'],
     }),
-    getCart: build.query<Cart, void>({
-      query: () => ({
-        url: '/get_cart/',
+    getCart: build.query<Cart, number>({
+      query: cartId => ({
+        url: `/get_cart/${cartId}`,
         method: 'GET',
       }),
       providesTags: ['CartItem'],
