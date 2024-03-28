@@ -27,6 +27,7 @@ export const cartApi = createApi({
         url: '/create_cart/',
         method: 'POST',
       }),
+      invalidatesTags: ['CartItem'],
     }),
     modifyCart: build.mutation<CartStatus, void>({
       query: () => ({
@@ -47,6 +48,7 @@ export const cartApi = createApi({
         url: '/get_all_carts/',
         method: 'GET',
       }),
+      providesTags: ['CartItem'],
     }),
   }),
 });

@@ -9,7 +9,7 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import {Cart, useGetAllCartsQuery} from './api';
+import {Cart, useCreateCartMutation, useGetAllCartsQuery} from './api';
 import {TouchableOpacity} from 'react-native';
 import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
 import MainButton from '../shared/MainButton';
@@ -62,6 +62,7 @@ export default function CartOverviewScreen({
   navigation,
 }: CartOverviewScreenProps) {
   const {data: carts, isFetching, refetch} = useGetAllCartsQuery();
+  const [createCart] = useCreateCartMutation();
   const activeCart = carts?.find(cart => !cart.finalized);
   const oldCarts = carts?.filter(cart => cart.finalized);
 
@@ -71,9 +72,17 @@ export default function CartOverviewScreen({
         {isFetching ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : activeCart ? (
-          <Text style={styles.noCartsFound}>You have a cart</Text>
+          <ShortCartInformation
+            cart={activeCart}
+            onSelected={() =>
+              navigation.navigate('Cart Details', {cartId: activeCart.id})
+            }
+          />
         ) : (
-          <Text style={styles.noCartsFound}>You have no active cart</Text>
+          <View>
+            <Text style={styles.noCartsFound}>You have no active cart</Text>
+            <MainButton title="Create Cart" onPress={() => createCart()} />
+          </View>
         )}
       </Section>
       <Section title="Completed Carts">
