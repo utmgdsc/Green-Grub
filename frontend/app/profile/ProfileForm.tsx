@@ -30,7 +30,9 @@ export default function ProfileForm({user}: {user: User}) {
       name: 'avatar.jpg',
     });
     formData.append('username', username);
-    formData.append('password', password);
+    if (password !== '') {
+      formData.append('password', password);
+    }
     formData.append('email', emailAddress);
     formData.append('first_name', firstName);
     formData.append('last_name', lastName);
