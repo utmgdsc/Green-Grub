@@ -11,6 +11,7 @@ import {
 import {Cart, useGetAllCartsQuery} from './api';
 import {TouchableOpacity} from 'react-native';
 import {TEXT_LARGE} from '../sizing';
+import MainButton from '../shared/MainButton';
 
 type CartOverviewScreenProps = StackScreenProps<CartStackParamList, 'Carts'>;
 
@@ -56,13 +57,18 @@ export function ShortCartInformationList({
 }
 
 export default function CartOverviewScreen({}: CartOverviewScreenProps) {
-  const {data: carts, isFetching} = useGetAllCartsQuery();
+  const {data: carts, isFetching, refetch} = useGetAllCartsQuery();
   return (
     <View>
-      {!isFetching && carts ? (
+      {isFetching ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : carts && carts.length > 0 ? (
         <ShortCartInformationList carts={carts} />
       ) : (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <View style={{padding: 20, gap: 20}}>
+          <Text style={styles.noCartsFound}>No carts found</Text>
+          <MainButton title="Refresh" onPress={refetch} />
+        </View>
       )}
     </View>
   );
@@ -99,5 +105,10 @@ const styles = StyleSheet.create({
     fontSize: TEXT_LARGE,
     flex: 6,
     color: 'black',
+  },
+  noCartsFound: {
+    fontSize: TEXT_LARGE,
+    color: 'gray',
+    textAlign: 'center',
   },
 });
