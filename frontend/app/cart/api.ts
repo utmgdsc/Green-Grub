@@ -42,8 +42,18 @@ export const cartApi = createApi({
       }),
       providesTags: ['CartItem'],
     }),
+    getAllCarts: build.query<Cart[], void>({
+      query: () => ({
+        url: '/get_all_carts/',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const {useCreateCartMutation, useModifyCartMutation, useGetCartQuery} =
-  cartApi;
+export const {
+  useCreateCartMutation,
+  useModifyCartMutation,
+  useGetCartQuery,
+  useGetAllCartsQuery,
+} = cartApi;

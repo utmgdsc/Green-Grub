@@ -27,8 +27,6 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
   const sustainabilityScore = data ? data.average_sustainability_score : 0;
   const nutritionScore = data ? data.average_nutri_score : 0;
 
-  console.log(data);
-
   const [isSustainabilityModalVisible, setIsSustainabilityModalVisible] =
     useState(false);
 
