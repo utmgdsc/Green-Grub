@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {CartStackParamList} from './CartTab';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -10,8 +11,9 @@ import {
 } from 'react-native';
 import {Cart, useGetAllCartsQuery} from './api';
 import {TouchableOpacity} from 'react-native';
-import {TEXT_LARGE} from '../sizing';
+import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
 import MainButton from '../shared/MainButton';
+import Section from '../Section';
 
 type CartOverviewScreenProps = StackScreenProps<CartStackParamList, 'Carts'>;
 
@@ -58,18 +60,32 @@ export function ShortCartInformationList({
 
 export default function CartOverviewScreen({}: CartOverviewScreenProps) {
   const {data: carts, isFetching, refetch} = useGetAllCartsQuery();
+  const activeCart = carts?.find(cart => !cart.finalized);
+  const oldCarts = carts?.filter(cart => cart.finalized);
+
   return (
-    <View>
-      {isFetching ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : carts && carts.length > 0 ? (
-        <ShortCartInformationList carts={carts} />
-      ) : (
-        <View style={{padding: 20, gap: 20}}>
-          <Text style={styles.noCartsFound}>No carts found</Text>
-          <MainButton title="Refresh" onPress={refetch} />
-        </View>
-      )}
+    <View style={{padding: 20, backgroundColor: 'white', flex: 1}}>
+      <Section title="Active Cart">
+        {isFetching ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : activeCart ? (
+          <Text style={styles.noCartsFound}>You have a cart</Text>
+        ) : (
+          <Text style={styles.noCartsFound}>You have no active cart</Text>
+        )}
+      </Section>
+      <Section title="Completed Carts">
+        {isFetching ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : oldCarts && oldCarts.length > 0 ? (
+          <ShortCartInformationList carts={oldCarts} />
+        ) : (
+          <View style={{padding: 20, gap: 20}}>
+            <Text style={styles.noCartsFound}>No carts found</Text>
+            <MainButton title="Refresh" onPress={refetch} />
+          </View>
+        )}
+      </Section>
     </View>
   );
 }
@@ -107,7 +123,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   noCartsFound: {
-    fontSize: TEXT_LARGE,
+    fontSize: TEXT_MEDIUM,
+    fontStyle: 'italic',
     color: 'gray',
     textAlign: 'center',
   },

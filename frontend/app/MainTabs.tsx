@@ -14,13 +14,14 @@ import HomeTab from './home/HomeTab';
 import ScanTab from './scan/ScanTab';
 import FriendsTab from './friends/FriendsTab';
 import ProfileScreen from './profile/ProfileScreen';
-import CartTab from './cart/CartTab';
+import CartTab, {CartStackParamList} from './cart/CartTab';
+import {NavigatorScreenParams} from '@react-navigation/native';
 
 export type MainTabsParamList = {
   'Home Tab': undefined;
   'Scan Tab': undefined;
   'Explore Tab': undefined;
-  'Cart Tab': undefined;
+  'Cart Tab': NavigatorScreenParams<CartStackParamList>;
   Friends: undefined;
   Profile: undefined;
 };
