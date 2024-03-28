@@ -9,7 +9,12 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import {Cart, useCreateCartMutation, useGetAllCartsQuery} from './api';
+import {
+  Cart,
+  useActiveCart,
+  useCreateCartMutation,
+  useGetAllCartsQuery,
+} from './api';
 import {TouchableOpacity} from 'react-native';
 import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
 import MainButton from '../shared/MainButton';
@@ -63,7 +68,7 @@ export default function CartOverviewScreen({
 }: CartOverviewScreenProps) {
   const {data: carts, isFetching, refetch} = useGetAllCartsQuery();
   const [createCart] = useCreateCartMutation();
-  const activeCart = carts?.find(cart => !cart.finalized);
+  const activeCart = useActiveCart();
   const oldCarts = carts?.filter(cart => cart.finalized);
 
   return (

@@ -8,7 +8,11 @@ export type CartStatus = {
 };
 
 export type Cart = CartStatus & {
-  items: FoodInfo[];
+  items: {
+    id: number;
+    quantity: number;
+    product_details: FoodInfo;
+  }[];
 };
 
 export type CartModification = {
@@ -29,16 +33,24 @@ export const cartApi = createApi({
       }),
       invalidatesTags: ['CartItem'],
     }),
-    modifyCart: build.mutation<CartStatus, void>({
-      query: () => ({
+    modifyCart: build.mutation<CartStatus, CartModification>({
+      query: body => ({
         url: '/modify_cart/',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['CartItem'],
+    }),
+    finalizeCart: build.mutation<void, number>({
+      query: id => ({
+        url: `/finalize_cart/${id}/`,
         method: 'POST',
       }),
       invalidatesTags: ['CartItem'],
     }),
     getCart: build.query<Cart, number>({
       query: cartId => ({
-        url: `/get_cart/${cartId}`,
+        url: `/get_cart/${cartId}/`,
         method: 'GET',
       }),
       providesTags: ['CartItem'],
@@ -53,9 +65,15 @@ export const cartApi = createApi({
   }),
 });
 
+export function useActiveCart() {
+  const {data: carts, isFetching} = useGetAllCartsQuery();
+  return !isFetching ? carts?.find(cart => !cart.finalized) : null;
+}
+
 export const {
   useCreateCartMutation,
   useModifyCartMutation,
   useGetCartQuery,
   useGetAllCartsQuery,
+  useFinalizeCartMutation,
 } = cartApi;

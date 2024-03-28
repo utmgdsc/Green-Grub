@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import MainButton from '../shared/MainButton';
@@ -9,6 +9,7 @@ import {ScanStackParamList} from './ScanTab';
 import {useUpdateSavedItemsMutation} from '../savedItems/api';
 import {TEXT_LARGE} from '../sizing';
 import {ProductInformation} from '../ProductInformation';
+import {useActiveCart, useModifyCartMutation} from '../cart/api';
 
 type ScanResultScreenProps = StackScreenProps<
   ScanStackParamList,
@@ -19,10 +20,25 @@ export default function ScanResultScreen({
   navigation,
   route,
 }: ScanResultScreenProps) {
+  const activeCart = useActiveCart();
+  const [modifyCart] = useModifyCartMutation();
+  const [itemAdded, setItemAdded] = useState(false);
+  const [numItems, setNumItems] = useState(1);
   const {data: product, isLoading} = useGetProductInfoQuery(
     route.params.barcode,
   );
   const [update] = useUpdateSavedItemsMutation();
+
+  function addItem() {
+    if (activeCart) {
+      modifyCart({
+        cart_id: activeCart.id,
+        barcode: parseInt(route.params.barcode, 10),
+        change_amount: numItems,
+      });
+      setItemAdded(true);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -42,6 +58,9 @@ export default function ScanResultScreen({
       </View>
       <ButtonGroup>
         <MainButton title="Retake" onPress={() => navigation.goBack()} />
+        {activeCart && !itemAdded && (
+          <MainButton title="Add to Cart" onPress={addItem} />
+        )}
         <MainButton
           title="Add to Saved Items"
           onPress={() => {
