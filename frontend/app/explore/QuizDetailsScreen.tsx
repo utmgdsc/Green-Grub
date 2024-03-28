@@ -54,7 +54,6 @@ const QuizDetailsScreen = ({route, navigation}) => {
     try {
       const payload = {quizId: quizId, score: correctAnswersCount};
       const result = await postQuizResults(payload).unwrap();
-      console.log('Submission successful', result);
     } catch (err) {
       console.error('Failed to submit quiz results', err);
     }
