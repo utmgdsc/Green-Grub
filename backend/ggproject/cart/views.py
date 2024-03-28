@@ -19,10 +19,13 @@ class CreateCartView(APIView):
 
     def post(self, request, *args, **kwargs):
         cart = Cart.objects.create(user=request.user)
+        name = request.data.get("name")
+        if name:
+            cart.name = name
+            cart.save()
         serializer = CartSerializer(cart)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 class ModifyCartView(APIView):
     permission_classes = [IsAuthenticated]

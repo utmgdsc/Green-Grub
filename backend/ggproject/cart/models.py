@@ -6,6 +6,7 @@ from report.models import Product
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     finalized = models.BooleanField(default=False)
+    name = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"Cart {self.id} for {self.user.username}"
