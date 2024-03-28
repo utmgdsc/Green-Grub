@@ -22,7 +22,10 @@ const Stack = createStackNavigator<FriendsStackParamList>();
 
 export default function FriendsScreen({navigation}: FriendScreenProps) {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        cardStyle: {backgroundColor: '#fdfdfd'},
+      }}>
       <Stack.Screen
         name="Your Friends"
         component={FriendsListScreen}

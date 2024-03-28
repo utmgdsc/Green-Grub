@@ -22,6 +22,9 @@ ALLOWED_HOSTS = []
 MEDIA_URL = '/avatars/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'avatars')
 
+ASSETS_URL = '/assets/'
+ASSETS_ROOT = os.path.join(BASE_DIR, 'assets')
+
 
 # Application definition
 

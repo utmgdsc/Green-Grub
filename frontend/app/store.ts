@@ -5,6 +5,7 @@ import {reactotron} from './reactotron';
 import {scanApi} from './scan/api';
 import {friendsApi} from './friends/api';
 import {quizApi} from './explore/api';
+import {userDashboardApi} from './home/api';
 import {leaderboardApi} from './leaderboard/api';
 import {savedItemsApi} from './savedItems/api';
 import {userApi} from './login/api';
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   [scanApi.reducerPath]: scanApi.reducer,
   [friendsApi.reducerPath]: friendsApi.reducer,
   [quizApi.reducerPath]: quizApi.reducer,
+  [userDashboardApi.reducerPath]: userDashboardApi.reducer,
   [leaderboardApi.reducerPath]: leaderboardApi.reducer,
   [savedItemsApi.reducerPath]: savedItemsApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
@@ -28,6 +30,7 @@ export const store = configureStore({
       scanApi.middleware,
       friendsApi.middleware,
       quizApi.middleware,
+      userDashboardApi.middleware,
       leaderboardApi.middleware,
       savedItemsApi.middleware,
       userApi.middleware,

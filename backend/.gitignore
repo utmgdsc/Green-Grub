@@ -10,3 +10,5 @@ avatars
 **/__pycache__/
 *.pyc
 
+
+ggproject/avatars/

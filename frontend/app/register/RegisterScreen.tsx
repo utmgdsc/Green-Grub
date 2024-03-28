@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY_BLUE,
     justifyContent: 'space-around',
     alignItems: 'center',
+    paddingBottom: 100,
   },
   title: {
     fontSize: TEXT_HUGE,
