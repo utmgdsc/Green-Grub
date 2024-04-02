@@ -13,10 +13,10 @@ import {
   useRemoveFriendMutation,
   useGetFriendsRequestsReceivedQuery,
 } from './api';
-import {FriendInformation} from './FriendInformationScreen';
 import SecondaryButton from '../shared/SecondaryButton';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {FriendsStackParamList} from './FriendsTab';
+import ProfileSummary from '../profile/ProfileSummary';
 
 type FriendsListScreenProps = StackScreenProps<
   FriendsStackParamList,
@@ -64,9 +64,7 @@ function FriendsList({
             onRequestClose={() => setViewFriend(null)}>
             <View style={styles.friendInfoModal}>
               {viewFriend !== null ? (
-                <FriendInformation
-                  friend={viewFriend}
-                  onClose={() => setViewFriend(null)}>
+                <ProfileSummary username={viewFriend.username}>
                   <SecondaryButton
                     title="Unfriend"
                     onPress={() => {
@@ -74,7 +72,7 @@ function FriendsList({
                       setViewFriend(null);
                     }}
                   />
-                </FriendInformation>
+                </ProfileSummary>
               ) : (
                 ''
               )}

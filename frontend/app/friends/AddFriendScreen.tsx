@@ -14,7 +14,8 @@ type AddFriendScreenProps = StackScreenProps<
 export default function AddFriendScreen({}: AddFriendScreenProps): JSX.Element {
   const [updateFriends, result] = useAddFriendMutation();
   const [username, setUsername] = useState('');
-  const message = result.data?.message ?? '';
+  const message =
+    result.data?.message ?? (result.error as {message?: string})?.message ?? '';
 
   return (
     <View style={styles.container}>
