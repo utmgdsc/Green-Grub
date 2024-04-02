@@ -36,13 +36,8 @@ export default function SavedItemsScreen({}: SavedItemsScreenProps) {
         visible={!!productDetail}
         onRequestClose={() => setProductDetail(null)}>
         <View style={styles.productDetailModal}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setProductDetail(null)}>
-            <Icon name="close" size={40} color={DARK_GRAY} />
-          </TouchableOpacity>
           {productDetail !== null ? (
-            <ProductInformation product={productDetail} />
+            <ProductInformation product={productDetail} onClose={() => setProductDetail(null)}/>
           ) : (
             ''
           )}

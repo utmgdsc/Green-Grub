@@ -65,7 +65,11 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
           padding={10}
           rotation={0}>
           {fill => (
-            <Text style={styles.progressText}>{`${totalScore}/1000`}</Text>
+            <Text style={styles.progressText}>
+              {totalScore > 1000
+                ? 'You have surpassed 1000 points! Compete with friends on Leaderboard'
+                : `${totalScore}/1000`}
+            </Text>
           )}
         </AnimatedCircularProgress>
       </TouchableOpacity>

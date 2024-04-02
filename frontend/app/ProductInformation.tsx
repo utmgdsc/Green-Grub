@@ -61,9 +61,20 @@ export function ShortProductInformation({
   );
 }
 
-export function ProductInformation({product}: {product: FoodInfo}) {
+export function ProductInformation({
+  product,
+  onClose,
+}: {
+  product: FoodInfo;
+  onClose: () => void;
+}) {
   return (
     <Card>
+      <View style={styles.closeButtonContainer}>
+        <TouchableOpacity onPress={onClose}>
+          <Icon name="close" size={25} color={DARK_GRAY} />
+        </TouchableOpacity>
+      </View>
       {product.image ? (
         <Image src={product.image} style={styles.productImage} />
       ) : (
@@ -163,5 +174,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'center',
+  },
+  closeButtonContainer: {
+    width: '100%',
+    paddingRight: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });

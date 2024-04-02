@@ -31,6 +31,7 @@ const styles = {
     fontSize: TEXT_LARGE,
     fontWeight: 'bold' as TextStyle['fontWeight'],
     color: 'black',
+    marginLeft: 20,
     marginBottom: 10,
   },
 };
