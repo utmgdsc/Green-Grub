@@ -25,7 +25,14 @@ export const userApi = createApi({
       }),
       providesTags: ['User'],
     }),
+    getOtherUser: build.query<User, string>({
+      query: username => ({
+        url: `/get_friends_info/${username}/`,
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
   }),
 });
 
-export const {useGetUserQuery} = userApi;
+export const {useGetUserQuery, useGetOtherUserQuery} = userApi;

@@ -13,10 +13,10 @@ import {
   useDeclineFriendMutation,
   useGetFriendsRequestsReceivedQuery,
 } from './api';
-import {FriendInformation} from './FriendInformationScreen';
 import ButtonGroup from '../shared/ButtonGroup';
 import MainButton from '../shared/MainButton';
 import Icon from 'react-native-vector-icons/AntDesign';
+import ProfileSummary from '../profile/ProfileSummary';
 
 type FriendProps = {
   friend: Friend;
@@ -60,7 +60,7 @@ function FriendsList() {
         onRequestClose={() => setViewFriend(null)}>
         <View style={styles.friendInfoModal}>
           {viewFriend !== null ? (
-            <FriendInformation friend={viewFriend}>
+            <ProfileSummary username={viewFriend.username}>
               <ButtonGroup>
                 <MainButton
                   title="Decline"
@@ -71,7 +71,7 @@ function FriendsList() {
                   onPress={() => acceptFriend(viewFriend.username)}
                 />
               </ButtonGroup>
-            </FriendInformation>
+            </ProfileSummary>
           ) : (
             ''
           )}
