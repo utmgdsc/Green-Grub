@@ -17,7 +17,7 @@ import {
 } from './api';
 import {TouchableOpacity} from 'react-native';
 import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
-import MainButton from '../shared/MainButton';
+import SecondaryButton from '../shared/SecondaryButton';
 import Section from '../Section';
 
 type CartOverviewScreenProps = StackScreenProps<CartStackParamList, 'Carts'>;
@@ -86,7 +86,7 @@ export default function CartOverviewScreen({
         ) : (
           <View>
             <Text style={styles.noCartsFound}>You have no active cart</Text>
-            <MainButton title="Create Cart" onPress={() => createCart()} />
+            <SecondaryButton title="Create Cart" onPress={() => createCart()} />
           </View>
         )}
       </Section>
@@ -103,7 +103,7 @@ export default function CartOverviewScreen({
         ) : (
           <View style={{padding: 20, gap: 20}}>
             <Text style={styles.noCartsFound}>You have no completed cards</Text>
-            <MainButton title="Refresh" onPress={refetch} />
+            <SecondaryButton title="Refresh" onPress={refetch} />
           </View>
         )}
       </Section>

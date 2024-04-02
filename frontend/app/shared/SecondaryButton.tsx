@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {BLACK, WHITE, PRIMARY_GREEN} from '../colors';
-import {TEXT_MEDIUM} from '../sizing';
+import {TEXT_MEDIUM, BUTTON_BORDERRADIUS} from '../sizing';
 
 type SecondaryButtonProps = {
   title: string;
@@ -22,15 +22,15 @@ export default function SecondaryButton({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: PRIMARY_GREEN,
-    padding: 15,
-    borderRadius: 7,
+    padding: 10,
+    borderRadius: BUTTON_BORDERRADIUS,
     alignSelf: 'center',
-    width: '70%',
+    width: '65%',
   },
   buttonText: {
     color: WHITE,
     textAlign: 'center',
-    fontSize: TEXT_MEDIUM,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });

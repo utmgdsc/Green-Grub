@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
-import MainButton from '../shared/MainButton';
+import SecondaryButton from '../shared/SecondaryButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import {useGetProductInfoQuery} from './api';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -57,11 +57,11 @@ export default function ScanResultScreen({
         )}
       </View>
       <ButtonGroup>
-        <MainButton title="Retake" onPress={() => navigation.goBack()} />
+        <SecondaryButton title="Retake" onPress={() => navigation.goBack()} />
         {activeCart && !itemAdded && (
-          <MainButton title="Add to Cart" onPress={addItem} />
+          <SecondaryButton title="Add to Cart" onPress={addItem} />
         )}
-        <MainButton
+        <SecondaryButton
           title="Add to Saved Items"
           onPress={() => {
             update(route.params.barcode);

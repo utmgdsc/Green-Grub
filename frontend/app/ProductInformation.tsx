@@ -1,13 +1,13 @@
 import React from 'react';
 import {Image, Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
-import {TEXT_LARGE, TEXT_SMALL} from './sizing';
+import {TEXT_LARGE, TEXT_MEDIUM, TEXT_SMALL} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
 import FoodInfo from './types/FoodInfo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Card from './Card';
 import ProgressBar from './shared/ProgressBar';
-import {DARK_GRAY} from './colors';
+import {DARK_GRAY, BLACK} from './colors';
 
 type ShortProductInformationProps = {
   product: FoodInfo;
@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   shortProductInformationImage: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     flex: 1,
   },
   scoreLabel: {
@@ -147,9 +147,11 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SMALL,
   },
   shortProductInformationText: {
-    fontSize: TEXT_LARGE,
+    fontSize: TEXT_MEDIUM,
     flex: 6,
-    color: 'black',
+    marginLeft: 10,
+    fontWeight: 'bold',
+    color: BLACK,
   },
   productNotFound: {
     paddingVertical: 80,
