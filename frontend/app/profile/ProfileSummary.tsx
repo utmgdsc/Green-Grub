@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {PropsWithChildren} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import Card from '../Card';
 import {useGetOtherUserQuery} from '../login/api';
+import {TEXT_LARGE} from '../sizing';
 
 type ProfileSummaryProps = PropsWithChildren<{
   username: string;
@@ -9,10 +11,21 @@ type ProfileSummaryProps = PropsWithChildren<{
 
 type ProfileImageProps = {
   uri: string;
+  size: number;
 };
 
-function ProfileImage({uri}: ProfileImageProps) {
-  return <Image source={{uri}} style={styles.field} />;
+function ProfileImage({uri, size}: ProfileImageProps) {
+  return (
+    <Image
+      source={{uri}}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        paddingHorizontal: 20,
+      }}
+    />
+  );
 }
 
 export default function ProfileSummary({
@@ -27,20 +40,19 @@ export default function ProfileSummary({
 
   return (
     <Card>
-      <View>
-        <ProfileImage uri={user.extra_info.avatar_url} />
+      <View style={{width: '100%', alignItems: 'center'}}>
+        <ProfileImage uri={user.extra_info.avatar_url} size={100} />
+        <Text style={styles.usernameText}>{username}</Text>
+        {children}
       </View>
-      <Text>{username}</Text>
-      {children}
     </Card>
   );
 }
 
 const styles = StyleSheet.create({
-  field: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    paddingHorizontal: 20,
+  usernameText: {
+    marginVertical: 30,
+    fontSize: TEXT_LARGE,
+    color: 'black',
   },
 });
