@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   FlatList,
@@ -13,10 +14,9 @@ import {
   useDeclineFriendMutation,
   useGetFriendsRequestsReceivedQuery,
 } from './api';
-import ButtonGroup from '../shared/ButtonGroup';
-import MainButton from '../shared/MainButton';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ProfileSummary from '../profile/ProfileSummary';
+import {SecondaryButtonDynamic} from '../shared/SecondaryButton';
 
 type FriendProps = {
   friend: Friend;
@@ -61,16 +61,24 @@ function FriendsList() {
         <View style={styles.friendInfoModal}>
           {viewFriend !== null ? (
             <ProfileSummary username={viewFriend.username}>
-              <ButtonGroup>
-                <MainButton
+              <View
+                style={{
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  gap: 20,
+                }}>
+                <SecondaryButtonDynamic
+                  style={{flexGrow: 1}}
                   title="Decline"
                   onPress={() => declineFriend(viewFriend.username)}
                 />
-                <MainButton
+                <SecondaryButtonDynamic
+                  style={{flexGrow: 1}}
                   title="Accept"
                   onPress={() => acceptFriend(viewFriend.username)}
                 />
-              </ButtonGroup>
+              </View>
             </ProfileSummary>
           ) : (
             ''
@@ -79,7 +87,6 @@ function FriendsList() {
       </Modal>
       <FlatList
         data={friends}
-        // eslint-disable-next-line react-native/no-inline-styles
         style={{height: '100%', width: '100%'}}
         renderItem={({item}) => (
           <ShortPendingFriendInfo
