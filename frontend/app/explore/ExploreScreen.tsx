@@ -39,7 +39,6 @@ function Topic({
     total_quizzes > 0 ? `${(passed_quizzes / total_quizzes) * 100}%` : '0%';
 
   const handlePress = () => {
-    console.log(navigation);
     navigation.navigate('QuizListScreen', {topicId: topic_id});
   };
   const isFocused = useIsFocused();

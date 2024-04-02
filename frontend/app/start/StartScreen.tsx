@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: PRIMARY_BLUE,
+    paddingBottom: 80,
   },
   textContainer: {
     alignItems: 'center',

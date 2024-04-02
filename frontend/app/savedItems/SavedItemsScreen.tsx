@@ -1,6 +1,13 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useState} from 'react';
-import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Modal,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {
   ProductInformation,
   ShortProductInformationList,
@@ -8,6 +15,9 @@ import {
 import {HomeStackParamList} from '../home/HomeTab';
 import {useGetSavedItemsQuery} from './api';
 import FoodInfo from '../types/FoodInfo';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {DARK_GRAY} from '../colors';
+import {TEXT_SMALL, TEXT_XLARGE} from '../sizing';
 
 type SavedItemsScreenProps = StackScreenProps<
   HomeStackParamList,
@@ -27,13 +37,18 @@ export default function SavedItemsScreen({}: SavedItemsScreenProps) {
         onRequestClose={() => setProductDetail(null)}>
         <View style={styles.productDetailModal}>
           {productDetail !== null ? (
-            <ProductInformation product={productDetail} />
+            <ProductInformation product={productDetail} onClose={() => setProductDetail(null)}/>
           ) : (
             ''
           )}
         </View>
       </Modal>
       <View style={styles.container}>
+        <Text style={styles.mainTitleText}>Saved Items </Text>
+        <Text style={styles.titleDescriptionText}>
+          View the items you have scanned and added. Click on an item to view
+          more information.
+        </Text>
         {!isLoading && products !== undefined ? (
           <ShortProductInformationList
             products={products}
@@ -50,8 +65,19 @@ export default function SavedItemsScreen({}: SavedItemsScreenProps) {
 }
 
 const styles = StyleSheet.create({
+  mainTitleText: {
+    fontFamily: 'Pacifico-Regular',
+    color: 'black',
+    fontSize: TEXT_XLARGE,
+  },
+  titleDescriptionText: {
+    fontSize: TEXT_SMALL,
+    marginHorizontal: 20,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
   container: {
-    paddingVertical: 30,
+    paddingBottom: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -60,6 +86,12 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    padding: 10,
+    marginRight: 10,
+    marginTop: 10,
   },
   loadingBox: {
     padding: 100,

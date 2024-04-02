@@ -30,6 +30,7 @@ urlpatterns = [
     path('friend_requests_received/', friends_views.view_received_requests, name='friend_requests_received'),
     path('view_friends_list/', friends_views.view_friends_list, name='view_friends'),
     path('view_leaderboard/', report_views.view_leaderboard, name='view_leaderboard'),
+    path('get_friends_info/<str:username>/', friends_views.get_friends_user_info, name='get_friends_info'),
 
     path('explore/', quiz_views.explore, name='explore'),
     path('topic/<int:topic_id>/', quiz_views.topic_quizzes, name='topic_quizzes'),
@@ -40,7 +41,7 @@ urlpatterns = [
     path('modify_cart/', cart_views.ModifyCartView.as_view(), name='modify_cart'),
     path('get_cart/<int:cart_id>/', cart_views.ViewCartView.as_view(), name='get_cart'),
     path('delete_cart/<int:cart_id>/', cart_views.DeleteCartView.as_view(), name='delete_cart'),
-    path('finalize_cart/<int:cart_id>/', cart_views.FinalizeCartView.as_view(), name='finalize_cart'),
+    path('finalize_cart/<int:cart_id>/', cart_views.FinalizeCartView.as_view(), name='finalize_cart'), 
     path('get_all_carts/', cart_views.ViewUserCartsView.as_view(), name='get_all_carts')
 ]
 
