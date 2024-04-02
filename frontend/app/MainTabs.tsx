@@ -39,6 +39,7 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
+          tabBarLabel: 'Home',
         }}
       />
 
@@ -50,6 +51,7 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="scan" color={color} size={size} />
           ),
+          tabBarLabel: 'Scan',
         }}
       />
 
@@ -61,6 +63,7 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="compass-outline" color={color} size={size} />
           ),
+          tabBarLabel: 'Explore',
         }}
       />
 
@@ -72,6 +75,7 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="cart" color={color} size={size} />
           ),
+          tabBarLabel: 'Cart',
         }}
       />
 
@@ -84,6 +88,7 @@ function App(): React.JSX.Element {
             <Icon name="people" color={color} size={size} />
           ),
           headerShown: false,
+          tabBarLabel: 'Friends',
         }}
       />
 

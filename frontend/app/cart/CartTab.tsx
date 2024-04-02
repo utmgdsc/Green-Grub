@@ -16,11 +16,16 @@ const CartStackNavigator = createStackNavigator<CartStackParamList>();
 
 const ExploreTab = ({}: CartScreenProps) => {
   return (
-    <CartStackNavigator.Navigator screenOptions={{headerShown: false}}>
-      <CartStackNavigator.Screen name="Carts" component={CartOverviewScreen} />
+    <CartStackNavigator.Navigator>
+      <CartStackNavigator.Screen
+        name="Carts"
+        component={CartOverviewScreen}
+        options={{title: ''}}
+      />
       <CartStackNavigator.Screen
         name="Cart Details"
         component={CartInfoScreen}
+        options={{title: ''}}
       />
     </CartStackNavigator.Navigator>
   );

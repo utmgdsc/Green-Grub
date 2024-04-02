@@ -10,7 +10,7 @@ import {CartStackParamList} from './CartTab';
 import {useFinalizeCartMutation, useGetCartQuery} from './api';
 import Section from '../Section';
 import FoodInfo from '../types/FoodInfo';
-import MainButton from '../shared/MainButton';
+import SecondaryButton from '../shared/SecondaryButton';
 
 type CartInfoScreenProps = StackScreenProps<CartStackParamList, 'Cart Details'>;
 
@@ -34,7 +34,10 @@ export default function CartInfoScreen({
         </View>
       </Modal>
       <Section title="Cart">
-        <MainButton title="Complete" onPress={() => finalizeCart(cartId)} />
+        <SecondaryButton
+          title="Complete"
+          onPress={() => finalizeCart(cartId)}
+        />
       </Section>
       <Section title="Products">
         <ShortProductInformationList

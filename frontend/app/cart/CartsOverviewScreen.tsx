@@ -16,8 +16,8 @@ import {
   useGetAllCartsQuery,
 } from './api';
 import {TouchableOpacity} from 'react-native';
-import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
-import MainButton from '../shared/MainButton';
+import {TEXT_LARGE, TEXT_MEDIUM, TEXT_XLARGE, TEXT_SMALL} from '../sizing';
+import SecondaryButton from '../shared/SecondaryButton';
 import Section from '../Section';
 
 type CartOverviewScreenProps = StackScreenProps<CartStackParamList, 'Carts'>;
@@ -72,21 +72,34 @@ export default function CartOverviewScreen({
   const oldCarts = carts?.filter(cart => cart.finalized);
 
   return (
-    <View style={{padding: 20, backgroundColor: 'white', flex: 1}}>
+    <View
+      style={{
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 20,
+        backgroundColor: 'white',
+        flex: 1,
+      }}>
+      <Text style={styles.mainTitleText}>Carts </Text>
+      <Text style={styles.titleDescriptionText}>
+        View the shopping carts or create a new cart to start adding items.
+      </Text>
       <Section title="Active Cart">
         {isFetching ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : activeCart ? (
-          <ShortCartInformation
-            cart={activeCart}
-            onSelected={() =>
-              navigation.navigate('Cart Details', {cartId: activeCart.id})
-            }
-          />
+          <View style={styles.activeCartView}>
+            <ShortCartInformation
+              cart={activeCart}
+              onSelected={() =>
+                navigation.navigate('Cart Details', {cartId: activeCart.id})
+              }
+            />
+          </View>
         ) : (
-          <View>
-            <Text style={styles.noCartsFound}>You have no active cart</Text>
-            <MainButton title="Create Cart" onPress={() => createCart()} />
+          <View style={{padding: 20, gap: 20}}>
+            <Text style={styles.noCartsFound}>You have no active carts</Text>
+            <SecondaryButton title="Create Cart" onPress={() => createCart()} />
           </View>
         )}
       </Section>
@@ -103,7 +116,7 @@ export default function CartOverviewScreen({
         ) : (
           <View style={{padding: 20, gap: 20}}>
             <Text style={styles.noCartsFound}>You have no completed cards</Text>
-            <MainButton title="Refresh" onPress={refetch} />
+            <SecondaryButton title="Refresh" onPress={refetch} />
           </View>
         )}
       </Section>
@@ -112,6 +125,23 @@ export default function CartOverviewScreen({
 }
 
 const styles = StyleSheet.create({
+  mainTitleText: {
+    fontFamily: 'Pacifico-Regular',
+    color: 'black',
+    fontSize: TEXT_XLARGE,
+    textAlign: 'center',
+  },
+  titleDescriptionText: {
+    fontSize: TEXT_SMALL,
+    marginHorizontal: 20,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  activeCartView: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+  },
   shortCartInformationList: {
     width: '90%',
     alignSelf: 'center',

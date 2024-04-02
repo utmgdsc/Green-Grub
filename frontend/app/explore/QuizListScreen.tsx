@@ -41,11 +41,13 @@ const QuizItem = ({
   navigation,
 }: QuizProps) => {
   const handlePress = () => {
-    navigation.navigate('QuizDetailsScreen', {
-      quizId: id,
-      quizTopic: topic_title,
-      questionNumber: 1,
-    });
+    if (completed == false) {
+      navigation.navigate('QuizDetailsScreen', {
+        quizId: id,
+        quizTopic: topic_title,
+        questionNumber: 1,
+      });
+    }
   };
 
   return (

@@ -10,6 +10,7 @@ import {saveAuthToken} from '../authSlice';
 import {setUsername} from '../userSlice';
 import {AppDispatch} from '../store';
 import ImagePickerField from '../shared/ImagePickerField';
+import {useNavigation} from '@react-navigation/native';
 
 export default function RegisterForm({}) {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,6 +22,11 @@ export default function RegisterForm({}) {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [imageUri, setImageUri] = useState('');
+  const navigation = useNavigation();
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
 
   const handleRegister = async () => {
     try {
@@ -126,6 +132,7 @@ export default function RegisterForm({}) {
         </TextInputGroup>
         <ButtonGroup style={{marginVertical: 20}}>
           <MainButton title="Register" onPress={handleRegister} />
+          <MainButton title="Back to Login" onPress={handleBack} />
         </ButtonGroup>
       </View>
     </ScrollView>

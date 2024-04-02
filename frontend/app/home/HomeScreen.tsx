@@ -3,12 +3,16 @@ import {useIsFocused} from '@react-navigation/native';
 import {StyleSheet, Text, View, TouchableOpacity, Modal} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store';
+import SecondaryButton from '../shared/SecondaryButton';
+import ProgressBar from '../shared/ProgressBar';
 import {useGetDashboardInfoQuery} from './api';
 import {StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamList} from '../navigation/HomeStack';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import {PRIMARY_GREEN, BLACK} from '../colors';
 import {TEXT_LARGER, BUTTON_BORDERRADIUS} from '../sizing';
+import MainButton from '../shared/MainButton';
+import ButtonGroup from '../shared/ButtonGroup';
 
 type DashboardScreenProps = StackScreenProps<HomeStackParamList, 'Dashboard'>;
 
@@ -48,32 +52,6 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
     setIsNutritionModalVisible(false);
   };
 
-  const ProgressBar = ({current, total}) => {
-    const progress = current / total;
-    let backgroundColor;
-
-    if (progress < 0.34) {
-      backgroundColor = '#E84747'; // Red for low progress
-    } else if (progress < 0.67) {
-      backgroundColor = '#FAC213'; // Yellow for medium progress
-    } else {
-      backgroundColor = '#4CAF50'; // Green for high progress
-    }
-
-    return (
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBarContainer}>
-          <View
-            style={[
-              styles.progressBar,
-              {width: `${progress * 100}%`, backgroundColor},
-            ]}
-          />
-        </View>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dashboard </Text>
@@ -81,20 +59,24 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
         <AnimatedCircularProgress
           size={200}
           width={20}
-          fill={sustainabilityScore}
+          fill={totalScore / 10}
           tintColor={PRIMARY_GREEN}
           backgroundColor="#DDD"
           padding={10}
           rotation={0}>
           {fill => (
-            <Text
-              style={styles.progressText}>{`${sustainabilityScore}/5`}</Text>
+            <Text style={styles.progressText}>
+              {totalScore > 1000
+                ? 'You have surpassed 1000 points! Compete with friends on Leaderboard'
+                : `${totalScore}/1000`}
+            </Text>
           )}
         </AnimatedCircularProgress>
       </TouchableOpacity>
-
       <Text style={styles.scoreLabel}>Sustainability Score</Text>
-      <ProgressBar current={nutritionScore} total={5} />
+      <View style={styles.progressContainer}>
+        <ProgressBar current={nutritionScore} total={5} />
+      </View>
       <TouchableOpacity onPress={openNutritionModal}>
         <Text style={styles.nutritionScoreLabel}>
           {`Your Nutrition Score ${nutritionScore}/5`}
@@ -105,18 +87,17 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
         To earn more points scan sustainable products & complete quizzes
       </Text>
       <Text style={styles.infoText}>View your past scanned items below</Text>
+      <ButtonGroup>
+        <SecondaryButton
+          title="Saved Items"
+          onPress={() => navigation.navigate('Saved Items')}
+        />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Saved Items')}>
-        <Text style={styles.buttonText}>Scanned Items</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Leaderboard')}>
-        <Text style={styles.buttonText}>See the Leaderboard</Text>
-      </TouchableOpacity>
+        <SecondaryButton
+          title="See the Leaderboard"
+          onPress={() => navigation.navigate('Leaderboard')}
+        />
+      </ButtonGroup>
       <Modal
         animationType="fade"
         transparent={true}
@@ -187,6 +168,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#666',
   },
+  progressContainer: {
+    marginTop: 20,
+    width: '60%',
+  },
   scoreLabel: {
     fontSize: 16,
     marginVertical: 5,
@@ -203,20 +188,6 @@ const styles = StyleSheet.create({
     marginRight: 15,
     textAlign: 'center',
     marginVertical: 10,
-  },
-  button: {
-    backgroundColor: PRIMARY_GREEN,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    width: '60%',
-    borderRadius: BUTTON_BORDERRADIUS,
-    marginVertical: 10,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   centeredView: {
     flex: 1,
@@ -259,21 +230,5 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     padding: 10,
-  },
-  progressContainer: {
-    width: '60%',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  progressBarContainer: {
-    height: 20,
-    width: '100%',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 10,
-    marginTop: 20,
-  },
-  progressBar: {
-    height: '100%',
-    borderRadius: 10,
   },
 });
