@@ -1,11 +1,13 @@
 import React from 'react';
 import {Image, Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 import RatingBar, {RatingBarGroup} from './RatingBar';
-import {TEXT_LARGE} from './sizing';
+import {TEXT_LARGE, TEXT_SMALL} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
 import FoodInfo from './types/FoodInfo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Card from './Card';
+import ProgressBar from './shared/ProgressBar';
+import {DARK_GRAY} from './colors';
 
 type ShortProductInformationProps = {
   product: FoodInfo;
@@ -73,18 +75,20 @@ export function ProductInformation({product}: {product: FoodInfo}) {
 
       <Text style={styles.productNameText}>{product.product_name}</Text>
       <RatingBarGroup>
-        <RatingBar
-          label="Nutri Score"
-          min={0}
-          max={5}
-          actual={product.nutri_score}
-        />
-        <RatingBar
-          label="Sustainability Score"
-          min={0}
-          max={5}
-          actual={product.sustainability}
-        />
+        <View style={styles.scoreLabel}>
+          <Icon name="restaurant" size={23} style={styles.icon} />
+          <Text style={styles.scoreLabelText}>
+            Nutritional Score: {product.nutri_score}/5
+          </Text>
+        </View>
+        <ProgressBar current={product.nutri_score} total={5} />
+        <View style={styles.scoreLabel}>
+          <Icon name="leaf" size={23} style={styles.icon} />
+          <Text style={styles.scoreLabelText}>
+            Sustainability Score: {product.sustainability}/5
+          </Text>
+        </View>
+        <ProgressBar current={product.sustainability} total={5} />
       </RatingBarGroup>
     </Card>
   );
@@ -100,6 +104,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   productNameText: {
+    textAlign: 'center',
     fontSize: TEXT_LARGE,
     fontWeight: 'bold',
     color: 'black',
@@ -129,6 +134,17 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     flex: 1,
+  },
+  scoreLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 10,
+    color: DARK_GRAY,
+  },
+  scoreLabelText: {
+    fontSize: TEXT_SMALL,
   },
   shortProductInformationText: {
     fontSize: TEXT_LARGE,

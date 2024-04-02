@@ -2,7 +2,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {TEXT_LARGE, TEXT_SMALL} from '../sizing';
-import MainButton from './MainButton';
+import FormInputButton from './FormInputButton';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 export default function ImagePickerField({
@@ -36,10 +36,10 @@ export default function ImagePickerField({
             alignItems: 'center',
           }}>
           <Image source={{uri: imageUri}} style={styles.field} />
-          <MainButton title="Replace Image" onPress={chooseImage} />
+          <FormInputButton title="Replace Image" onPress={chooseImage} />
         </View>
       ) : (
-        <MainButton title="Choose Image" onPress={chooseImage} />
+        <FormInputButton title="Choose Image" onPress={chooseImage} />
       )}
     </View>
   );
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     fontSize: TEXT_SMALL,
     fontWeight: 'bold',
     paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   field: {
     width: 60,
