@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, Text, StyleSheet, TouchableOpacity, View} from 'react-native';
-import RatingBar, {RatingBarGroup} from './RatingBar';
+import {RatingBarGroup} from './RatingBar';
 import {TEXT_LARGE, TEXT_MEDIUM, TEXT_SMALL} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
 import FoodInfo from './types/FoodInfo';
@@ -61,20 +61,9 @@ export function ShortProductInformation({
   );
 }
 
-export function ProductInformation({
-  product,
-  onClose,
-}: {
-  product: FoodInfo;
-  onClose: () => void;
-}) {
+export function ProductInformation({product}: {product: FoodInfo}) {
   return (
     <Card>
-      <View style={styles.closeButtonContainer}>
-        <TouchableOpacity onPress={onClose}>
-          <Icon name="close" size={25} color={DARK_GRAY} />
-        </TouchableOpacity>
-      </View>
       {product.image ? (
         <Image src={product.image} style={styles.productImage} />
       ) : (

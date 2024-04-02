@@ -20,8 +20,15 @@ export default function CartInfoScreen({
   },
 }: CartInfoScreenProps) {
   const {data: cart} = useGetCartQuery(cartId);
-  const [finalizeCart] = useFinalizeCartMutation();
+  const [finalizeCart_] = useFinalizeCartMutation();
+  //const [updateCart] = useUpdateCartMutation();
   const [product, setProduct] = useState<FoodInfo | null>(null);
+  const cartName = cart?.name ?? `Cart ${cartId}`;
+
+  function finalizeCart() {
+    finalizeCart_(cartId);
+    setProduct(null);
+  }
 
   return (
     <View style={{padding: 20, flex: 1, backgroundColor: 'white'}}>
@@ -33,11 +40,13 @@ export default function CartInfoScreen({
           {product !== null ? <ProductInformation product={product} /> : ''}
         </View>
       </Modal>
-      <Section title="Cart">
-        <SecondaryButton
-          title="Complete"
-          onPress={() => finalizeCart(cartId)}
-        />
+      <Section
+        title={cartName}
+        editable={true} /*onConfirm={() => updateCart()}*/
+      >
+        {!cart?.finalized ? (
+          <SecondaryButton title="Complete" onPress={() => finalizeCart()} />
+        ) : null}
       </Section>
       <Section title="Products">
         <ShortProductInformationList

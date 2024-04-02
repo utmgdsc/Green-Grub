@@ -4,6 +4,7 @@ import FoodInfo from '../types/FoodInfo';
 
 export type CartStatus = {
   id: number;
+  name?: string;
   finalized: boolean;
 };
 
