@@ -8,7 +8,8 @@ import {quizApi} from './explore/api';
 import {userDashboardApi} from './home/api';
 import {leaderboardApi} from './leaderboard/api';
 import {savedItemsApi} from './savedItems/api';
-import {setupListeners} from '@reduxjs/toolkit/query';
+import {cartApi} from './cart/api';
+import {userApi} from './login/api';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -19,6 +20,8 @@ const rootReducer = combineReducers({
   [userDashboardApi.reducerPath]: userDashboardApi.reducer,
   [leaderboardApi.reducerPath]: leaderboardApi.reducer,
   [savedItemsApi.reducerPath]: savedItemsApi.reducer,
+  [cartApi.reducerPath]: cartApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 });
 
 export const store = configureStore({
@@ -32,6 +35,8 @@ export const store = configureStore({
       userDashboardApi.middleware,
       leaderboardApi.middleware,
       savedItemsApi.middleware,
+      cartApi.middleware,
+      userApi.middleware,
     ),
   reducer: rootReducer,
 });

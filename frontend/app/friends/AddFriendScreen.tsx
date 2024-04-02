@@ -3,7 +3,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import {FriendsStackParamList} from './FriendsTab';
 import {StackScreenProps} from '@react-navigation/stack';
 import TextInputField from '../shared/TextInputField';
-import MainButton from '../shared/MainButton';
+import SecondaryButton from '../shared/SecondaryButton';
 import {useAddFriendMutation} from './api';
 
 type AddFriendScreenProps = StackScreenProps<
@@ -25,7 +25,7 @@ export default function AddFriendScreen({}: AddFriendScreenProps): JSX.Element {
         isSecureText={false}
       />
       <Text style={styles.responseText}>{message}</Text>
-      <MainButton
+      <SecondaryButton
         title="Add Friend"
         onPress={async () => {
           updateFriends(username);

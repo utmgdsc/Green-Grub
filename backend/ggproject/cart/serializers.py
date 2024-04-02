@@ -6,7 +6,7 @@ from django.db.models import Avg
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = ['id', 'finalized']
+        fields = ['id', 'finalized', 'name']
         read_only_fields = ('id', 'finalized')
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -32,7 +32,7 @@ class DetailedCartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ['id', 'finalized', 'items', 'average_nutri_score', 'average_sustainability_score']
+        fields = ['id', 'finalized', 'name', 'items', 'average_nutri_score', 'average_sustainability_score']
 
     def get_average_nutri_score(self, obj):
         # Filter out products with a nutri_score of 0 or below

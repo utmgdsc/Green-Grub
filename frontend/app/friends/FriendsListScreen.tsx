@@ -14,7 +14,7 @@ import {
   useGetFriendsRequestsReceivedQuery,
 } from './api';
 import {FriendInformation} from './FriendInformationScreen';
-import MainButton from '../shared/MainButton';
+import SecondaryButton from '../shared/SecondaryButton';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {FriendsStackParamList} from './FriendsTab';
 
@@ -49,7 +49,7 @@ function FriendsList({
   return (
     <View style={styles.friendsList}>
       {friendInvitations && friendInvitations.length > 0 ? (
-        <MainButton
+        <SecondaryButton
           title="Pending Friend Invitations"
           onPress={() => navigation.navigate('Invitations')}
         />
@@ -64,8 +64,10 @@ function FriendsList({
             onRequestClose={() => setViewFriend(null)}>
             <View style={styles.friendInfoModal}>
               {viewFriend !== null ? (
-                <FriendInformation friend={viewFriend}>
-                  <MainButton
+                <FriendInformation
+                  friend={viewFriend}
+                  onClose={() => setViewFriend(null)}>
+                  <SecondaryButton
                     title="Unfriend"
                     onPress={() => {
                       unfriend(viewFriend.username);
@@ -93,7 +95,9 @@ function FriendsList({
           />
         </View>
       ) : (
-        <Text style={styles.noFriendsText}>You don't have any friends yet</Text>
+        <Text style={styles.noFriendsText}>
+          Add more friends to see your friends here
+        </Text>
       )}
     </View>
   );

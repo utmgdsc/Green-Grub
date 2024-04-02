@@ -41,12 +41,13 @@ const QuizItem = ({
   navigation,
 }: QuizProps) => {
   const handlePress = () => {
-    console.log('quiz id', id);
-    navigation.navigate('QuizDetailsScreen', {
-      quizId: id,
-      quizTopic: topic_title,
-      questionNumber: 1,
-    });
+    if (completed == false) {
+      navigation.navigate('QuizDetailsScreen', {
+        quizId: id,
+        quizTopic: topic_title,
+        questionNumber: 1,
+      });
+    }
   };
 
   return (
@@ -62,7 +63,6 @@ const QuizItem = ({
 const QuizListScreen = ({route, navigation}: QuizListScreenProps) => {
   const {topicId} = route.params;
   const {data, isLoading} = useGetQuizzesQuery(topicId);
-  console.log(data);
 
   if (isLoading) {
     return (

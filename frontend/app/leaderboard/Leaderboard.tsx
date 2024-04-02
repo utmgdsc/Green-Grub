@@ -2,7 +2,13 @@ import React from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {LeaderboardEntry, useGetLeaderboardQuery} from '../explore/api';
 import LinearGradient from 'react-native-linear-gradient';
-import {TEXT_LARGE, TEXT_MEDIUM, TEXT_XLARGE} from '../sizing';
+import {PRIMARY_BLUE} from '../colors';
+import {
+  BUTTON_BORDERRADIUS,
+  TEXT_LARGE,
+  TEXT_MEDIUM,
+  TEXT_XLARGE,
+} from '../sizing';
 
 function colorForPlace(place: number) {
   if (place === 1) {
@@ -14,7 +20,7 @@ function colorForPlace(place: number) {
   if (place === 3) {
     return '#CD7F32';
   }
-  return '#3AC765';
+  return PRIMARY_BLUE;
 }
 
 function LeaderboardPlace({place}: {place: number}) {
@@ -25,17 +31,17 @@ function LeaderboardPlace({place}: {place: number}) {
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: 'gray',
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 5,
+        elevation: 1,
       }}>
       <Text
         // eslint-disable-next-line react-native/no-inline-styles
         style={{
-          color: 'white',
+          color: 'black',
+          fontWeight: 'bold',
           fontSize: TEXT_MEDIUM,
-          fontFamily: 'Peralta-Regular',
         }}>
         {place}
       </Text>
@@ -68,7 +74,7 @@ export default function Leaderboard({}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.leaderboardText}>Leaderboard</Text>
+      <Text style={styles.mainTitleText}>Leaderboard </Text>
       <FlatList
         style={styles.listContainer}
         contentContainerStyle={styles.listContentContainer}
@@ -84,7 +90,7 @@ export default function Leaderboard({}) {
 }
 
 const styles = StyleSheet.create({
-  leaderboardText: {
+  mainTitleText: {
     fontFamily: 'Pacifico-Regular',
     color: 'black',
     fontSize: TEXT_XLARGE,
@@ -103,10 +109,10 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   leaderboardItem: {
-    elevation: 10,
-    borderRadius: 20,
+    elevation: 5,
+    borderRadius: BUTTON_BORDERRADIUS,
     width: '100%',
-    padding: 20,
+    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -117,13 +123,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   leaderboardItemText: {
-    color: 'black',
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: TEXT_MEDIUM,
-    fontFamily: 'Peralta-Regular',
   },
   leaderboardScore: {
     color: 'black',
+    fontWeight: 'bold',
+    paddingRight: 20,
     fontSize: TEXT_LARGE,
-    fontFamily: 'Peralta-Regular',
   },
 });

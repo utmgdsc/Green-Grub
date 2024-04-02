@@ -7,7 +7,8 @@ import {
 } from '@react-navigation/stack';
 import AddFriendScreen from './AddFriendScreen';
 import FriendsListScreen from './FriendsListScreen';
-import {Button, View} from 'react-native';
+import {View} from 'react-native';
+import SecondaryButton from '../shared/SecondaryButton';
 import FriendInvitationScreen from './FriendInvitationsScreen';
 
 type FriendScreenProps = BottomTabScreenProps<MainTabsParamList, 'Friends'>;
@@ -35,7 +36,7 @@ export default function FriendsScreen({navigation}: FriendScreenProps) {
           headerRight: () => (
             // eslint-disable-next-line react-native/no-inline-styles
             <View style={{paddingHorizontal: 10}}>
-              <Button
+              <SecondaryButton
                 title="Add Friend"
                 onPress={() => {
                   (

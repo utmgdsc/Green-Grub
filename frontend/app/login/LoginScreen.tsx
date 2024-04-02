@@ -81,7 +81,7 @@ export default function LoginScreen({navigation}: StartScreenProps) {
           />
           <ButtonGroup>
             <MainButton title="Login" onPress={handleLogin} />
-            <MainButton title="Back" onPress={handleBack} />
+            <MainButton title="Back to Login" onPress={handleBack} />
           </ButtonGroup>
         </>
       )}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
-    paddingBottom: 100,
+    paddingBottom: 150,
   },
   title: {
     fontSize: TEXT_HUGE,
