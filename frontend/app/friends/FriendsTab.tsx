@@ -9,7 +9,6 @@ import AddFriendScreen from './AddFriendScreen';
 import FriendsListScreen from './FriendsListScreen';
 import {View} from 'react-native';
 import SecondaryButton from '../shared/SecondaryButton';
-import FriendInvitationScreen from './FriendInvitationsScreen';
 
 type FriendScreenProps = BottomTabScreenProps<MainTabsParamList, 'Friends'>;
 
@@ -53,7 +52,6 @@ export default function FriendsScreen({navigation}: FriendScreenProps) {
         }}
       />
       <Stack.Screen name="Add Friend" component={AddFriendScreen} />
-      <Stack.Screen name="Invitations" component={FriendInvitationScreen} />
     </Stack.Navigator>
   );
 }
