@@ -15,13 +15,20 @@ import {
 import Section from '../Section';
 import FoodInfo from '../types/FoodInfo';
 import SecondaryButton from '../shared/SecondaryButton';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {MainTabsParamList} from '../MainTabs';
+import {CompositeScreenProps} from '@react-navigation/native';
 
-type CartInfoScreenProps = StackScreenProps<CartStackParamList, 'Cart Details'>;
+type CartInfoScreenProps = CompositeScreenProps<
+  StackScreenProps<CartStackParamList, 'Cart Details'>,
+  BottomTabScreenProps<MainTabsParamList>
+>;
 
 export default function CartInfoScreen({
   route: {
     params: {cartId},
   },
+  navigation,
 }: CartInfoScreenProps) {
   const {data: cart} = useGetCartQuery(cartId);
   const [finalizeCart_] = useFinalizeCartMutation();
@@ -48,8 +55,13 @@ export default function CartInfoScreen({
         title={cartName}
         editable={true}
         onConfirm={name => updateCartName({cart_id: cartId, name})}>
-        {!cart?.finalized ? (
+        {!cart?.finalized && (cart?.items.length ?? 0) > 0 ? (
           <SecondaryButton title="Complete" onPress={() => finalizeCart()} />
+        ) : !cart?.finalized && (cart?.items.length ?? 1) === 0 ? (
+          <SecondaryButton
+            title="Scan Items to Add"
+            onPress={() => navigation.navigate('Scan Tab')}
+          />
         ) : null}
       </Section>
       <Section title="Products">
