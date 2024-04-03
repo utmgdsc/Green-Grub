@@ -7,7 +7,11 @@ import {
   ShortProductInformationList,
 } from '../ProductInformation';
 import {CartStackParamList} from './CartTab';
-import {useFinalizeCartMutation, useGetCartQuery} from './api';
+import {
+  useFinalizeCartMutation,
+  useGetCartQuery,
+  useUpdateCartNameMutation,
+} from './api';
 import Section from '../Section';
 import FoodInfo from '../types/FoodInfo';
 import SecondaryButton from '../shared/SecondaryButton';
@@ -21,7 +25,7 @@ export default function CartInfoScreen({
 }: CartInfoScreenProps) {
   const {data: cart} = useGetCartQuery(cartId);
   const [finalizeCart_] = useFinalizeCartMutation();
-  //const [updateCart] = useUpdateCartMutation();
+  const [updateCartName] = useUpdateCartNameMutation();
   const [product, setProduct] = useState<FoodInfo | null>(null);
   const cartName = cart?.name ?? `Cart ${cartId}`;
 
@@ -42,8 +46,8 @@ export default function CartInfoScreen({
       </Modal>
       <Section
         title={cartName}
-        editable={true} /*onConfirm={() => updateCart()}*/
-      >
+        editable={true}
+        onConfirm={name => updateCartName({cart_id: cartId, name})}>
         {!cart?.finalized ? (
           <SecondaryButton title="Complete" onPress={() => finalizeCart()} />
         ) : null}

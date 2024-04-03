@@ -16,7 +16,7 @@ import {
   useGetAllCartsQuery,
 } from './api';
 import {TouchableOpacity} from 'react-native';
-import {TEXT_LARGE, TEXT_MEDIUM, TEXT_XLARGE, TEXT_SMALL} from '../sizing';
+import {TEXT_MEDIUM, TEXT_XLARGE, TEXT_SMALL} from '../sizing';
 import SecondaryButton from '../shared/SecondaryButton';
 import Section from '../Section';
 
@@ -35,10 +35,13 @@ export function ShortCartInformation({
   cart,
   onSelected,
 }: ShortCartInformationProps) {
+  const cartName = cart.name ?? `Cart ${cart.id}`;
+
   return (
     <TouchableOpacity style={styles.shortCartInformation} onPress={onSelected}>
+      <Text style={styles.shortCartInformationHeaderText}>{cartName}</Text>
       <Text style={styles.shortCartInformationText}>
-        {`Cart ${cart.id} - ${cart.items.length} items`}
+        {cart.items.length} items
       </Text>
     </TouchableOpacity>
   );
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
   shortCartInformation: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    justifyContent: 'space-between',
     padding: 10,
     margin: 5,
     borderColor: 'lightgray',
@@ -168,10 +171,14 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
   },
-  shortCartInformationText: {
-    fontSize: TEXT_LARGE,
-    flex: 6,
+  shortCartInformationHeaderText: {
+    fontSize: TEXT_MEDIUM,
     color: 'black',
+  },
+  shortCartInformationText: {
+    fontSize: TEXT_SMALL,
+    color: 'black',
+    fontStyle: 'italic',
   },
   noCartsFound: {
     fontSize: TEXT_MEDIUM,
