@@ -4,28 +4,45 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import Card from '../Card';
 import {useGetOtherUserQuery, useGetReducedUserQuery} from '../login/api';
 import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 type ProfileSummaryProps = PropsWithChildren<{
   username: string;
 }>;
 
 type ProfileImageProps = {
-  uri: string;
+  uri?: string;
   size: number;
 };
 
-function ProfileImage({uri, size}: ProfileImageProps) {
-  return (
-    <Image
-      source={{uri}}
-      style={{
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-        paddingHorizontal: 20,
-      }}
-    />
-  );
+export function ProfileImage({uri, size}: ProfileImageProps) {
+  if (!uri || uri.endsWith('default.png')) {
+    return (
+      <View
+        style={{
+          backgroundColor: 'gray',
+          opacity: 0.7,
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Icon name="question" color="white" size={size * (5 / 6)} />
+      </View>
+    );
+  } else {
+    return (
+      <Image
+        source={{uri}}
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+        }}
+      />
+    );
+  }
 }
 
 export function ReducedProfileSummary({

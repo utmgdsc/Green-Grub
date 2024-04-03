@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
-  FlatList,
+  ActivityIndicator,
   Modal,
   StyleSheet,
   Text,
@@ -15,8 +15,10 @@ import {
   useGetFriendsRequestsReceivedQuery,
 } from './api';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {ReducedProfileSummary} from '../profile/ProfileSummary';
+import {ProfileImage, ReducedProfileSummary} from '../profile/ProfileSummary';
 import {SecondaryButtonDynamic} from '../shared/SecondaryButton';
+import {TEXT_SMALL} from '../sizing';
+import {useGetReducedUserQuery} from '../login/api';
 
 type FriendProps = {
   friend: Friend;
@@ -26,10 +28,14 @@ type FriendProps = {
 function ShortPendingFriendInfo({friend, onSelected}: FriendProps) {
   const [acceptFriend] = useAcceptFriendMutation();
   const [declineFriend] = useDeclineFriendMutation();
+  const {data: friendUser} = useGetReducedUserQuery(friend.username);
 
   return (
     <TouchableOpacity style={styles.friend} onPress={onSelected}>
-      <Text style={styles.friendText}>{friend.username}</Text>
+      <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+        <ProfileImage uri={friendUser?.avatar_url} size={50} />
+        <Text style={styles.friendText}>{friend.username}</Text>
+      </View>
       <View style={styles.friendInfoDirectAction}>
         <TouchableOpacity onPress={() => acceptFriend(friend.username)}>
           <Icon name="checkcircle" size={40} color="green" />
@@ -47,77 +53,83 @@ export default function FriendsList() {
   const {
     data: friends,
     refetch,
-    isLoading,
+    isFetching,
   } = useGetFriendsRequestsReceivedQuery();
   const [acceptFriend] = useAcceptFriendMutation();
   const [declineFriend] = useDeclineFriendMutation();
 
-  return friends && friends.length > 0 ? (
-    <View>
-      <Modal
-        animationType="slide"
-        visible={!!viewFriend}
-        onRequestClose={() => setViewFriend(null)}>
-        <View style={styles.friendInfoModal}>
-          {viewFriend !== null ? (
-            <ReducedProfileSummary username={viewFriend.username}>
-              <View
-                style={{
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  gap: 20,
-                }}>
-                <SecondaryButtonDynamic
-                  style={{flexGrow: 1}}
-                  title="Decline"
-                  onPress={() => {
-                    declineFriend(viewFriend.username);
-                    setViewFriend(null);
-                  }}
-                />
-                <SecondaryButtonDynamic
-                  style={{flexGrow: 1}}
-                  title="Accept"
-                  onPress={() => {
-                    acceptFriend(viewFriend.username);
-                    setViewFriend(null);
-                  }}
-                />
-              </View>
-            </ReducedProfileSummary>
-          ) : (
-            ''
-          )}
+  if (isFetching) {
+    return <ActivityIndicator size="large" color="gray" />;
+  }
+
+  return (
+    <>
+      {friends && friends.length > 0 ? (
+        <View>
+          <Modal
+            animationType="slide"
+            visible={!!viewFriend}
+            onRequestClose={() => setViewFriend(null)}>
+            <View style={styles.friendInfoModal}>
+              {viewFriend !== null ? (
+                <ReducedProfileSummary username={viewFriend.username}>
+                  <View
+                    style={{
+                      width: '100%',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      gap: 20,
+                    }}>
+                    <SecondaryButtonDynamic
+                      style={{flexGrow: 1}}
+                      title="Decline"
+                      onPress={() => {
+                        declineFriend(viewFriend.username);
+                        setViewFriend(null);
+                      }}
+                    />
+                    <SecondaryButtonDynamic
+                      style={{flexGrow: 1}}
+                      title="Accept"
+                      onPress={() => {
+                        acceptFriend(viewFriend.username);
+                        setViewFriend(null);
+                      }}
+                    />
+                  </View>
+                </ReducedProfileSummary>
+              ) : null}
+            </View>
+          </Modal>
+          {friends.map(item => (
+            <ShortPendingFriendInfo
+              friend={item}
+              onSelected={() => setViewFriend(item)}
+            />
+          ))}
         </View>
-      </Modal>
-      <FlatList
-        data={friends}
-        style={{height: '100%', width: '100%'}}
-        renderItem={({item}) => (
-          <ShortPendingFriendInfo
-            friend={item}
-            onSelected={() => setViewFriend(item)}
-          />
-        )}
-        refreshing={isLoading}
-        onRefresh={refetch}
-      />
-    </View>
-  ) : (
-    <Text style={styles.noFriendsText}>
-      You don't have any friend invitations
-    </Text>
+      ) : (
+        <Text style={styles.noFriendsText}>
+          You don't have any friend invitations
+        </Text>
+      )}
+      <TouchableOpacity onPress={refetch}>
+        <Text style={styles.refreshText}>Refresh</Text>
+      </TouchableOpacity>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   friend: {
+    width: '100%',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
   },
   friendText: {
     fontSize: 20,
@@ -139,5 +151,12 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  refreshText: {
+    fontSize: TEXT_SMALL,
+    fontStyle: 'italic',
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

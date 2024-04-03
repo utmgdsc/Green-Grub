@@ -7,18 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  useGetFriendsQuery,
-  Friend,
-  useRemoveFriendMutation,
-  useGetFriendsRequestsReceivedQuery,
-} from './api';
+import {useGetFriendsQuery, Friend, useRemoveFriendMutation} from './api';
 import SecondaryButton from '../shared/SecondaryButton';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {StackScreenProps} from '@react-navigation/stack';
 import {FriendsStackParamList} from './FriendsTab';
-import ProfileSummary from '../profile/ProfileSummary';
+import ProfileSummary, {ProfileImage} from '../profile/ProfileSummary';
 import Section from '../Section';
 import FriendsInvitationList from './FriendsInvitationList';
+import {useGetOtherUserQuery} from '../login/api';
 
 type FriendsListScreenProps = StackScreenProps<
   FriendsStackParamList,
@@ -31,33 +27,22 @@ type FriendProps = {
 };
 
 function ShortFriendInfo({friend, onSelected}: FriendProps) {
+  const {data: friendUser} = useGetOtherUserQuery(friend.username);
   return (
     <TouchableOpacity style={styles.friend} onPress={onSelected}>
+      <ProfileImage uri={friendUser?.extra_info.avatar_url} size={50} />
       <Text style={styles.friendText}>{friend.username}</Text>
     </TouchableOpacity>
   );
 }
 
-function FriendsList({
-  navigation,
-}: {
-  navigation: StackNavigationProp<FriendsStackParamList, 'Your Friends'>;
-}) {
+function FriendsList() {
   const [viewFriend, setViewFriend] = React.useState<Friend | null>(null);
-  const {data: friendInvitations} = useGetFriendsRequestsReceivedQuery();
   const {data: friends, refetch, isLoading} = useGetFriendsQuery();
   const [unfriend] = useRemoveFriendMutation();
 
   return (
     <View style={styles.friendsList}>
-      {friendInvitations && friendInvitations.length > 0 ? (
-        <SecondaryButton
-          title="Pending Friend Invitations"
-          onPress={() => navigation.navigate('Invitations')}
-        />
-      ) : (
-        ''
-      )}
       {friends && friends.length > 0 ? (
         <View>
           <Modal
@@ -103,16 +88,14 @@ function FriendsList({
   );
 }
 
-export default function FriendsListScreen({
-  navigation,
-}: FriendsListScreenProps): JSX.Element {
+export default function FriendsListScreen({}: FriendsListScreenProps): JSX.Element {
   return (
     <View>
       <Section title="Invitations">
         <FriendsInvitationList />
       </Section>
       <Section title="Your Friends">
-        <FriendsList navigation={navigation} />
+        <FriendsList />
       </Section>
     </View>
   );
@@ -124,6 +107,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   friend: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
