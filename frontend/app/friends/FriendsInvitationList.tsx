@@ -42,7 +42,7 @@ function ShortPendingFriendInfo({friend, onSelected}: FriendProps) {
   );
 }
 
-function FriendsList() {
+export default function FriendsList() {
   const [viewFriend, setViewFriend] = React.useState<Friend | null>(null);
   const {
     data: friends,
@@ -108,14 +108,6 @@ function FriendsList() {
     <Text style={styles.noFriendsText}>
       You don't have any friend invitations
     </Text>
-  );
-}
-
-export default function FriendInvitationScreen(): JSX.Element {
-  return (
-    <View>
-      <FriendsList />
-    </View>
   );
 }
 

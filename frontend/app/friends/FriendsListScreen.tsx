@@ -17,6 +17,8 @@ import SecondaryButton from '../shared/SecondaryButton';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {FriendsStackParamList} from './FriendsTab';
 import ProfileSummary from '../profile/ProfileSummary';
+import Section from '../Section';
+import FriendsInvitationList from './FriendsInvitationList';
 
 type FriendsListScreenProps = StackScreenProps<
   FriendsStackParamList,
@@ -101,12 +103,17 @@ function FriendsList({
   );
 }
 
-export default function AddFriendScreen({
+export default function FriendsListScreen({
   navigation,
 }: FriendsListScreenProps): JSX.Element {
   return (
     <View>
-      <FriendsList navigation={navigation} />
+      <Section title="Invitations">
+        <FriendsInvitationList />
+      </Section>
+      <Section title="Your Friends">
+        <FriendsList navigation={navigation} />
+      </Section>
     </View>
   );
 }
