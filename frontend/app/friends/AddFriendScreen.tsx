@@ -4,7 +4,7 @@ import {FriendsStackParamList} from './FriendsTab';
 import {StackScreenProps} from '@react-navigation/stack';
 import TextInputField from '../shared/TextInputField';
 import SecondaryButton from '../shared/SecondaryButton';
-import {useAddFriendMutation} from './api';
+import {useAddFriendMutation, useGetFriendsQuery} from './api';
 import {ReducedProfileSummary} from '../profile/ProfileSummary';
 
 type AddFriendScreenProps = StackScreenProps<
@@ -14,21 +14,30 @@ type AddFriendScreenProps = StackScreenProps<
 
 export default function AddFriendScreen({}: AddFriendScreenProps): JSX.Element {
   const [updateFriends, result] = useAddFriendMutation();
+  const {data: friends} = useGetFriendsQuery();
   const [username, setUsername] = useState('');
   const [displayUsername, setDisplayUsername] = useState('');
-  const message =
+  let message =
     result.data?.message ?? (result.error as {message?: string})?.message ?? '';
+  let alreadyFriends = false;
+  if (friends && friends.some(friend => friend.username === displayUsername)) {
+    alreadyFriends = true;
+  }
 
   return (
     <View style={styles.container}>
       {displayUsername && (
         <ReducedProfileSummary username={displayUsername}>
-          <SecondaryButton
-            title="Add Friend"
-            onPress={async () => {
-              await updateFriends(displayUsername);
-            }}
-          />
+          {!alreadyFriends ? (
+            <SecondaryButton
+              title="Add Friend"
+              onPress={async () => {
+                await updateFriends(displayUsername);
+              }}
+            />
+          ) : (
+            <Text style={styles.responseText}>Already friends!</Text>
+          )}
         </ReducedProfileSummary>
       )}
       <Text style={styles.responseText}>{message}</Text>
