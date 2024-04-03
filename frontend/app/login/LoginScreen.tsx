@@ -81,7 +81,7 @@ export default function LoginScreen({navigation}: StartScreenProps) {
           />
           <ButtonGroup>
             <MainButton title="Login" onPress={handleLogin} />
-            <MainButton title="Back to Login" onPress={handleBack} />
+            <MainButton title="Back" onPress={handleBack} />
           </ButtonGroup>
         </>
       )}

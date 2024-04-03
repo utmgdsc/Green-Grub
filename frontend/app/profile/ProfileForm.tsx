@@ -9,11 +9,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../store';
 import {User, userApi} from '../login/api';
 import {logout} from '../authSlice';
+import TextField from '../shared/TextField';
 
 export default function ProfileForm({user}: {user: User}) {
   const dispatch = useDispatch<AppDispatch>();
   const authToken = useSelector((state: RootState) => state.auth.accessToken);
-  const [username, setLocalUsername] = useState(user.username);
+  const username = user.username;
   const [password, setLocalPassword] = useState('');
   const [emailAddress, setEmailAddress] = useState(user.email);
   const [firstName, setFirstName] = useState(user.first_name);
@@ -58,12 +59,7 @@ export default function ProfileForm({user}: {user: User}) {
     <ScrollView style={{width: '100%'}}>
       <View style={styles.container}>
         <TextInputGroup>
-          <TextInputField
-            title="Username"
-            onChangeText={setLocalUsername}
-            value={username}
-            isSecureText={false}
-          />
+          <TextField title="Username" value={username} />
           <TextInputField
             title="Email Address"
             onChangeText={setEmailAddress}
