@@ -5,6 +5,7 @@ import Card from '../Card';
 import {useGetOtherUserQuery, useGetReducedUserQuery} from '../login/api';
 import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 type ProfileSummaryProps = PropsWithChildren<{
   username: string;
@@ -49,10 +50,21 @@ export function ReducedProfileSummary({
   username,
   children,
 }: ProfileSummaryProps) {
-  const {data: user, isLoading} = useGetReducedUserQuery(username);
+  const {data: user, isLoading, isError} = useGetReducedUserQuery(username);
 
   if (isLoading || !user) {
     return null;
+  }
+
+  if (isError) {
+    return (
+      <Card>
+        <View style={styles.userNotFound}>
+          <Ionicon name="warning-outline" size={200} color="black" />
+          <Text style={styles.userNotFoundText}>User not found</Text>
+        </View>
+      </Card>
+    );
   }
 
   return (
@@ -124,5 +136,16 @@ const styles = StyleSheet.create({
     fontSize: TEXT_MEDIUM,
     color: 'black',
     flex: 1,
+  },
+  userNotFound: {
+    paddingVertical: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userNotFoundText: {
+    fontSize: TEXT_LARGE,
+    fontWeight: 'bold',
+    color: 'black',
+    textAlign: 'center',
   },
 });
