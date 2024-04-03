@@ -1,4 +1,4 @@
-import React, {PropsWithChildren} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TEXT_SMALL} from '../sizing';
 
@@ -6,10 +6,6 @@ type TextFieldProps = {
   title: string;
   value: string;
 };
-
-export function TextInputGroup({children}: PropsWithChildren) {
-  return <View style={styles.inputGroup}>{children}</View>;
-}
 
 export default function TextField({title, value}: TextFieldProps) {
   return (
@@ -38,21 +34,10 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    borderWidth: 1,
-    borderColor: '#ddd',
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
-    backgroundColor: '#FFF',
+    color: 'white',
     marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-    color: 'black',
   },
 });
