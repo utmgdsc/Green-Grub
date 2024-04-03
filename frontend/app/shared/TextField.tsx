@@ -1,33 +1,21 @@
 import React, {PropsWithChildren} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {TEXT_SMALL} from '../sizing';
 
-type TextInputFieldProps = {
+type TextFieldProps = {
   title: string;
   value: string;
-  isSecureText: boolean;
-  onChangeText: (text: string) => void;
 };
 
 export function TextInputGroup({children}: PropsWithChildren) {
   return <View style={styles.inputGroup}>{children}</View>;
 }
 
-export default function TextInputField({
-  title,
-  value,
-  onChangeText,
-  isSecureText,
-}: TextInputFieldProps) {
+export default function TextField({title, value}: TextFieldProps) {
   return (
     <View style={styles.inputView}>
       <Text style={styles.inputTitle}>{title}</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeText}
-        secureTextEntry={isSecureText}
-        value={value}
-      />
+      <Text style={styles.input}>{value}</Text>
     </View>
   );
 }

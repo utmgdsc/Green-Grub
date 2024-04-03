@@ -132,7 +132,7 @@ export default function RegisterForm({}) {
         </TextInputGroup>
         <ButtonGroup style={{marginVertical: 20}}>
           <MainButton title="Register" onPress={handleRegister} />
-          <MainButton title="Back to Login" onPress={handleBack} />
+          <MainButton title="Back" onPress={handleBack} />
         </ButtonGroup>
       </View>
     </ScrollView>
