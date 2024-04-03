@@ -15,7 +15,7 @@ import {
   useGetFriendsRequestsReceivedQuery,
 } from './api';
 import Icon from 'react-native-vector-icons/AntDesign';
-import ProfileSummary from '../profile/ProfileSummary';
+import {ReducedProfileSummary} from '../profile/ProfileSummary';
 import {SecondaryButtonDynamic} from '../shared/SecondaryButton';
 
 type FriendProps = {
@@ -60,7 +60,7 @@ function FriendsList() {
         onRequestClose={() => setViewFriend(null)}>
         <View style={styles.friendInfoModal}>
           {viewFriend !== null ? (
-            <ProfileSummary username={viewFriend.username}>
+            <ReducedProfileSummary username={viewFriend.username}>
               <View
                 style={{
                   width: '100%',
@@ -71,15 +71,21 @@ function FriendsList() {
                 <SecondaryButtonDynamic
                   style={{flexGrow: 1}}
                   title="Decline"
-                  onPress={() => declineFriend(viewFriend.username)}
+                  onPress={() => {
+                    declineFriend(viewFriend.username);
+                    setViewFriend(null);
+                  }}
                 />
                 <SecondaryButtonDynamic
                   style={{flexGrow: 1}}
                   title="Accept"
-                  onPress={() => acceptFriend(viewFriend.username)}
+                  onPress={() => {
+                    acceptFriend(viewFriend.username);
+                    setViewFriend(null);
+                  }}
                 />
               </View>
-            </ProfileSummary>
+            </ReducedProfileSummary>
           ) : (
             ''
           )}

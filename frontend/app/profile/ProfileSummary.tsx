@@ -2,7 +2,7 @@
 import React, {PropsWithChildren} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import Card from '../Card';
-import {useGetOtherUserQuery} from '../login/api';
+import {useGetOtherUserQuery, useGetReducedUserQuery} from '../login/api';
 import {TEXT_LARGE, TEXT_MEDIUM} from '../sizing';
 
 type ProfileSummaryProps = PropsWithChildren<{
@@ -28,6 +28,27 @@ function ProfileImage({uri, size}: ProfileImageProps) {
   );
 }
 
+export function ReducedProfileSummary({
+  username,
+  children,
+}: ProfileSummaryProps) {
+  const {data: user, isLoading} = useGetReducedUserQuery(username);
+
+  if (isLoading || !user) {
+    return null;
+  }
+
+  return (
+    <Card>
+      <View style={{width: '100%', alignItems: 'center'}}>
+        <ProfileImage uri={user.avatar_url} size={100} />
+        <Text style={styles.usernameText}>{username}</Text>
+        {children}
+      </View>
+    </Card>
+  );
+}
+
 export default function ProfileSummary({
   username,
   children,
@@ -41,6 +62,8 @@ export default function ProfileSummary({
   const {extra_info: extra_info_} = user;
   let extra_info = {...extra_info_};
   const info = {
+    'First Name': user.first_name,
+    'Last Name': user.last_name,
     City: extra_info.city,
     Country: extra_info.country,
   };

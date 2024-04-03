@@ -13,6 +13,13 @@ export type User = {
   };
 };
 
+export type ReducedUser = {
+  username: string;
+  first_name: string;
+  last_name: string;
+  avatar_url: string;
+};
+
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQueryWithReauth,
@@ -32,7 +39,15 @@ export const userApi = createApi({
       }),
       providesTags: ['User'],
     }),
+    getReducedUser: build.query<ReducedUser, string>({
+      query: username => ({
+        url: `/get_basic_user_info/${username}/`,
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
   }),
 });
 
-export const {useGetUserQuery, useGetOtherUserQuery} = userApi;
+export const {useGetUserQuery, useGetOtherUserQuery, useGetReducedUserQuery} =
+  userApi;

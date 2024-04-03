@@ -253,6 +253,7 @@ def get_friends_user_info(request, username):
     if not Friends.objects.filter(
         ((Q(user1=request.user) & Q(user2=friend_user)) | 
          (Q(user1=friend_user) & Q(user2=request.user))),
+         status='accepted'
     ).exists():
         return Response({'message': 'You are not friends with the requested user'}, status=status.HTTP_403_FORBIDDEN)
     
