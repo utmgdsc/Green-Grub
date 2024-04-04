@@ -4,6 +4,7 @@ import FoodInfo from '../types/FoodInfo';
 
 export type CartStatus = {
   id: number;
+  name?: string;
   finalized: boolean;
 };
 
@@ -17,7 +18,7 @@ export type Cart = CartStatus & {
 
 export type CartModification = {
   cart_id: number;
-  barcode: number;
+  barcode: string;
   change_amount: number;
 };
 
@@ -62,6 +63,14 @@ export const cartApi = createApi({
       }),
       providesTags: ['CartItem'],
     }),
+    updateCartName: build.mutation<void, {cart_id: number; name: string}>({
+      query: ({cart_id, name}) => ({
+        url: '/update_cart_name/',
+        method: 'POST',
+        body: {name, cart_id},
+      }),
+      invalidatesTags: ['CartItem'],
+    }),
   }),
 });
 
@@ -76,4 +85,5 @@ export const {
   useGetCartQuery,
   useGetAllCartsQuery,
   useFinalizeCartMutation,
+  useUpdateCartNameMutation,
 } = cartApi;
