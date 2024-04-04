@@ -23,7 +23,6 @@ export default function ScanResultScreen({
   const activeCart = useActiveCart();
   const [modifyCart] = useModifyCartMutation();
   const [itemAdded, setItemAdded] = useState(false);
-  const [numItems, setNumItems] = useState(1);
   const {data: product, isLoading} = useGetProductInfoQuery(
     route.params.barcode,
   );
@@ -33,8 +32,8 @@ export default function ScanResultScreen({
     if (activeCart) {
       modifyCart({
         cart_id: activeCart.id,
-        barcode: parseInt(route.params.barcode, 10),
-        change_amount: numItems,
+        barcode: route.params.barcode,
+        change_amount: 1,
       });
       setItemAdded(true);
     }
