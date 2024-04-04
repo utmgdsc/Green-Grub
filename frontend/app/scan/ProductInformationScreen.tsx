@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
-import MainButton from '../shared/MainButton';
+import SecondaryButton from '../shared/SecondaryButton';
 import ButtonGroup from '../shared/ButtonGroup';
 import {useGetProductInfoQuery} from './api';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,6 +9,7 @@ import {ScanStackParamList} from './ScanTab';
 import {useUpdateSavedItemsMutation} from '../savedItems/api';
 import {TEXT_LARGE} from '../sizing';
 import {ProductInformation} from '../ProductInformation';
+import {useActiveCart, useModifyCartMutation} from '../cart/api';
 
 type ScanResultScreenProps = StackScreenProps<
   ScanStackParamList,
@@ -19,10 +20,24 @@ export default function ScanResultScreen({
   navigation,
   route,
 }: ScanResultScreenProps) {
+  const activeCart = useActiveCart();
+  const [modifyCart] = useModifyCartMutation();
+  const [itemAdded, setItemAdded] = useState(false);
   const {data: product, isLoading} = useGetProductInfoQuery(
     route.params.barcode,
   );
   const [update] = useUpdateSavedItemsMutation();
+
+  function addItem() {
+    if (activeCart) {
+      modifyCart({
+        cart_id: activeCart.id,
+        barcode: route.params.barcode,
+        change_amount: 1,
+      });
+      setItemAdded(true);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -41,8 +56,11 @@ export default function ScanResultScreen({
         )}
       </View>
       <ButtonGroup>
-        <MainButton title="Retake" onPress={() => navigation.goBack()} />
-        <MainButton
+        <SecondaryButton title="Retake" onPress={() => navigation.goBack()} />
+        {activeCart && !itemAdded && (
+          <SecondaryButton title="Add to Cart" onPress={addItem} />
+        )}
+        <SecondaryButton
           title="Add to Saved Items"
           onPress={() => {
             update(route.params.barcode);

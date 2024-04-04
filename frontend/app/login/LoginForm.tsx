@@ -44,7 +44,7 @@ export default function LoginForm({
 
 const styles = StyleSheet.create({
   container: {
-    width: '80%',
+    width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
   },

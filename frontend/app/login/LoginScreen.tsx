@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
-    paddingBottom: 100,
+    paddingBottom: 150,
   },
   title: {
     fontSize: TEXT_HUGE,

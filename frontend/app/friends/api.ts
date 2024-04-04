@@ -29,6 +29,13 @@ export const friendsApi = createApi({
         url: `/add_friend/${username}/`,
         method: 'POST',
       }),
+      transformErrorResponse: response => {
+        const data = response.data as {message: string; code: string};
+        return {
+          message: data.message,
+          code: data.code,
+        };
+      },
       invalidatesTags: ['PendingFriends'],
     }),
     removeFriend: build.mutation<StatusMessage, string>({

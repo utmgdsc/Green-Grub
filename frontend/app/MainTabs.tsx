@@ -9,22 +9,19 @@ import React from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import HomeScreen from './home/HomeScreen';
 import ExploreTab from './explore/ExploreTab';
 import HomeTab from './home/HomeTab';
-import ExploreScreen from './explore/ExploreScreen';
 import ScanTab from './scan/ScanTab';
 import FriendsTab from './friends/FriendsTab';
 import ProfileScreen from './profile/ProfileScreen';
-import QuizListScreen from './explore/QuizListScreen';
-import QuizDetailsScreen from './explore/QuizDetailsScreen';
+import CartTab, {CartStackParamList} from './cart/CartTab';
+import {NavigatorScreenParams} from '@react-navigation/native';
 
 export type MainTabsParamList = {
   'Home Tab': undefined;
   'Scan Tab': undefined;
   'Explore Tab': undefined;
-  'Saved Items': undefined;
-  Leaderboard: undefined;
+  'Cart Tab': NavigatorScreenParams<CartStackParamList>;
   Friends: undefined;
   Profile: undefined;
 };
@@ -42,6 +39,7 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
+          tabBarLabel: 'Home',
         }}
       />
 
@@ -53,6 +51,7 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="scan" color={color} size={size} />
           ),
+          tabBarLabel: 'Scan',
         }}
       />
 
@@ -64,6 +63,19 @@ function App(): React.JSX.Element {
           tabBarIcon: ({color, size}) => (
             <Icon name="compass-outline" color={color} size={size} />
           ),
+          tabBarLabel: 'Explore',
+        }}
+      />
+
+      <Tabs.Screen
+        name="Cart Tab"
+        component={CartTab}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color, size}) => (
+            <Icon name="cart" color={color} size={size} />
+          ),
+          tabBarLabel: 'Cart',
         }}
       />
 
@@ -76,6 +88,7 @@ function App(): React.JSX.Element {
             <Icon name="people" color={color} size={size} />
           ),
           headerShown: false,
+          tabBarLabel: 'Friends',
         }}
       />
 

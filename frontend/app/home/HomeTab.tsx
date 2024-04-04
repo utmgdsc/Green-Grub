@@ -27,8 +27,16 @@ export default function HomeTab({}: HomeScreenProps) {
         component={HomeScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Saved Items" component={SavedItemsScreen} />
-      <Stack.Screen name="Leaderboard" component={LeaderboardScreen} />
+      <Stack.Screen
+        name="Saved Items"
+        component={SavedItemsScreen}
+        options={{headerTitle: ''}}
+      />
+      <Stack.Screen
+        name="Leaderboard"
+        component={LeaderboardScreen}
+        options={{headerTitle: ''}}
+      />
     </Stack.Navigator>
   );
 }

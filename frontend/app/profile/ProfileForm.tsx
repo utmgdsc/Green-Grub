@@ -1,43 +1,117 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-import {StyleSheet, View} from 'react-native';
-import TextInputField from '../shared/TextInputField';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import TextInputField, {TextInputGroup} from '../shared/TextInputField';
+import ButtonGroup from '../shared/ButtonGroup';
+import ImagePickerField from '../shared/ImagePickerField';
+import MainButton from '../shared/MainButton';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '../store';
+import {User, userApi} from '../login/api';
+import {logout} from '../authSlice';
+import TextField from '../shared/TextField';
 
-type ProfileFormProps = {
-  username: string;
-  setUsername: (text: string) => void;
-  password: string;
-  setPassword: (text: string) => void;
-};
+export default function ProfileForm({user}: {user: User}) {
+  const dispatch = useDispatch<AppDispatch>();
+  const authToken = useSelector((state: RootState) => state.auth.accessToken);
+  const username = user.username;
+  const [password, setLocalPassword] = useState('');
+  const [emailAddress, setEmailAddress] = useState(user.email);
+  const [firstName, setFirstName] = useState(user.first_name);
+  const [lastName, setLastName] = useState(user.last_name);
+  const [city, setCity] = useState(user.extra_info.city);
+  const [country, setCountry] = useState(user.extra_info.country);
+  const [imageUri, setImageUri] = useState(user.extra_info.avatar_url);
 
-export default function ProfileForm({
-  username,
-  setUsername,
-  password,
-  setPassword,
-}: ProfileFormProps) {
+  async function handleUpdate() {
+    const formData = new FormData();
+    formData.append('avatar', {
+      uri: imageUri,
+      type: 'image/jpeg',
+      name: 'avatar.jpg',
+    });
+    formData.append('username', username);
+    if (password !== '') {
+      formData.append('password', password);
+    }
+    formData.append('email', emailAddress);
+    formData.append('first_name', firstName);
+    formData.append('last_name', lastName);
+    formData.append('city', city);
+    formData.append('country', country);
+
+    await fetch('http://localhost:8000/api/update_user/', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: formData,
+    });
+    dispatch(userApi.util.invalidateTags(['User']));
+  }
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+  };
+
   return (
-    <View style={styles.container}>
-      <TextInputField
-        title="Username"
-        onChangeText={setUsername}
-        value={username}
-        isSecureText={false}
-      />
-      <TextInputField
-        title="Password"
-        onChangeText={setPassword}
-        value={password}
-        isSecureText={true}
-      />
-    </View>
+    // eslint-disable-next-line react-native/no-inline-styles
+    <ScrollView style={{width: '100%'}}>
+      <View style={styles.container}>
+        <TextInputGroup>
+          <TextField title="Username" value={username} />
+          <TextInputField
+            title="Email Address"
+            onChangeText={setEmailAddress}
+            value={emailAddress}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="First Name"
+            onChangeText={setFirstName}
+            value={firstName}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="Last Name"
+            onChangeText={setLastName}
+            value={lastName}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="City"
+            onChangeText={setCity}
+            value={city}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="Country"
+            onChangeText={setCountry}
+            value={country}
+            isSecureText={false}
+          />
+          <TextInputField
+            title="Password"
+            onChangeText={setLocalPassword}
+            value={password}
+            isSecureText={true}
+          />
+          <ImagePickerField imageUri={imageUri} setImageUri={setImageUri} />
+        </TextInputGroup>
+        <ButtonGroup>
+          <MainButton title="Update" onPress={handleUpdate} />
+          <MainButton title="Log out" onPress={handleLogout} />
+        </ButtonGroup>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '80%',
+    paddingVertical: 30,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },

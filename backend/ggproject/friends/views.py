@@ -9,6 +9,7 @@ from django.db.models import Q
 
 from .models import Friends
 from .serializers import FriendRequestSerializer, FriendsListSerializer
+from ggauth.serializers import UserWithExtraInfoSerializer, UserExtra
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -231,3 +232,35 @@ def view_friends_list(request):
     usernames = [entry['friend']['username'] for entry in serializer.data]
     return Response({"usernames":usernames})
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_friends_user_info(request, username):
+    """
+    View to get a friend's user info if the authenticated user is friends with them.
+
+    :param request: HttpRequest object
+    :param username: Username of the friend whose information is requested
+    :return: Response object with user info if they are friends, otherwise an error message
+    """
+    # Ensure that the requested user exists
+    try:
+        friend_user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({'message': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    
+    # Check if the authenticated user and the requested user are friends
+    if not Friends.objects.filter(
+        ((Q(user1=request.user) & Q(user2=friend_user)) | 
+         (Q(user1=friend_user) & Q(user2=request.user))),
+         status='accepted'
+    ).exists():
+        return Response({'message': 'You are not friends with the requested user'}, status=status.HTTP_403_FORBIDDEN)
+    
+    # Get the UserExtra object related to the friend
+    friend_extra, created = UserExtra.objects.get_or_create(user=friend_user)
+    
+    # Serialize the user data
+    serializer = UserWithExtraInfoSerializer(friend_user, context={'request': request})
+    
+    return Response(serializer.data)

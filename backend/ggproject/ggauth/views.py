@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 # import isauthenticated
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserSerializer, UserWithExtraInfoSerializer
+from .serializers import UserSerializer, UserWithExtraInfoSerializer, UserBasicSerializer
 from report.models import Stats
 
 class SignupView(APIView):
@@ -39,3 +39,16 @@ class GetUserInfo(APIView):
         user = request.user
         serializer = UserWithExtraInfoSerializer(user, context={'request': request})
         return Response(serializer.data)
+    
+class GetUserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, username, *args, **kwargs):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Pass the context containing the request to the serializer
+        serializer = UserBasicSerializer(user, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

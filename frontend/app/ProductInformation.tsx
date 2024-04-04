@@ -1,52 +1,78 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Image, Text, StyleSheet, TouchableOpacity, View} from 'react-native';
-import RatingBar, {RatingBarGroup} from './RatingBar';
-import {TEXT_LARGE} from './sizing';
+import {RatingBarGroup} from './RatingBar';
+import {TEXT_LARGE, TEXT_MEDIUM, TEXT_SMALL} from './sizing';
 import {FlatList} from 'react-native-gesture-handler';
 import FoodInfo from './types/FoodInfo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Card from './Card';
+import ProgressBar from './shared/ProgressBar';
+import {DARK_GRAY, BLACK} from './colors';
 
 type ShortProductInformationProps = {
   product: FoodInfo;
   onSelected?: () => void;
+  onDeleted?: () => void;
 };
 type ShortProductInformationListProps = {
   products: FoodInfo[];
   onSelected?: (product: FoodInfo) => void;
+  onDeleted?: (product: FoodInfo) => void;
 };
 
 export function ShortProductInformationList({
   products,
   onSelected,
+  onDeleted,
 }: ShortProductInformationListProps) {
-  return (
-    <FlatList
-      contentContainerStyle={styles.shortProductInformationList}
-      style={styles.shortProductInformationListContainer}
-      renderItem={({item: product}) => (
-        <ShortProductInformation
-          product={product}
-          onSelected={onSelected ? () => onSelected(product) : undefined}
-        />
-      )}
-      data={products}
-    />
-  );
+  if (products.length === 0) {
+    return (
+      <View style={styles.productNotFound}>
+        <Text style={styles.productNotFoundText}>No products found</Text>
+      </View>
+    );
+  } else {
+    return (
+      <FlatList
+        contentContainerStyle={styles.shortProductInformationList}
+        style={styles.shortProductInformationListContainer}
+        renderItem={({item: product}) => (
+          <ShortProductInformation
+            product={product}
+            onSelected={onSelected ? () => onSelected(product) : undefined}
+            onDeleted={onDeleted ? () => onDeleted(product) : undefined}
+          />
+        )}
+        data={products}
+      />
+    );
+  }
 }
 
 export function ShortProductInformation({
   product,
   onSelected,
+  onDeleted,
 }: ShortProductInformationProps) {
   return (
     <TouchableOpacity
       style={styles.shortProductInformation}
       onPress={onSelected}>
-      <Image src={product.image} style={styles.shortProductInformationImage} />
-      <Text style={styles.shortProductInformationText}>
-        {product.product_name}
-      </Text>
+      <View style={{flexDirection: 'row', alignItems: 'center', width: '60%'}}>
+        <Image
+          src={product.image}
+          style={styles.shortProductInformationImage}
+        />
+        <Text style={styles.shortProductInformationText}>
+          {product.product_name}
+        </Text>
+      </View>
+      {onDeleted !== undefined ? (
+        <TouchableOpacity onPress={onDeleted}>
+          <Icon name="trash-outline" size={40} color="black" />
+        </TouchableOpacity>
+      ) : null}
     </TouchableOpacity>
   );
 }
@@ -65,18 +91,20 @@ export function ProductInformation({product}: {product: FoodInfo}) {
 
       <Text style={styles.productNameText}>{product.product_name}</Text>
       <RatingBarGroup>
-        <RatingBar
-          label="Nutri Score"
-          min={0}
-          max={5}
-          actual={product.nutri_score}
-        />
-        <RatingBar
-          label="Sustainability Score"
-          min={0}
-          max={5}
-          actual={product.sustainability}
-        />
+        <View style={styles.scoreLabel}>
+          <Icon name="restaurant" size={23} style={styles.icon} />
+          <Text style={styles.scoreLabelText}>
+            Nutritional Score: {product.nutri_score}/5
+          </Text>
+        </View>
+        <ProgressBar current={product.nutri_score} total={5} />
+        <View style={styles.scoreLabel}>
+          <Icon name="leaf" size={23} style={styles.icon} />
+          <Text style={styles.scoreLabelText}>
+            Sustainability Score: {product.sustainability}/5
+          </Text>
+        </View>
+        <ProgressBar current={product.sustainability} total={5} />
       </RatingBarGroup>
     </Card>
   );
@@ -92,6 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   productNameText: {
+    textAlign: 'center',
     fontSize: TEXT_LARGE,
     fontWeight: 'bold',
     color: 'black',
@@ -106,26 +135,38 @@ const styles = StyleSheet.create({
   shortProductInformation: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    justifyContent: 'space-between',
     padding: 10,
-    margin: 5,
     borderColor: 'lightgray',
     borderWidth: 2,
     width: '100%',
+    height: 80,
     alignSelf: 'center',
     backgroundColor: 'white',
     elevation: 2,
     borderRadius: 8,
   },
   shortProductInformationImage: {
-    width: 50,
-    height: 50,
-    flex: 1,
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
+  },
+  scoreLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 10,
+    color: DARK_GRAY,
+  },
+  scoreLabelText: {
+    fontSize: TEXT_SMALL,
   },
   shortProductInformationText: {
-    fontSize: TEXT_LARGE,
-    flex: 6,
-    color: 'black',
+    fontSize: TEXT_MEDIUM,
+    marginLeft: 10,
+    fontWeight: 'bold',
+    color: BLACK,
   },
   productNotFound: {
     paddingVertical: 80,
@@ -137,5 +178,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     textAlign: 'center',
+  },
+  closeButtonContainer: {
+    width: '100%',
+    paddingRight: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });
