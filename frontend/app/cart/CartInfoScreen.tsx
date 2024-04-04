@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Modal, StyleSheet, View} from 'react-native';
+import {Modal, StyleSheet, View, TouchableWithoutFeedback} from 'react-native';
 import {
   ProductInformation,
   ShortProductInformationList,
@@ -49,9 +49,19 @@ export default function CartInfoScreen({
         animationType="slide"
         visible={!!product}
         onRequestClose={() => setProduct(null)}>
-        <View style={styles.productDetailModal}>
-          {product !== null ? <ProductInformation product={product} /> : ''}
-        </View>
+        <TouchableWithoutFeedback onPress={() => setProduct(null)}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.productDetailModal}>
+                {product !== null ? (
+                  <ProductInformation product={product} />
+                ) : (
+                  ''
+                )}
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
       <Section
         title={cartName}
@@ -92,5 +102,11 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
 });

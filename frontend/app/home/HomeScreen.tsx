@@ -79,7 +79,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
       </View>
       <TouchableOpacity onPress={openNutritionModal}>
         <Text style={styles.nutritionScoreLabel}>
-          {`Your Nutrition Score ${nutritionScore}/5`}
+          {`Your Nutrition Score ${nutritionScore.toFixed(1)}/5`}
         </Text>
       </TouchableOpacity>
 

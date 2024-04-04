@@ -11,7 +11,7 @@ import {useGetQuestionQuery} from './api';
 import {Animated} from 'react-native';
 import {usePostQuizResultsMutation} from './api';
 import {PRIMARY_GREEN} from '../colors';
-import { BUTTON_BORDERRADIUS } from '../sizing';
+import {BUTTON_BORDERRADIUS} from '../sizing';
 
 const QuizDetailsScreen = ({route, navigation}) => {
   const {quizId, quizTopic} = route.params;
@@ -177,7 +177,9 @@ const QuizDetailsScreen = ({route, navigation}) => {
         <TouchableOpacity
           style={styles.nextQuestionButton}
           onPress={goToNextQuestion}>
-          <Text style={styles.nextQuestionButtonText}>Next Question</Text>
+          <Text style={styles.nextQuestionButtonText}>
+            {currentQuestionId < 6 ? 'Next Question' : 'Finish Quiz'}
+          </Text>
         </TouchableOpacity>
       )}
     </ScrollView>
