@@ -7,6 +7,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {
   ProductInformation,
@@ -21,8 +22,7 @@ import {TEXT_SMALL, TEXT_XLARGE} from '../sizing';
 
 type SavedItemsScreenProps = StackScreenProps<
   HomeStackParamList,
-  'Saved Items',
-  'Leaderboard'
+  'Saved Items'
 >;
 
 export default function SavedItemsScreen({}: SavedItemsScreenProps) {
@@ -35,13 +35,22 @@ export default function SavedItemsScreen({}: SavedItemsScreenProps) {
         animationType="slide"
         visible={!!productDetail}
         onRequestClose={() => setProductDetail(null)}>
-        <View style={styles.productDetailModal}>
-          {productDetail !== null ? (
-            <ProductInformation product={productDetail} onClose={() => setProductDetail(null)}/>
-          ) : (
-            ''
-          )}
-        </View>
+        <TouchableWithoutFeedback onPress={() => setProductDetail(null)}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.productDetailModal}>
+                {productDetail !== null ? (
+                  <ProductInformation
+                    product={productDetail}
+                    onClose={() => setProductDetail(null)}
+                  />
+                ) : (
+                  ''
+                )}
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
       <View style={styles.container}>
         <Text style={styles.mainTitleText}>Saved Items </Text>
@@ -95,5 +104,11 @@ const styles = StyleSheet.create({
   },
   loadingBox: {
     padding: 100,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
 });

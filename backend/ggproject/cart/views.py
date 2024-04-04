@@ -59,6 +59,10 @@ class ModifyCartView(APIView):
         
         # Calculate new quantity and apply changes
         new_quantity = cart_item.quantity + change_amount
+        
+        if cart_item_created:
+            new_quantity -= 1
+            
         if new_quantity <= 0:
             cart_item.delete()
             return Response({"message": f"{response_message}Product removed from the cart.", "state": "removed"}, status=status.HTTP_200_OK)
