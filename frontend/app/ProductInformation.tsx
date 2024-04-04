@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Image, Text, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {RatingBarGroup} from './RatingBar';
@@ -12,15 +13,18 @@ import {DARK_GRAY, BLACK} from './colors';
 type ShortProductInformationProps = {
   product: FoodInfo;
   onSelected?: () => void;
+  onDeleted?: () => void;
 };
 type ShortProductInformationListProps = {
   products: FoodInfo[];
   onSelected?: (product: FoodInfo) => void;
+  onDeleted?: (product: FoodInfo) => void;
 };
 
 export function ShortProductInformationList({
   products,
   onSelected,
+  onDeleted,
 }: ShortProductInformationListProps) {
   if (products.length === 0) {
     return (
@@ -37,6 +41,7 @@ export function ShortProductInformationList({
           <ShortProductInformation
             product={product}
             onSelected={onSelected ? () => onSelected(product) : undefined}
+            onDeleted={onDeleted ? () => onDeleted(product) : undefined}
           />
         )}
         data={products}
@@ -48,15 +53,26 @@ export function ShortProductInformationList({
 export function ShortProductInformation({
   product,
   onSelected,
+  onDeleted,
 }: ShortProductInformationProps) {
   return (
     <TouchableOpacity
       style={styles.shortProductInformation}
       onPress={onSelected}>
-      <Image src={product.image} style={styles.shortProductInformationImage} />
-      <Text style={styles.shortProductInformationText}>
-        {product.product_name}
-      </Text>
+      <View style={{flexDirection: 'row', alignItems: 'center', width: '60%'}}>
+        <Image
+          src={product.image}
+          style={styles.shortProductInformationImage}
+        />
+        <Text style={styles.shortProductInformationText}>
+          {product.product_name}
+        </Text>
+      </View>
+      {onDeleted !== undefined ? (
+        <TouchableOpacity onPress={onDeleted}>
+          <Icon name="trash-outline" size={40} color="black" />
+        </TouchableOpacity>
+      ) : null}
     </TouchableOpacity>
   );
 }
@@ -119,12 +135,12 @@ const styles = StyleSheet.create({
   shortProductInformation: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    justifyContent: 'space-between',
     padding: 10,
-    margin: 5,
     borderColor: 'lightgray',
     borderWidth: 2,
     width: '100%',
+    height: 80,
     alignSelf: 'center',
     backgroundColor: 'white',
     elevation: 2,
@@ -133,7 +149,7 @@ const styles = StyleSheet.create({
   shortProductInformationImage: {
     width: 60,
     height: 60,
-    flex: 1,
+    resizeMode: 'contain',
   },
   scoreLabel: {
     flexDirection: 'row',
@@ -148,7 +164,6 @@ const styles = StyleSheet.create({
   },
   shortProductInformationText: {
     fontSize: TEXT_MEDIUM,
-    flex: 6,
     marginLeft: 10,
     fontWeight: 'bold',
     color: BLACK,

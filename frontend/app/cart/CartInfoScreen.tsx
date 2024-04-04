@@ -10,6 +10,7 @@ import {CartStackParamList} from './CartTab';
 import {
   useFinalizeCartMutation,
   useGetCartQuery,
+  useModifyCartMutation,
   useUpdateCartNameMutation,
 } from './api';
 import Section from '../Section';
@@ -33,6 +34,7 @@ export default function CartInfoScreen({
   const {data: cart} = useGetCartQuery(cartId);
   const [finalizeCart_] = useFinalizeCartMutation();
   const [updateCartName] = useUpdateCartNameMutation();
+  const [modifyCart] = useModifyCartMutation();
   const [product, setProduct] = useState<FoodInfo | null>(null);
   const cartName = cart?.name ?? `Cart ${cartId}`;
 
@@ -68,6 +70,16 @@ export default function CartInfoScreen({
         <ShortProductInformationList
           products={cart?.items.map(i => i.product_details) ?? []}
           onSelected={setProduct}
+          onDeleted={
+            !cart?.finalized ?? false
+              ? prod =>
+                  modifyCart({
+                    cart_id: cartId,
+                    barcode: prod.barcode,
+                    change_amount: -1,
+                  })
+              : undefined
+          }
         />
       </Section>
     </View>

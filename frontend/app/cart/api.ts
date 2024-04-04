@@ -18,7 +18,7 @@ export type Cart = CartStatus & {
 
 export type CartModification = {
   cart_id: number;
-  barcode: number;
+  barcode: string;
   change_amount: number;
 };
 
