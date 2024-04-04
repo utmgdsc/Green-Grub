@@ -81,7 +81,7 @@ def topic_quizzes(request, topic_id):
         'id': quiz.id,
         'topic_title': quiz.quiz_title,
         'order': quiz.order,
-        'success_url': f'GET /quiz/{quiz.id}/question/1'
+        'success_url': f'GET /quiz/{quiz.id}/question/1',
     } for quiz in unattempted_or_not_passed_quizzes]
     
     # Second array: Passed quizzes
@@ -92,7 +92,8 @@ def topic_quizzes(request, topic_id):
         'id': quiz.id,
         'topic_title': quiz.quiz_title,
         'order': quiz.order,
-        'success_url': f'GET /quiz/{quiz.id}/question/1'
+        'success_url': f'GET /quiz/{quiz.id}/question/1',
+        'correct_answers': quiz.num_correct
     } for quiz in passed_quizzes_list]
 
     # Construct and return the JSON response
@@ -151,6 +152,8 @@ def submit_quiz_answers(request, quiz_id):
         # submitted_answers = request.data.get('answers', {})
         
         correct_answers_count = request.data.get('score')
+        quiz.num_correct = correct_answers_count
+        quiz.save()
         # incorrect_questions = []
 
         # Begin a transaction to ensure data integrity
