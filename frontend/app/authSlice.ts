@@ -1,7 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import * as Keychain from 'react-native-keychain';
-import {friendsApi} from './friends/api';
-import {scanApi} from './scan/api';
 
 /**
  * Auth status can be one of the following:
@@ -28,10 +26,8 @@ const initialState: AuthState = {
   status: 'loading',
 };
 
-export const logout = createAsyncThunk('auth/logout', async (_, {dispatch}) => {
+export const logout = createAsyncThunk('auth/logout', async (_, {}) => {
   Keychain.resetInternetCredentials('greengrub');
-  dispatch(friendsApi.util.resetApiState());
-  dispatch(scanApi.util.resetApiState());
 });
 
 export const loadAuthToken = createAsyncThunk('auth/loadToken', async () => {
