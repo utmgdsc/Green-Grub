@@ -98,3 +98,24 @@ class UserWithExtraInfoSerializer(serializers.ModelSerializer):
             average_sustainability_score = sum(scores) / len(scores) if scores else 0
             return average_sustainability_score
         return 0
+    
+
+class UserBasicSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField(required=False)
+    avatar_url = serializers.SerializerMethodField('get_avatar_url')
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'avatar', 'avatar_url']
+
+    def get_avatar_url(self, obj):
+        request = self.context.get('request')
+        if request is None:
+            return 'Request is None. Context not passed correctly.'
+
+        # Get the UserExtra instance related to the User
+        user_extra = UserExtra.objects.filter(user=obj).first()
+        if user_extra and user_extra.avatar and hasattr(user_extra.avatar, 'url'):
+            photo_url = user_extra.avatar.url
+            return request.build_absolute_uri(photo_url)
+        return None

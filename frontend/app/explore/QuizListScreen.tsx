@@ -29,6 +29,7 @@ type QuizProps = {
   order: number;
   completed: boolean;
   success_url: string;
+  correct_answers: number;
   navigation: QuizListScreenNavigationProp;
 };
 
@@ -38,6 +39,7 @@ const QuizItem = ({
   completed,
   order,
   success_url,
+  correct_answers,
   navigation,
 }: QuizProps) => {
   const handlePress = () => {
@@ -54,7 +56,10 @@ const QuizItem = ({
     <TouchableOpacity style={styles.button} onPress={handlePress}>
       <Text style={styles.buttonText}>{topic_title} </Text>
       <Text style={{color: 'white', marginBottom: 10, marginTop: 15}}>
-        {completed ? 'Completed' : ''}
+        {completed ? `Successfully completed` : ''}
+      </Text>
+      <Text style={{color: 'white', fontWeight: 'bold'}}>
+        {completed ? `${correct_answers}/6 answered correctly` : ''}
       </Text>
     </TouchableOpacity>
   );

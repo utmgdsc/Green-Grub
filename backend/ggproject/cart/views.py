@@ -59,6 +59,10 @@ class ModifyCartView(APIView):
         
         # Calculate new quantity and apply changes
         new_quantity = cart_item.quantity + change_amount
+        
+        if cart_item_created:
+            new_quantity -= 1
+            
         if new_quantity <= 0:
             cart_item.delete()
             return Response({"message": f"{response_message}Product removed from the cart.", "state": "removed"}, status=status.HTTP_200_OK)
@@ -129,3 +133,20 @@ class ViewUserCartsView(APIView):
         carts = Cart.objects.filter(user=user)
         serializer = DetailedCartSerializer(carts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class UpdateCartNameView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        cart_id = request.data.get("cart_id")
+        name = request.data.get("name")
+        if not name:
+            return Response({"error": "Name field is missing."}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            cart = Cart.objects.get(id=cart_id, user=user)
+        except Cart.DoesNotExist:
+            return Response({"error": "Cart does not belong to the user."}, status=status.HTTP_403_FORBIDDEN)
+        cart.name = name
+        cart.save()
+        return Response({"message": "Cart name updated successfully."}, status=status.HTTP_200_OK)

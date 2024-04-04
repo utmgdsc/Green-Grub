@@ -23,7 +23,11 @@ const ResultsScreen = ({route, navigation}) => {
     <View style={styles.container}>
       <Text style={styles.header}>Quiz Results</Text>
       <Text style={styles.resultText}>
-        You got {correctAnswersCount} out of 6 answers correct
+        {correctAnswersCount > 0
+          ? `You got ${correctAnswersCount} out of 6 answers correct and earned ${
+              correctAnswersCount * 10
+            } points!`
+          : `You got ${correctAnswersCount} out of 6 answers correct`}
       </Text>
       <Image source={{uri: getImageSource()}} style={styles.resultImage} />
       <Text style={styles.resultText}>

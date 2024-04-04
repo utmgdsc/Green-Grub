@@ -32,6 +32,7 @@ class Quiz(models.Model): # the quiz topic id needs to be the same as all the qu
     q5 = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='q5')
     q6 = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='q6')
     order = models.IntegerField()
+    num_correct = models.IntegerField(default=0)
 
 class UserQuizzes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
