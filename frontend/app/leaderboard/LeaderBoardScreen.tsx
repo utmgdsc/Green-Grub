@@ -1,8 +1,14 @@
 import React from 'react';
+import {StackScreenProps} from '@react-navigation/stack';
+import {HomeStackParamList} from '../home/HomeTab';
+import Leaderboard from './Leaderboard';
 
+type LeaderboardScreenProps = StackScreenProps<
+  HomeStackParamList,
+  'Saved Items',
+  'Leaderboard'
+>;
 
-type ExploreScreenProps = StackScreenProps<QuizzesStackParamList, 'Explore'>;
-
-export default function ExploreScreen({}: StartScreenProps) {
+export default function LeaderboardScreen({}: LeaderboardScreenProps) {
   return <Leaderboard />;
 }

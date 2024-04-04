@@ -4,6 +4,7 @@ import {MainTabsParamList} from '../MainTabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './HomeScreen';
 import SavedItemsScreen from '../savedItems/SavedItemsScreen';
+import LeaderboardScreen from '../leaderboard/LeaderBoardScreen';
 
 type HomeScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home Tab'>;
 
@@ -25,7 +26,6 @@ export default function FriendsScreen({}: HomeScreenProps) {
         component={HomeScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Saved Items" component={SavedItemsScreen} />
       <Stack.Screen
         name="Saved Items"
         component={SavedItemsScreen}
