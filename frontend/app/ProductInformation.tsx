@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
   shortProductInformationList: {
     width: '90%',
     alignSelf: 'center',
+    gap: 5,
   },
   shortProductInformationListContainer: {
     width: '100%',
