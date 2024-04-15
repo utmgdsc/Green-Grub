@@ -21,6 +21,7 @@ export type MainTabsParamList = {
   'Home Tab': undefined;
   'Scan Tab': undefined;
   'Explore Tab': undefined;
+  'Saved Items': undefined;
   'Cart Tab': NavigatorScreenParams<CartStackParamList>;
   Friends: undefined;
   Profile: undefined;

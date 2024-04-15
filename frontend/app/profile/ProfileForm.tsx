@@ -9,7 +9,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../store';
 import {User, userApi} from '../login/api';
 import {logout} from '../authSlice';
-import TextField from '../shared/TextField';
+import {friendsApi} from '../friends/api';
+import {scanApi} from '../scan/api';
 import {TEXT_XLARGE, TEXT_SMALL} from '../sizing';
 import {WHITE} from '../colors';
 
@@ -54,6 +55,8 @@ export default function ProfileForm({user}: {user: User}) {
 
   const handleLogout = async () => {
     await dispatch(logout());
+    dispatch(friendsApi.util.resetApiState());
+    dispatch(scanApi.util.resetApiState());
   };
 
   return (

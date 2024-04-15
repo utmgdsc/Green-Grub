@@ -22,8 +22,7 @@ import {TEXT_SMALL, TEXT_XLARGE} from '../sizing';
 
 type SavedItemsScreenProps = StackScreenProps<
   HomeStackParamList,
-  'Saved Items',
-  'Leaderboard'
+  'Saved Items'
 >;
 
 export default function SavedItemsScreen({}: SavedItemsScreenProps) {
