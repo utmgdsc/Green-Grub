@@ -11,6 +11,7 @@ import {setUsername} from '../userSlice';
 import {AppDispatch} from '../store';
 import ImagePickerField from '../shared/ImagePickerField';
 import {useNavigation} from '@react-navigation/native';
+import {SERVER_URL} from '../api';
 
 export default function RegisterForm({}) {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,12 +45,12 @@ export default function RegisterForm({}) {
       formData.append('city', city);
       formData.append('country', country);
 
-      await fetch('http://localhost:8000/api/signup/', {
+      await fetch(`${SERVER_URL}signup/`, {
         method: 'POST',
         body: formData,
       });
 
-      const response = await fetch('http://localhost:8000/api/login/', {
+      const response = await fetch(`${SERVER_URL}login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

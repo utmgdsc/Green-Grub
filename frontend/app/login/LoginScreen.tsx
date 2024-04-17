@@ -11,6 +11,7 @@ import {StartStackParamList} from '../StartStack';
 import {AppDispatch} from '../store';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
+import {SERVER_URL} from '../api';
 
 type StartScreenProps = StackScreenProps<StartStackParamList, 'Login'>;
 
@@ -27,7 +28,7 @@ export default function LoginScreen({navigation}: StartScreenProps) {
       const controller = new AbortController();
 
       const timeoutId = setTimeout(() => controller.abort(), 2000);
-      const response = await fetch('http://localhost:8000/api/login/', {
+      const response = await fetch(`${SERVER_URL}login/`, {
         signal: controller.signal,
         method: 'POST',
         headers: {
