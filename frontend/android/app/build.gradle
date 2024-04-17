@@ -2,7 +2,9 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-apply from: "signing.gradle"
+if (getGradle().getStartParameter().getTaskRequests().toString().contains("Release")) {
+    apply from: "signing.gradle"
+}
 
 import com.android.build.OutputFile
 
@@ -111,6 +113,7 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {}
     }
     buildTypes {
         debug {
