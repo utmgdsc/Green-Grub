@@ -11,14 +11,16 @@ import {RootState} from './store';
 let SERVER_URL = '';
 
 if (__DEV__) {
-  SERVER_URL = 'http://localhost:8000/api/';
+  SERVER_URL = 'http://127.0.0.1:8000/api/';
 } else {
   SERVER_URL = 'http://greengrub.utm.utoronto.ca/api/';
 }
 
+console.log(`Using remote ${SERVER_URL}`);
+
 const mutex = new Mutex();
 const baseQuery = fetchBaseQuery({
-  baseUrl: '',
+  baseUrl: SERVER_URL,
   prepareHeaders: (header: Headers, {getState}) => {
     const token = (getState() as RootState).auth.accessToken;
     header.set('Authorization', `Bearer ${token}`);

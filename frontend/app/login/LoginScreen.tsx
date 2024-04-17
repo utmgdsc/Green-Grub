@@ -27,8 +27,9 @@ export default function LoginScreen({navigation}: StartScreenProps) {
     try {
       const controller = new AbortController();
 
-      const timeoutId = setTimeout(() => controller.abort(), 2000);
-      const response = await fetch(`${SERVER_URL}login/`, {
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      const url = `${SERVER_URL}login/`;
+      const response = await fetch(url, {
         signal: controller.signal,
         method: 'POST',
         headers: {
@@ -56,6 +57,7 @@ export default function LoginScreen({navigation}: StartScreenProps) {
       }
     } catch (error) {
       setErrorMessage('Failed to log in. Please check back later.');
+      console.error('Failed to log in:', error);
     } finally {
       setLoading(false);
     }
