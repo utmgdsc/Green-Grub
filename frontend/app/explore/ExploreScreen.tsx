@@ -35,9 +35,6 @@ function Topic({
 }: TopicProps) {
   const navigation = useNavigation();
 
-  const progressWidth =
-    total_quizzes > 0 ? `${(passed_quizzes / total_quizzes) * 100}%` : '0%';
-
   const handlePress = () => {
     navigation.navigate('QuizListScreen', {topicId: topic_id});
   };

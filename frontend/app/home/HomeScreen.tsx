@@ -9,7 +9,7 @@ import {useGetDashboardInfoQuery} from './api';
 import {StackScreenProps} from '@react-navigation/stack';
 import {HomeStackParamList} from '../navigation/HomeStack';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import {PRIMARY_GREEN, BLACK} from '../colors';
+import {PRIMARY_GREEN, BLACK, DARK_GRAY} from '../colors';
 import {TEXT_LARGER, BUTTON_BORDERRADIUS} from '../sizing';
 import MainButton from '../shared/MainButton';
 import ButtonGroup from '../shared/ButtonGroup';
@@ -111,9 +111,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
               quizzes and 40% from the average sustainability rating of your
               past scanned products.
             </Text>
-            <TouchableOpacity
-              style={[styles.button]}
-              onPress={closeSustainabilityModal}>
+            <TouchableOpacity onPress={closeSustainabilityModal}>
               <Text style={styles.buttonText}>Hide Details</Text>
             </TouchableOpacity>
           </View>
@@ -137,9 +135,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
               Keep the nutrition score high by scanning more nutritious
               products.
             </Text>
-            <TouchableOpacity
-              style={[styles.button]}
-              onPress={closeNutritionModal}>
+            <TouchableOpacity onPress={closeNutritionModal}>
               <Text style={styles.buttonText}>Hide Details</Text>
             </TouchableOpacity>
           </View>
@@ -175,6 +171,7 @@ const styles = StyleSheet.create({
   scoreLabel: {
     fontSize: 16,
     marginVertical: 5,
+    color: '#444',
   },
   nutritionScoreLabel: {
     fontSize: 18,
@@ -188,6 +185,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     textAlign: 'center',
     marginVertical: 10,
+    color: DARK_GRAY,
   },
   centeredView: {
     flex: 1,
@@ -215,20 +213,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     fontWeight: 'bold',
+    color: DARK_GRAY,
   },
   modalSustainabilityDescription: {
     textAlign: 'center',
     fontSize: 17,
     marginBottom: 20,
+    color: DARK_GRAY,
   },
   modalNutritionDescription: {
     textAlign: 'center',
     fontSize: 17,
     marginBottom: 20,
+    color: DARK_GRAY,
   },
   textStyle: {
     color: 'white',
     textAlign: 'center',
     padding: 10,
+  },
+  buttonText: {
+    color: DARK_GRAY,
   },
 });

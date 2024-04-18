@@ -56,7 +56,7 @@ const QuizItem = ({
     <TouchableOpacity style={styles.button} onPress={handlePress}>
       <Text style={styles.buttonText}>{topic_title} </Text>
       <Text style={{color: 'white', marginBottom: 10, marginTop: 15}}>
-        {completed ? `Successfully completed` : ''}
+        {completed ? `Completed` : ''}
       </Text>
       <Text style={{color: 'white', fontWeight: 'bold'}}>
         {completed ? `${correct_answers}/6 answered correctly` : ''}
