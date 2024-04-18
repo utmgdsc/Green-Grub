@@ -13,7 +13,7 @@ let SERVER_URL = '';
 if (__DEV__) {
   SERVER_URL = 'http://127.0.0.1:8000/api/';
 } else {
-  SERVER_URL = 'http://greengrub.utm.utoronto.ca/api/';
+  SERVER_URL = 'https://greengrub.utm.utoronto.ca/api/';
 }
 
 console.log(`Using remote ${SERVER_URL}`);
