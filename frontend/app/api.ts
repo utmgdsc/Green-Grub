@@ -8,9 +8,19 @@ import {setAccessToken} from './authSlice';
 import {Mutex} from 'async-mutex';
 import {RootState} from './store';
 
+let SERVER_URL = '';
+
+if (__DEV__) {
+  SERVER_URL = 'http://127.0.0.1:8000/api/';
+} else {
+  SERVER_URL = 'https://greengrub.utm.utoronto.ca/api/';
+}
+
+console.log(`Using remote ${SERVER_URL}`);
+
 const mutex = new Mutex();
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:8000/api/',
+  baseUrl: SERVER_URL,
   prepareHeaders: (header: Headers, {getState}) => {
     const token = (getState() as RootState).auth.accessToken;
     header.set('Authorization', `Bearer ${token}`);
@@ -31,18 +41,15 @@ export const baseQueryWithReauth: BaseQueryFn<
       const release = await mutex.acquire();
       try {
         const refreshToken = (api.getState() as RootState).auth.refreshToken;
-        const refreshResult = await fetch(
-          'http://127.0.0.1:8000/api/refresh/',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              refresh: refreshToken,
-            }),
+        const refreshResult = await fetch(`${SERVER_URL}refresh/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+          body: JSON.stringify({
+            refresh: refreshToken,
+          }),
+        });
         const {access} = await refreshResult.json();
         if (access) {
           api.dispatch(setAccessToken(access));
@@ -62,3 +69,5 @@ export const baseQueryWithReauth: BaseQueryFn<
 
   return result;
 };
+
+export {SERVER_URL};

@@ -114,7 +114,7 @@ const QuizDetailsScreen = ({route, navigation}) => {
   if (isLoading) {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <Text style={{color: 'black'}}>Loading...</Text>
       </View>
     );
   }
@@ -122,7 +122,7 @@ const QuizDetailsScreen = ({route, navigation}) => {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text>Error occurred!</Text>
+        <Text style={{color: 'black'}}>Error occurred!</Text>
       </View>
     );
   }
