@@ -15,8 +15,8 @@ const ResultsScreen = ({route, navigation}) => {
 
   const getImageSource = () => {
     return correctAnswersCount > 3
-      ? 'http://127.0.0.1:8000/assets/trophy.png'
-      : 'http://127.0.0.1:8000/assets/failedtest.png';
+      ? 'https://greengrub.utm.utoronto.ca/assets/trophy.png'
+      : 'https://greengrub.utm.utoronto.ca/assets/failedtest.png';
   };
 
   return (
@@ -57,10 +57,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: 'black',
   },
   resultText: {
     fontSize: 20,
     textAlign: 'center',
+    color: 'black',
   },
   resultImage: {
     width: 300,

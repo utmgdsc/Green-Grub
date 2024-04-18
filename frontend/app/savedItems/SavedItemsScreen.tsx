@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 10,
     textAlign: 'center',
+    color: 'black',
   },
   container: {
     paddingBottom: 30,
