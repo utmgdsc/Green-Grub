@@ -32,6 +32,7 @@ local.properties
 *.hprof
 .cxx/
 *.keystore
+signing.gradle
 !debug.keystore
 
 # node.js
