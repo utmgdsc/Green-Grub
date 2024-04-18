@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 
 import {ScrollView, StyleSheet, View, Text} from 'react-native';
@@ -9,9 +10,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../store';
 import {User, userApi} from '../login/api';
 import {logout} from '../authSlice';
-import TextField from '../shared/TextField';
+import {friendsApi} from '../friends/api';
+import {scanApi} from '../scan/api';
 import {TEXT_XLARGE, TEXT_SMALL} from '../sizing';
 import {WHITE} from '../colors';
+import {SERVER_URL} from '../api';
 
 export default function ProfileForm({user}: {user: User}) {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,7 +45,7 @@ export default function ProfileForm({user}: {user: User}) {
     formData.append('city', city);
     formData.append('country', country);
 
-    await fetch('http://localhost:8000/api/update_user/', {
+    await fetch(`${SERVER_URL}update_user/`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -54,10 +57,11 @@ export default function ProfileForm({user}: {user: User}) {
 
   const handleLogout = async () => {
     await dispatch(logout());
+    dispatch(friendsApi.util.resetApiState());
+    dispatch(scanApi.util.resetApiState());
   };
 
   return (
-    // eslint-disable-next-line react-native/no-inline-styles
     <ScrollView style={{width: '100%'}}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Profile</Text>

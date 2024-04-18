@@ -11,12 +11,11 @@ type HomeScreenProps = BottomTabScreenProps<MainTabsParamList, 'Home Tab'>;
 export type HomeStackParamList = {
   Home: undefined;
   'Saved Items': undefined;
-  Leaderboard: undefined;
 };
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
-export default function HomeTab({}: HomeScreenProps) {
+export default function FriendsScreen({}: HomeScreenProps) {
   return (
     <Stack.Navigator
       screenOptions={{
