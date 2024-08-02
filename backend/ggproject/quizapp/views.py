@@ -9,37 +9,6 @@ from .models import Quiz, UserQuizzes, Question, IncorrectQuestions
 from report.models import Stats
 
 
-
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def explore(request):
-#     # Get the current user
-#     user = request.user
-
-#     # Count the total number of quizzes per topic
-#     quizzes_per_topic = Quiz.objects.values('topic_id').annotate(total_quizzes=Count('topic_id')).order_by('topic_id')
-
-#     print("quizzes per topic", quizzes_per_topic)
-
-#     # Count the number of quizzes passed by the user per topic
-#     passed_quizzes_per_topic = UserQuizzes.objects.filter(user=user, pass_q=True)\
-#         .values('quiz__topic_id')\
-#         .annotate(passed_quizzes=Count('quiz__topic_id'))\
-#         .order_by('quiz__topic_id')
-
-#     # Combine the two querysets into a single response
-#     # This example assumes that each topic_id in quizzes_per_topic also exists in passed_quizzes_per_topic
-#     # Adjust logic as needed if this assumption does not hold
-#     print("BEFORE FOR LOOP", quizzes_per_topic)
-#     for topic in quizzes_per_topic:
-#         topic['passed_quizzes'] = next((item['passed_quizzes'] for item in passed_quizzes_per_topic if item['quiz__topic_id'] == topic['topic_id']), 0)
-
-#     test = quizzes_per_topic
-    
-#     print("FINAL RETURNED", quizzes_per_topic)
-
-#     return Response(quizzes_per_topic)
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def explore(request):
@@ -154,25 +123,9 @@ def submit_quiz_answers(request, quiz_id):
         correct_answers_count = request.data.get('score')
         quiz.num_correct = correct_answers_count
         quiz.save()
-        # incorrect_questions = []
-
-        # Begin a transaction to ensure data integrity
-        # with transaction.atomic():
-        #     for question_attr in ['q1', 'q2', 'q3', 'q4', 'q5', 'q6']:
-        #         question = getattr(quiz, question_attr)
-        #         # Convert question ID to string since JSON keys are always strings
-        #         question_id_str = str(question.id)
-        #         if question_id_str in submitted_answers:
-        #             is_correct = submitted_answers[question_id_str] in [True, 'true', 'True']
-        #             if is_correct:
-        #                 correct_answers_count += 1
-        #             else:
-        #                 incorrect_questions.append(question)
-
             # Check if user passed the quiz
         passed = correct_answers_count >= 4  # Assuming passing criteria is getting at least 4 questions correct
         
-        # TODO: get the stats object for user and update the score 
         # get stats object for user
         stats = Stats.objects.get(user=user)
         stats.score += correct_answers_count * 10 # can be any value
@@ -181,10 +134,6 @@ def submit_quiz_answers(request, quiz_id):
         
         # Update UserQuizzes
         UserQuizzes.objects.create(user=user, quiz=quiz, pass_q=passed, num_correct=correct_answers_count) 
-            
-            # Update IncorrectQuestions for each incorrect answer
-            # for question in incorrect_questions:
-            #     IncorrectQuestions.objects.create(user=user, quiz=quiz, question=question)
 
         return JsonResponse({'message': 'Quiz results processed', 'passed': passed, 'correct_answers_count': correct_answers_count})
     
@@ -192,6 +141,3 @@ def submit_quiz_answers(request, quiz_id):
         return JsonResponse({'error': 'Quiz not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
-
-
-# implement solve incorrect question
