@@ -137,7 +137,7 @@ For more detailed backend documentation and API usage, refer to the [Backend Doc
 ---
 
 ## Contributors
-- **Razeen Ali** - Backend Lead (API setup, Friends API, Shopping Cart API)
+- **Razeen Ali** - Backend Developer (API setup, Friends API, Shopping Cart API)
 - **Isha Juneja** - Backend Developer (Quiz API, score calculation, database models)
 - **Adel Muursepp** - Frontend Developer (UI/UX design, quizzes, dashboard, score view)
 - **Henrik Zimmermann** - Frontend Developer (Login/Register flow, barcode scanning, cart feature)
