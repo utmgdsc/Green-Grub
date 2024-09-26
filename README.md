@@ -12,10 +12,17 @@ Our vision is to create an engaging platform that empowers users to make healthi
 - **Cart Creation**: Organize scanned products into carts for specific events or categories.
 - **Friends & Leaderboard**: Add friends, accept invitations, and compete on sustainability rankings.
 
-<img width="398" alt="image" src="https://github.com/user-attachments/assets/29610964-7547-4bcb-b9f7-ecfa2ede28fc">
+- 
+
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/29610964-7547-4bcb-b9f7-ecfa2ede28fc">
+
+
 The main screen of the application showing the sustainability score with the option to scan items and compete on the leaderboard.
 
-<img width="395" alt="image" src="https://github.com/user-attachments/assets/1084c780-7dc4-4afd-8d88-5006699ed5b6">
+
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/1084c780-7dc4-4afd-8d88-5006699ed5b6">
+
+
 Quizzed on different topics which educate the users and provide an option to gain points.
 
 
@@ -24,6 +31,8 @@ Quizzed on different topics which educate the users and provide an option to gai
 ## Technical Overview
 
 <img width="872" alt="image" src="https://github.com/user-attachments/assets/b0ee5508-ccf7-4ced-8bf4-964143c93883">
+
+
 This diagram illustrates the architecture of GreenGrub, showing interactions between the backend and frontend systems. Django serves as the backend with PostgreSQL as the database, while the frontend uses React Native, Redux for state management, and RTK Query for efficient data handling between the API and UI.
 
 
