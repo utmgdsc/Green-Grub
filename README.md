@@ -12,7 +12,7 @@ Our vision is to create an engaging platform that empowers users to make healthi
 - **Cart Creation**: Organize scanned products into carts for specific events or categories.
 - **Friends & Leaderboard**: Add friends, accept invitations, and compete on sustainability rankings.
 
-- 
+  
 
 <img width="200" alt="image" src="https://github.com/user-attachments/assets/29610964-7547-4bcb-b9f7-ecfa2ede28fc">
 
