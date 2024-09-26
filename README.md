@@ -14,16 +14,14 @@ Our vision is to create an engaging platform that empowers users to make healthi
 
   
 
-<img width="200" alt="image" src="https://github.com/user-attachments/assets/29610964-7547-4bcb-b9f7-ecfa2ede28fc">
-
-
-The main screen of the application showing the sustainability score with the option to scan items and compete on the leaderboard.
-
-
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/29610964-7547-4bcb-b9f7-ecfa2ede28fc"> 
 <img width="200" alt="image" src="https://github.com/user-attachments/assets/1084c780-7dc4-4afd-8d88-5006699ed5b6">
 
 
-Quizzed on different topics which educate the users and provide an option to gain points.
+1. The main screen of the application showing the sustainability score with the option to scan items and compete on the leaderboard.
+
+
+2. Quizzes on different topics which educate the users and provide an option to gain points.
 
 
 ---
