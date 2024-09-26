@@ -49,7 +49,7 @@ This diagram illustrates the architecture of GreenGrub, showing interactions bet
 
 ### Backend:
 - **Framework**: Django REST
-- **Database**: MongoDB
+- **Database**: Postgres
 - **Authentication**: JWT (JSON Web Token)
 - **Key Endpoints**:
   - **User Authentication**: Handles user registration and login.
