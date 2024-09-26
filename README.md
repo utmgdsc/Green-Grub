@@ -1,9 +1,17 @@
 # GreenGrub
 
-**GreenGrub** is a mobile application developed as part of GDSC community project aimed at encouraging sustainable food choices through gamification. The app provides users with sustainability and nutrition scores for food products by scanning barcodes and allows them to track their performance, take quizzes, and compete with friends on a leaderboard. This project aligns with the UN Sustainable Development Goals (SDG #12) for responsible consumption and production.
+**GreenGrub** is a mobile application developed as part of GDSC community project aimed at encouraging sustainable food choices through gamification. The app provides users with sustainability and nutrition scores for food products by scanning barcodes and allows them to track their performance, take quizzes, and compete with friends on a leaderboard. This project aligns with the UN Sustainable Development Goals (SDG #12) for responsible consumption and production. The app is featured in the [University of Toronto students news paper](https://themedium.ca/greengrub-an-app-dedicated-to-food-sustainability-and-healthy-eating/) as its primary focus was to educate students about sustainability.
+
+<img width="529" alt="image" src="https://github.com/user-attachments/assets/67de2cd3-c068-4bc7-a5ed-8d6b1eeaf1a1">
+
+
+*Illustration by Buket S. Baykal/The Medium news paper for the article about GreenGrub*
+
 
 ## Vision
 Our vision is to create an engaging platform that empowers users to make healthier and more sustainable food choices. By leveraging gamification and educational content, GreenGrub aims to raise awareness about the environmental impact of everyday food items and help users form habits that contribute to a more sustainable future.
+
+For the full presentation have a look at the [slides](https://github.com/utmgdsc/Green-Grub/blob/main/GreenGrub%20Presentation.pdf)
 
 ### Key Features:
 - **Sustainability & Nutrition Scores**: Scan barcodes of food products to retrieve sustainability and health ratings from databases like Open Food Facts.
